@@ -46,7 +46,7 @@ configure(subprojects.filter { it.isJavaProject() }) {
         configure<OpenApi3Extension> {
             title = currentProject.name
             description = (currentProject.properties["openapi3-description"] ?: "") as String
-            format = "json"
+            format = "yaml"
         }
     }
 
@@ -74,5 +74,9 @@ configure(subprojects.filter { it.isJavaProject() }) {
             testImplementation(platform("org.junit:junit-bom:5.9.1"))
             testImplementation("org.junit.jupiter:junit-jupiter")
         }
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
     }
 }
