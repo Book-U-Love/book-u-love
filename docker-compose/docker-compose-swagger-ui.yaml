@@ -1,0 +1,32 @@
+networks:
+  swagger-ui:
+
+services:
+  swagger-ui-static-file-server:
+    image: "halverneus/static-file-server:latest"
+    networks:
+    - swagger-ui
+    volumes:
+    - "./data/swagger-ui/specs:/static/swagger-ui/specs"
+    environment:
+      CORS: "true"
+      PORT: 8080
+      FOLDER: "/static"
+
+  swagger-ui:
+    image: "swaggerapi/swagger-ui:latest"
+    networks:
+    - swagger-ui
+    env_file:
+    - "./env/swagger-ui.env"
+    environment:
+      BASE_URL: "/swagger-ui"
+
+  swagger-ui-nginx:
+    image: "nginx:latest"
+    networks:
+    - swagger-ui
+    ports:
+    - "18080:8080/tcp"
+    volumes:
+    - "./data/swagger-ui/nginx/conf.d:/etc/nginx/conf.d"
