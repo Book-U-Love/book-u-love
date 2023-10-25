@@ -34,6 +34,7 @@ function prepare-swagger-ui {
         OPENAPI_SPEC_URLS="$OPENAPI_SPEC_URLS,{url:\"/swagger-ui/specs/$SERVICE_NAME.yaml\",name:\"$SERVICE_NAME\"}"
     done
 
+    mkdir -p "$MAIN_DIR/docker-compose/env"
     echo "URLS='[${OPENAPI_SPEC_URLS:1}]'" >"$MAIN_DIR/docker-compose/env/swagger-ui.env"
 }
 
