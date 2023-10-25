@@ -1,4 +1,7 @@
 import com.epages.restdocs.apispec.gradle.OpenApi3Extension
+import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
+
+val springCloudVersion = "2022.0.4"
 
 fun Project.isJavaProject(): Boolean {
     return properties["lang"] == "java"
@@ -73,8 +76,26 @@ fun Project.useSpringWebMVC() {
     }
 }
 
+fun Project.useSpringCloud(springCloudVersion: String) {
+    extra["springCloudVersion"] = springCloudVersion
+
+    configure<DependencyManagementExtension> {
+        imports {
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
+        }
+    }
+
+    dependencies {
+        val implementation by configurations
+        val testImplementation by configurations
+        implementation("org.springframework.boot:spring-boot-starter-webflux")
+        implementation("org.springframework.cloud:spring-cloud-starter-gateway")
+        testImplementation("io.projectreactor:reactor-test")
+    }
+}
+
 buildscript {
-    val springBootVersion = "3.1.3"
+    val springBootVersion = "3.1.5"
 
     repositories {
         mavenCentral()
@@ -135,5 +156,9 @@ configure(subprojects.filter { it.isJavaProject() }) {
     if (includes("spring-webmvc")) {
         useSpringWebMVC()
         useSpringRESTDocs()
+    }
+
+    if (includes("spring-cloud")) {
+        useSpringCloud(springCloudVersion)
     }
 }
