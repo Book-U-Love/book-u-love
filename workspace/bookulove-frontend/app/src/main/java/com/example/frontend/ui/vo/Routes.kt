@@ -6,5 +6,5 @@ object Routes{
     const val MYPAGE = "mypage"
     const val CHAT = "chat"
     const val BOOKTOTAL = "booktotal"
-
+    const val CHATROOM = "chatroom"
 }

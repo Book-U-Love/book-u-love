@@ -1,8 +1,24 @@
 package com.example.frontend.ui.vo
 
-class DummyData {
-    object BookReport{
-        const val book1 = "book1"
-        const val book2 = "book2"
-    }
-}
+data class chatList(
+    val userName:String,
+    val userChat:String,
+)
+val chatDataList = mutableListOf<chatList>(
+    chatList(
+        userName="asdf",
+        userChat="hiasdfasdfasdfasdfadasdfdasfsdsf",
+    ),
+    chatList(
+        userName="나",
+        userChat="hi",
+    ),
+    chatList(
+        userName="asdf",
+        userChat="hiasdfsdafasdfdsfdasfadsfdsfsdafadsfasdfadsfasdfadsfdsaf",
+    ),
+    chatList(
+        userName="나",
+        userChat="hiasdfasdfasdfdasfasdfadsfsffsdfasdfadsfsdfafsdfasdfasdfsdfasdfasdfdsfasdfadsfadsfadsfdsafdsafadsfadsfdasfadsfdasfdasfdsfdsfadsfdsfadsfasdfds",
+    ),
+)
