@@ -7,7 +7,7 @@ services:
     networks:
     - swagger-ui
     volumes:
-    - "./data/swagger-ui/specs:/static/swagger-ui/specs"
+    - "${REMOTE_HOST_DOCKER_COMPOSE_DIR}data/swagger-ui/specs:/static/swagger-ui/specs"
     environment:
       CORS: "true"
       PORT: 8080
@@ -29,4 +29,4 @@ services:
     ports:
     - "18080:8080/tcp"
     volumes:
-    - "./data/swagger-ui/nginx/conf.d:/etc/nginx/conf.d"
+    - "${REMOTE_HOST_DOCKER_COMPOSE_DIR}data/swagger-ui/nginx/conf.d:/etc/nginx/conf.d"
