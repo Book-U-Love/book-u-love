@@ -40,6 +40,7 @@ import com.example.frontend.ui.screens.book.BookTotal
 import com.example.frontend.ui.screens.main.Home
 import com.example.frontend.ui.screens.info.MyPage
 import com.example.frontend.ui.screens.user.Chat
+import com.example.frontend.ui.screens.user.Register
 
 import com.example.frontend.ui.theme.FrontEndTheme
 import com.example.frontend.ui.vo.Routes
@@ -114,7 +115,7 @@ fun MainApp(){
 fun MainNavigation(navController: NavHostController){
     NavHost(navController = navController, startDestination = Routes.CHAT){
         composable(route = Routes.HOME){
-            Home()
+            Home(navController = navController)
         }
         composable(route = Routes.CHAT){
             Chat()
@@ -128,6 +129,10 @@ fun MainNavigation(navController: NavHostController){
         composable(route = Routes.BOOKTOTAL){
             BookTotal()
         }
+        composable(route = Routes.REGISTER){
+            Register(navController = navController)
+        }
     }
 
 }
+
