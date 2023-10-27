@@ -1,8 +1,12 @@
 package com.example.frontend.ui.screens.user
 
+import android.Manifest
+import android.os.Bundle
+import android.os.PersistableBundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,14 +16,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.frontend.ui.components.FuncBtn
 import com.example.frontend.ui.components.PageBtn
 import com.example.frontend.ui.components.InputField
-import com.example.frontend.ui.screens.main.Home
+import com.example.frontend.ui.components.MapInfo
+import com.example.frontend.ui.theme.FrontEndTheme
 import com.example.frontend.ui.vo.Routes
+
 
 @Composable
 fun Register(navController: NavHostController){
@@ -105,15 +111,14 @@ fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            Box(){
-
-            }
+            MapInfo()
             Spacer(modifier = Modifier.height(50.dp))
             PageBtn(
                 navController = navController,
                 name = "회원가입",
                 Routes.HOME
             )
+
         }
     }
 }

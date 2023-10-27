@@ -2,11 +2,15 @@
 
 package com.example.frontend
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -45,10 +50,32 @@ import com.example.frontend.ui.screens.user.Register
 
 import com.example.frontend.ui.theme.FrontEndTheme
 import com.example.frontend.ui.vo.Routes
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        val curLocation = registerForActivityResult(
+//            ActivityResultContracts.RequestMultiplePermissions()
+//        ){
+//                permissions ->
+//            when{
+//                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+//
+//                }
+//                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+//
+//                }
+//                else -> {
+//                }
+//            }
+//        }
+//        curLocation.launch(arrayOf(
+//            Manifest.permission.ACCESS_FINE_LOCATION,
+//            Manifest.permission.ACCESS_COARSE_LOCATION)
+//        )
+
         setContent {
             FrontEndTheme {
                 // A surface container using the 'background' color from the theme
@@ -141,3 +168,23 @@ fun MainNavigation(navController: NavHostController){
 
 }
 
+//fun initLocation() {
+//    if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//        && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//        return
+//    }
+//
+//    var fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+//    fusedLocationClient.lastLocation
+//        .addOnSuccessListener { location ->
+//            if(location == null) {
+//                Log.e(TAG, "location get fail")
+//            } else {
+//                Log.d(TAG, "${location.latitude} , ${location.longitude}")
+//            }
+//        }
+//        .addOnFailureListener {
+//            Log.e(TAG, "location error is ${it.message}")
+//            it.printStackTrace()
+//        }
+//}
