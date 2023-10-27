@@ -7,4 +7,5 @@ object Routes{
     const val CHAT = "chat"
     const val BOOKTOTAL = "booktotal"
     const val CHATROOM = "chatroom"
+    const val REGISTER = "register"
 }
