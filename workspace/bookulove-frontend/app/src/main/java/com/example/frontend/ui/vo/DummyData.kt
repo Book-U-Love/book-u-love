@@ -21,4 +21,28 @@ val chatDataList = mutableListOf<chatList>(
         userName="나",
         userChat="hiasdfasdfasdfdasfasdfadsfsffsdfasdfadsfsdfafsdfasdfasdfsdfasdfasdfdsfasdfadsfadsfadsfdsafdsafadsfadsfdasfadsfdasfdasfdsfdsfadsfdsfadsfasdfds",
     ),
+    chatList(
+        userName="asdf",
+        userChat="hiasdfsdafasdfdsfdasfadsfdsfsdafadsfasdfadsfasdfadsfdsaf",
+    ),
+    chatList(
+        userName="asdf",
+        userChat="hiasdfsdafasdfdsfdasfadsfdsfsdafadsfasdfadsfasdfadsfdsaf",
+    ),
+    chatList(
+        userName="asdf",
+        userChat="hiasdfsdafasdfdsfdasfadsfdsfsdafadsfasdfadsfasdfadsfdsaf",
+    ),
+    chatList(
+        userName="asdf",
+        userChat="hiasdfsdafasdfdsfdasfadsfdsfsdafadsfasdfadsfasdfadsfdsaf",
+    ),
+)
+
+val categoryList = mutableListOf<String>(
+    "독후감",
+    "판매",
+    "대여",
+    "내 주변"
+    
 )
