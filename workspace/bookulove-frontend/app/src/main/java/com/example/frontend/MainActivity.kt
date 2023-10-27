@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -29,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -40,6 +40,7 @@ import com.example.frontend.ui.screens.book.BookTotal
 import com.example.frontend.ui.screens.main.Home
 import com.example.frontend.ui.screens.info.MyPage
 import com.example.frontend.ui.screens.user.Chat
+import com.example.frontend.ui.screens.user.ChatRoom
 import com.example.frontend.ui.screens.user.Register
 
 import com.example.frontend.ui.theme.FrontEndTheme
@@ -59,6 +60,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Preview
 @Composable
 fun MainApp(){
     val navController = rememberNavController()
@@ -113,12 +115,12 @@ fun MainApp(){
 }
 @Composable
 fun MainNavigation(navController: NavHostController){
-    NavHost(navController = navController, startDestination = Routes.CHAT){
+    NavHost(navController = navController, startDestination = Routes.HOME){
         composable(route = Routes.HOME){
             Home(navController = navController)
         }
         composable(route = Routes.CHAT){
-            Chat()
+            Chat(navController)
         }
         composable(route = Routes.MYPAGE){
             MyPage()
@@ -128,6 +130,9 @@ fun MainNavigation(navController: NavHostController){
         }
         composable(route = Routes.BOOKTOTAL){
             BookTotal()
+        }
+        composable(route = Routes.CHATROOM){
+            ChatRoom()
         }
         composable(route = Routes.REGISTER){
             Register(navController = navController)
