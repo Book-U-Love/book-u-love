@@ -8,9 +8,15 @@ OPENAPI_SPECS_DIR="$MAIN_DIR/docker-compose/data/swagger-ui/specs"
 GRADLE_IMAGE=gradle:8.3.0-jdk17-jammy
 
 function openapi3-task {
-    docker run --rm -it \
+    if [ ${#REMOTE_HOST_MAIN_DIR} -eq 0 ]; then
+        BOOKULOVE_BACKEND_DIR="$MAIN_DIR/workspace/bookulove-backend"
+    else
+        BOOKULOVE_BACKEND_DIR="$REMOTE_HOST_MAIN_DIR/workspace/bookulove-backend"
+    fi
+
+    docker run --rm -i \
         --user "$(id -u):$(id -g)" \
-        --volume "$MAIN_DIR/workspace/bookulove-backend:/workspace" \
+        --volume "$BOOKULOVE_BACKEND_DIR:/workspace" \
         $GRADLE_IMAGE sh -c "cd /workspace && gradle clean && gradle openapi3 --parallel --build-cache -g .gradle.cache"
     return $?
 }
