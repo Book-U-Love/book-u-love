@@ -23,26 +23,9 @@ spring:
 #      mode: always
   application:
     name: book-service
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/planty?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
-    hikari:
-      idle-timeout: '600000'
-      maximum-pool-size: '50'
-      auto-commit: 'true'
-      connection-init-sql: SELECT 1
-      driver-class-name: org.mariadb.jdbc.Driver
-      connection-timeout: '5000'
-      pool-name: HikariPool
-      max-lifetime: '1800000'
-      minimum-idle: '50'
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      show_sql: true
-      format_sql: true
 
+  main:
+    web-application-type: reactive
 
 server:
   ## UTF-8 인코딩 설정
