@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -26,6 +27,7 @@ import com.example.frontend.ui.vo.chatList
 
 
 @Composable
+@ExperimentalMaterial3Api
 fun ChatInput(){
     var text by remember{
         mutableStateOf(TextFieldValue());

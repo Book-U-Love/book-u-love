@@ -39,9 +39,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.frontend.ui.components.BookReportDetail
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
 import com.example.frontend.ui.screens.main.Home
@@ -166,27 +169,35 @@ fun MainApp(){
 }
 @Composable
 fun MainNavigation(navController: NavHostController){
-    NavHost(navController = navController, startDestination = Routes.BOOKTOTAL){
-        composable(route = Routes.HOME){
+    NavHost(navController = navController, startDestination = Routes.BOOKTOTAL) {
+        composable(route = Routes.HOME) {
             Home(navController = navController)
         }
-        composable(route = Routes.CHAT){
+        composable(route = Routes.CHAT) {
             Chat(navController)
         }
-        composable(route = Routes.MYPAGE){
+        composable(route = Routes.MYPAGE) {
             MyPage()
         }
-        composable(route = Routes.BOOKSEARCH){
+        composable(route = Routes.BOOKSEARCH) {
             BookSearch()
         }
-        composable(route = Routes.BOOKTOTAL){
-            BookTotal()
+        composable(route = Routes.BOOKTOTAL) {
+            BookTotal(navController)
         }
-        composable(route = Routes.CHATROOM){
+        composable(route = Routes.CHATROOM) {
             ChatRoom()
         }
-        composable(route = Routes.REGISTER){
+        composable(route = Routes.REGISTER) {
             Register(navController = navController)
+        }
+        composable(route = Routes.REPORTDETAIL+"/{index}",
+            arguments = listOf(navArgument("index"){
+                type = NavType.IntType
+            })) {
+            entry ->
+            val reportIndex = entry.arguments?.getInt("index");
+           if(reportIndex!=null) BookReportDetail(reportIndex)
         }
     }
 

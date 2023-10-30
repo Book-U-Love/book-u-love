@@ -8,4 +8,5 @@ object Routes{
     const val BOOKTOTAL = "booktotal"
     const val CHATROOM = "chatroom"
     const val REGISTER = "register"
+    const val REPORTDETAIL = "reportdetail"
 }

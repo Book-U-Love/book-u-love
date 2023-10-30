@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import com.example.frontend.ui.vo.chatDataList
 
 @Preview
 @Composable
+@ExperimentalMaterial3Api
 fun ChatRoom(){
     Surface(color= SkyBlue, modifier=Modifier.fillMaxSize()){
 

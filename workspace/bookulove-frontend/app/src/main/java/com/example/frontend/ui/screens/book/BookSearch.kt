@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -44,6 +45,7 @@ import com.example.frontend.ui.vo.categoryList
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
+@ExperimentalMaterial3Api
 fun BookSearch(){
     val categoryState = rememberLazyListState();
     var border by remember{
