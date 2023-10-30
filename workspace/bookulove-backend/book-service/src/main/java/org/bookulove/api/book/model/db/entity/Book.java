@@ -13,9 +13,9 @@ import java.time.LocalDate;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(name = "TITLE_PUB_DATE_AUTHOR_UNIQUE", columnNames = {"title", "pubDate", "author"})
-})
+//@Table(uniqueConstraints = {
+//        @UniqueConstraint(name = "TITLE_PUB_DATE_AUTHOR_UNIQUE", columnNames = {"title", "pubDate", "author"})
+//})
 public class Book {
 
     @Id
@@ -30,6 +30,7 @@ public class Book {
 
     private String description;
 
+    @Column(unique=true)
     private String isbn;
 
     private int price;

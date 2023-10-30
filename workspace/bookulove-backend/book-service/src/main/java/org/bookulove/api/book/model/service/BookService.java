@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static org.bookulove.common.util.LogCurrent.*;
+import static org.bookyoulove.common.util.LogCurrent.*;
 
 @Slf4j
 @Service
@@ -44,14 +44,16 @@ public class BookService {
     public BookSearchRes search(String payload) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
 
+        log.info("ISBN : {}", payload);
         Book book = bookRepository.findByIsbn(payload)
-                .orElse(searchAladinAndSave(payload));
+                .orElseGet( () -> searchAladinAndSave(payload) );
+        log.info("book : {}", book);
 
         log.info(logCurrent(getClassName(), getMethodName(), END));
         return new BookSearchRes(book);
     }
 
-    public Book searchAladinAndSave(String isbn) {
+    private Book searchAladinAndSave(String isbn) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
 
         Response response = aladinFeignClient.aladinSearch(KEY, TYPE, isbn, OUTPUT, VERSION);

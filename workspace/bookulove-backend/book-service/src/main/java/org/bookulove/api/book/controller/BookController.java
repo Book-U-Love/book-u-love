@@ -9,7 +9,7 @@ import org.bookulove.api.book.model.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static org.bookulove.common.util.LogCurrent.*;
+import static org.bookyoulove.common.util.LogCurrent.*;
 
 @Slf4j
 @RestController
@@ -36,7 +36,7 @@ class BookController {
 
     @PostMapping
     ResponseEntity<?> regist(@RequestBody final BookSearchReq payload) {
-        bookService.searchAladinAndSave(payload.isbn());
+//        bookService.searchAladinAndSave(payload.isbn());
         return ResponseEntity.ok(null);
     }
 }
