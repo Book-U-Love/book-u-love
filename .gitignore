@@ -2,6 +2,11 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,intellij,intellij+all,intellij+iml,gradle
 
 **/application-env.*
+**/*.env
+**/axon-server-se/**
+**/db/**
+
+
 
 
 ### Intellij ###

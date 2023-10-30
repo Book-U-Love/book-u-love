@@ -14,4 +14,12 @@ public record ApiData<T>(
     public static <T> ApiData<T> ok(T data){
         return new ApiData<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), data);
     }
+
+//    public static <T> ApiData<T> of(int status, String code, T data){
+//        return new ApiData<>(status, code, data);
+//    }
+
+    public static <T> ApiData<T> of(int status, T data){
+        return new ApiData<>(status, null, data);
+    }
 }
