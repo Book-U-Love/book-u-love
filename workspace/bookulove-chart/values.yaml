@@ -1,0 +1,30 @@
+# PVC 생성에 사용할 기본 storageClass
+defaultStorageClass: &defaultStorageClass standard
+# bitnami/redis helm chart에 사용할 기본 redis 설정
+redisBaseValues: &redisBaseValues
+  auth:
+    password: bookulove
+  master:
+    persistence:
+      enabled: false
+  replica:
+    replicaCount: 0
+    persistence:
+      enabled: false
+# bitnami/mysql helm chart에 사용할 기본 mysql 설정
+mysqlBaseValues: &mysqlBaseValues
+  auth:
+    rootPassword: bookulove
+    database: bookulove
+  primary:
+    persistence:
+      storageClass: *defaultStorageClass
+      size: 1G
+  secondary:
+    replicaCount: 0
+    persistence:
+      enabled: false
+redis-fcm:
+  !!merge <<: *redisBaseValues
+user-db:
+  !!merge <<: *mysqlBaseValues
