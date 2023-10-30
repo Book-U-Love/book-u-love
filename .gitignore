@@ -5,6 +5,7 @@
 **/*.env
 **/axon-server-se/**
 **/db/**
+**/src/main/generated/**
 
 
 
