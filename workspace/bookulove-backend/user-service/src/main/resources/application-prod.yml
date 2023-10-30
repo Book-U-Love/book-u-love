@@ -1,0 +1,18 @@
+server:
+  port: 0
+
+spring:
+  datasource:
+    url: ${USER-DB-URL}
+    username: ${USER-DB-USERNAME}
+    password: ${USER-DB-PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        highlight_sql: true
+        default_batch_fetch_size: 100
