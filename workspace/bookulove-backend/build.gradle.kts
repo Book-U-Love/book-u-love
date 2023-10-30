@@ -4,6 +4,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import java.time.Instant
 
 val springCloudVersion = "2022.0.4"
+val axonVersion = "4.6.0"
 
 fun Project.isJavaProject(): Boolean {
     return properties["lang"] == "java"
@@ -24,8 +25,8 @@ fun Project.useSpringBoot() {
     }
 
     tasks.withType<BootBuildImage> {
-        imageName = "bookulove/${this@useSpringBoot.name}:${this@useSpringBoot.version}"
-        createdDate = Instant.now().toString()
+        imageName.set("bookulove/${this@useSpringBoot.name}:${this@useSpringBoot.version}")
+        createdDate.set(Instant.now().toString())
         environment.put("BP_JVM_VERSION", "17")
     }
 }
@@ -102,6 +103,14 @@ fun Project.useSpringCloud(springCloudVersion: String) {
     }
 }
 
+fun Project.useAxon(axonVersion: String) {
+    dependencies {
+        val implementation by configurations
+        implementation("org.axonframework:axon-configuration:${axonVersion}")
+        implementation("org.axonframework:axon-spring-boot-starter:${axonVersion}")
+    }
+}
+
 buildscript {
     val springBootVersion = "3.1.5"
 
@@ -174,5 +183,9 @@ configure(subprojects.filter { it.isJavaProject() }) {
 
     if (includes("spring-cloud")) {
         useSpringCloud(springCloudVersion)
+    }
+
+    if (includes("axon")) {
+        useAxon(axonVersion)
     }
 }
