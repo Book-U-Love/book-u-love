@@ -120,6 +120,7 @@ buildscript {
 
 configure(subprojects.filter { it.isJavaProject() }) {
     group = "org.bookulove"
+    version = "1.0.0"
     apply(plugin = "java")
 
     repositories {
