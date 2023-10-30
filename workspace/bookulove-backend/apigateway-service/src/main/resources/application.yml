@@ -1,0 +1,16 @@
+server:
+  port: 8001
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+
+      routes:
+        - id:
+          url:
+          predicates:
+          filters:
+
+token:
+  secret: bookyoulovesecrettoken@ssafy
