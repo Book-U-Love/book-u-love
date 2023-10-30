@@ -40,7 +40,6 @@ fun ChatInput(){
     Surface(modifier = Modifier.fillMaxWidth()){
         Box(){
             Row(verticalAlignment = Alignment.CenterVertically){
-
                 TextField(
                     value = text,
                     onValueChange = {

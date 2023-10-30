@@ -61,6 +61,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@ExperimentalMaterial3Api
 @Preview
 @Composable
 fun MainApp(){
@@ -117,7 +118,7 @@ fun MainApp(){
 }
 @Composable
 fun MainNavigation(navController: NavHostController){
-    NavHost(navController = navController, startDestination = Routes.BOOKSEARCH){
+    NavHost(navController = navController, startDestination = Routes.BOOKTOTAL){
         composable(route = Routes.HOME){
             Home(navController = navController)
         }

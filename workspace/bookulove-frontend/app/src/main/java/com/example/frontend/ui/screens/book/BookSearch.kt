@@ -83,21 +83,7 @@ fun BookSearch(){
                                onClick = { focusRequester.requestFocus();
                                          focusedIndex = index},
                                modifier= Modifier
-                                   .width(80.dp)
-                                   .focusRequester(focusRequester)
-                                   .drawBehind {
-                                       val strokeWidth = 2 *density
-                                       val y = size.height - strokeWidth/2
 
-                                       drawLine(border,
-                                           Offset(0f, y),
-                                           Offset(size.width,y),
-                                           strokeWidth)
-                                   }
-                                   .onFocusChanged {
-                                       border = if ((focusedIndex==index)) Color.Black else Color.White
-                                   }
-                                   .focusable()
                            ) {
                                 Text(text=item,color=Color.Black.copy(alpha=1f), fontSize = 18.sp)
                            }
