@@ -1,5 +1,7 @@
 import com.epages.restdocs.apispec.gradle.OpenApi3Extension
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+import java.time.Instant
 
 val springCloudVersion = "2022.0.4"
 
@@ -19,6 +21,12 @@ fun Project.useSpringBoot() {
     dependencies {
         val testImplementation by configurations
         testImplementation("org.springframework.boot:spring-boot-starter-test")
+    }
+
+    tasks.withType<BootBuildImage> {
+        imageName = "bookulove/${this@useSpringBoot.name}:${this@useSpringBoot.version}"
+        createdDate = Instant.now().toString()
+        environment.put("BP_JVM_VERSION", "17")
     }
 }
 
@@ -135,6 +143,11 @@ configure(subprojects.filter { it.isJavaProject() }) {
 
         testImplementation(platform("org.junit:junit-bom:5.9.1"))
         testImplementation("org.junit.jupiter:junit-jupiter")
+    }
+
+    tasks.withType<JavaCompile> {
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
 
     tasks.withType<Test> {
