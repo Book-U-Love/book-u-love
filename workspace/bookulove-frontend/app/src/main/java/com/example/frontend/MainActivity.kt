@@ -56,25 +56,25 @@ import com.google.android.gms.location.LocationServices
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        val curLocation = registerForActivityResult(
-//            ActivityResultContracts.RequestMultiplePermissions()
-//        ){
-//                permissions ->
-//            when{
-//                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-//
-//                }
-//                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-//
-//                }
-//                else -> {
-//                }
-//            }
-//        }
-//        curLocation.launch(arrayOf(
-//            Manifest.permission.ACCESS_FINE_LOCATION,
-//            Manifest.permission.ACCESS_COARSE_LOCATION)
-//        )
+        val curLocation = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ){
+                permissions ->
+            when{
+                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+
+                }
+                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+
+                }
+                else -> {
+                }
+            }
+        }
+        curLocation.launch(arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION)
+        )
 
         setContent {
             FrontEndTheme {
@@ -167,24 +167,3 @@ fun MainNavigation(navController: NavHostController){
     }
 
 }
-
-//fun initLocation() {
-//    if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//        && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//        return
-//    }
-//
-//    var fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-//    fusedLocationClient.lastLocation
-//        .addOnSuccessListener { location ->
-//            if(location == null) {
-//                Log.e(TAG, "location get fail")
-//            } else {
-//                Log.d(TAG, "${location.latitude} , ${location.longitude}")
-//            }
-//        }
-//        .addOnFailureListener {
-//            Log.e(TAG, "location error is ${it.message}")
-//            it.printStackTrace()
-//        }
-//}
