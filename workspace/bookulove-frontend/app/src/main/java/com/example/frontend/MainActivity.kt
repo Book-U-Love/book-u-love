@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -40,9 +41,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.frontend.ui.components.BookReportDetail
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
 import com.example.frontend.ui.screens.main.Home
@@ -50,7 +54,6 @@ import com.example.frontend.ui.screens.info.MyPage
 import com.example.frontend.ui.screens.user.Chat
 import com.example.frontend.ui.screens.user.ChatRoom
 import com.example.frontend.ui.screens.user.Register
-
 import com.example.frontend.ui.theme.FrontEndTheme
 import com.example.frontend.ui.vo.Routes
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -91,7 +94,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@ExperimentalMaterial3Api
 @Preview
 @Composable
 fun MainApp(){
@@ -128,17 +133,18 @@ fun MainApp(){
             bottomBar ={
                 com.example.frontend.ui.components.BottomAppBar(navController = navController)
             },
-            floatingActionButton = {
-                FloatingActionButton(onClick = {  }) {
-                    Icon(Icons.Default.Add, contentDescription = "Add")
-                }
-            }
+//            floatingActionButton = {
+//                FloatingActionButton(onClick = {  }) {
+//                    Icon(Icons.Default.Add, contentDescription = "Add")
+//                }
+//            }
         ){  innerPadding ->
             Column(
                 modifier = Modifier
                     .padding(innerPadding),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(1.dp),
             ) {
+                Divider()
                 MainNavigation(navController = navController)
             }
 
@@ -147,27 +153,35 @@ fun MainApp(){
 }
 @Composable
 fun MainNavigation(navController: NavHostController){
-    NavHost(navController = navController, startDestination = Routes.HOME){
-        composable(route = Routes.HOME){
+    NavHost(navController = navController, startDestination = Routes.CHAT) {
+        composable(route = Routes.HOME) {
             Home(navController = navController)
         }
-        composable(route = Routes.CHAT){
+        composable(route = Routes.CHAT) {
             Chat(navController)
         }
-        composable(route = Routes.MYPAGE){
+        composable(route = Routes.MYPAGE) {
             MyPage()
         }
-        composable(route = Routes.BOOKSEARCH){
+        composable(route = Routes.BOOKSEARCH) {
             BookSearch()
         }
-        composable(route = Routes.BOOKTOTAL){
-            BookTotal()
+        composable(route = Routes.BOOKTOTAL) {
+            BookTotal(navController)
         }
-        composable(route = Routes.CHATROOM){
+        composable(route = Routes.CHATROOM) {
             ChatRoom()
         }
-        composable(route = Routes.REGISTER){
+        composable(route = Routes.REGISTER) {
             Register(navController = navController)
+        }
+        composable(route = Routes.REPORTDETAIL+"/{index}",
+            arguments = listOf(navArgument("index"){
+                type = NavType.IntType
+            })) {
+            entry ->
+            val reportIndex = entry.arguments?.getInt("index");
+           if(reportIndex!=null) BookReportDetail(reportIndex)
         }
     }
 

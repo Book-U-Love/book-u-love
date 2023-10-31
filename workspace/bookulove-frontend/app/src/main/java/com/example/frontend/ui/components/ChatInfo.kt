@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 fun ChatInfo(navController: NavController){
     Surface(modifier=Modifier.clickable{navController.navigate("chatroom")}){
         Box(){
+
             Row(modifier= Modifier
                 .height(100.dp)
                 .fillMaxWidth()){
@@ -58,10 +59,7 @@ fun ChatInfo(navController: NavController){
             }
 
         }
-        Divider(
-            color= Color.Black,
-            modifier=Modifier.height(1.dp)
-        )
-    }
 
+    }
+    Divider()
 }
