@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
+@ExperimentalMaterial3Api
 @Composable
 @ExperimentalMaterial3Api
 fun ChatInfo(navController: NavController){

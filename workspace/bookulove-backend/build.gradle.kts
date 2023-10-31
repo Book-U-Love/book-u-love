@@ -1,7 +1,11 @@
 import com.epages.restdocs.apispec.gradle.OpenApi3Extension
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+import java.time.Instant
 
 val springCloudVersion = "2022.0.4"
+val axonVersion = "4.8.0"
+
 
 fun Project.isJavaProject(): Boolean {
     return properties["lang"] == "java"
@@ -19,6 +23,12 @@ fun Project.useSpringBoot() {
     dependencies {
         val testImplementation by configurations
         testImplementation("org.springframework.boot:spring-boot-starter-test")
+    }
+
+    tasks.withType<BootBuildImage> {
+        imageName.set("bookulove/${this@useSpringBoot.name}:${this@useSpringBoot.version}")
+        createdDate.set(Instant.now().toString())
+        environment.put("BP_JVM_VERSION", "17")
     }
 }
 
@@ -94,6 +104,14 @@ fun Project.useSpringCloud(springCloudVersion: String) {
     }
 }
 
+fun Project.useAxon(axonVersion: String) {
+    dependencies {
+        val implementation by configurations
+        implementation("org.axonframework:axon-configuration:${axonVersion}")
+        implementation("org.axonframework:axon-spring-boot-starter:${axonVersion}")
+    }
+}
+
 buildscript {
     val springBootVersion = "3.1.5"
 
@@ -112,6 +130,7 @@ buildscript {
 
 configure(subprojects.filter { it.isJavaProject() }) {
     group = "org.bookulove"
+    version = "1.0.0"
     apply(plugin = "java")
 
     repositories {
@@ -137,6 +156,11 @@ configure(subprojects.filter { it.isJavaProject() }) {
         testImplementation("org.junit.jupiter:junit-jupiter")
     }
 
+    tasks.withType<JavaCompile> {
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
+    }
+
     tasks.withType<Test> {
         useJUnitPlatform()
     }
@@ -160,5 +184,9 @@ configure(subprojects.filter { it.isJavaProject() }) {
 
     if (includes("spring-cloud")) {
         useSpringCloud(springCloudVersion)
+    }
+
+    if (includes("axon")) {
+        useAxon(axonVersion)
     }
 }

@@ -1,3 +1,6 @@
+version = "1.0.0"
+
 dependencies{
-    implementation("io.jsonwebtoken:jjwt:0.9.1");
+    val implementation by configurations
+    implementation(project(":common"));
 }

@@ -21,9 +21,8 @@ import com.example.frontend.ui.theme.SkyBlue
 import com.example.frontend.ui.vo.chatDataList
 
 
-@Preview
-@Composable
 @ExperimentalMaterial3Api
+@Composable
 fun ChatRoom(){
     Surface(color= SkyBlue, modifier=Modifier.fillMaxSize()){
 
