@@ -116,11 +116,18 @@ fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
         ){
             MapInfo()
             Spacer(modifier = Modifier.height(50.dp))
-            PageBtn(
-                navController = navController,
-                name = "회원가입",
-                Routes.HOME
-            )
+            Row() {
+                FuncBtn(
+                    onClick = {changePage()},
+                    name = "이전으로"
+                )
+                Spacer(modifier = Modifier.width(80.dp))
+                PageBtn(
+                    navController = navController,
+                    name = "회원가입",
+                    Routes.HOME
+                )
+            }
 
         }
     }
