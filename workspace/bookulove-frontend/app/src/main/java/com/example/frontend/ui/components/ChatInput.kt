@@ -28,7 +28,6 @@ import com.example.frontend.ui.vo.chatList
 
 @ExperimentalMaterial3Api
 @Composable
-@ExperimentalMaterial3Api
 fun ChatInput(){
     var text by remember{
         mutableStateOf(TextFieldValue());

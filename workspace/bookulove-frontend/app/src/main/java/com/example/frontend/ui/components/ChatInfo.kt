@@ -20,7 +20,6 @@ import androidx.navigation.NavController
 
 @ExperimentalMaterial3Api
 @Composable
-@ExperimentalMaterial3Api
 fun ChatInfo(navController: NavController){
     Surface(modifier=Modifier.clickable{navController.navigate("chatroom")}){
         Box(){
