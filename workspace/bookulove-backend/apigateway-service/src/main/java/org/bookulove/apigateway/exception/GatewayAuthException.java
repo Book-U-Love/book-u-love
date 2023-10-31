@@ -1,4 +1,4 @@
-package org.bookyoulove.apigateway.exception;
+package org.bookulove.apigateway.exception;
 
 import org.bookyoulove.common.error.ErrorCode;
 import org.bookyoulove.common.error.exception.ServiceRuntimeException;
