@@ -2,10 +2,13 @@ package com.example.frontend.ui.components
 
 import android.annotation.SuppressLint
 import android.location.Location
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
@@ -44,17 +47,33 @@ fun MapInfo(){
             .width(450.dp)
     ){
 
-        val seoul = LatLng(37.566535, 126.97796919)
+        var posInfo = LatLng(0.0, 0.0)
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState
+            cameraPositionState = cameraPositionState,
+            onMapClick = {
+                pos: LatLng ->
+                posInfo = pos
+            }
         ) {
             Marker(
                 state = MarkerState(position = cameraPositionState.position.target),
-                title = "Seoul",
-                snippet = "Marker in Seoul"
+                title = "Click",
+                snippet = "Click"
             )
-
+        }
+        Button(onClick = {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location : Location? ->
+                    if(location != null){
+                        val update = CameraUpdateFactory.newLatLngZoom(
+                            LatLng(location.latitude, location.longitude),
+                            18f)
+                        cameraPositionState.move(update)
+                    }
+                }
+        }) {
+            Text(text = "현재위치로")
         }
     }
 }
