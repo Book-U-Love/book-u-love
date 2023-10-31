@@ -1,0 +1,17 @@
+server:
+  port: 0
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+
+jwt:
+  secret: ${secret}
+#      routes:
+#        - id:
+#          url:
+#          predicates:
+#          filters:
+
+

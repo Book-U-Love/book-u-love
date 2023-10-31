@@ -7,9 +7,14 @@
 **/*.env
 **/axon-server-se/**
 **/db/**
+**/userdb/**
+**/tradedb/**
+**/librarydb/**
+**/bookdb/**
+**/chatdb/**
+**/alarmdb/**
+**/reviewdb/**
 **/src/main/generated/**
-
-
 
 
 ### Intellij ###
