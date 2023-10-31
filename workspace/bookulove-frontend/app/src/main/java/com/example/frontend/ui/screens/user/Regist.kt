@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -63,39 +64,41 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
         modifier = Modifier.fillMaxHeight(),
         verticalAlignment = Alignment.CenterVertically
     ){
-        Column (
+        LazyColumn (
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            InputField(value = id, label = "아이디", onValueChanged = {id = it})
-            InputField(value = pw, label = "비밀번호", isPassword = true, onValueChanged = {pw = it})
-            InputField(value = confirmPw, label = "비밀번호 확인", isPassword = true, needSpacer = false, onValueChanged = {confirmPw = it})
-            if(pw == "" || confirmPw == ""){
-                Spacer(modifier = Modifier.height(30.dp))
-            } else if (pw == confirmPw){
-                Text(text = "비밀번호가 일치합니다", color = MaterialTheme.colorScheme.secondary, modifier = Modifier.height(30.dp))
-            } else{
-                Text(text = "비밀번호가 일치하지 않습니다", color = MaterialTheme.colorScheme.error, modifier = Modifier.height(30.dp))
-            }
-            InputField(value = phNum, label = "전화번호", onValueChanged = {phNum = it})
-            FuncBtn(
-                name = "인증번호 받기",
-                onClick = { /*TODO*/ }
-            )
-            Spacer(modifier = Modifier.height(30.dp))
-            InputField(value = confirmNum, label = "인증번호", onValueChanged = {confirmNum = it})
-            InputField(value = nickname, label = "닉네임", onValueChanged = {nickname = it})
-            Row(){
-                PageBtn(
-                    navController = navController,
-                    "돌아가기",
-                    Routes.HOME
-                )
-                Spacer(modifier = Modifier.width(80.dp))
+            item{
+                InputField(value = id, label = "아이디", onValueChanged = {id = it})
+                InputField(value = pw, label = "비밀번호", isPassword = true, onValueChanged = {pw = it})
+                InputField(value = confirmPw, label = "비밀번호 확인", isPassword = true, needSpacer = false, onValueChanged = {confirmPw = it})
+                if(pw == "" || confirmPw == ""){
+                    Spacer(modifier = Modifier.height(30.dp))
+                } else if (pw == confirmPw){
+                    Text(text = "비밀번호가 일치합니다", color = MaterialTheme.colorScheme.secondary, modifier = Modifier.height(30.dp))
+                } else{
+                    Text(text = "비밀번호가 일치하지 않습니다", color = MaterialTheme.colorScheme.error, modifier = Modifier.height(30.dp))
+                }
+                InputField(value = phNum, label = "전화번호", onValueChanged = {phNum = it})
                 FuncBtn(
-                    onClick = {changePage()},
-                    name = "다음으로"
+                    name = "인증번호 받기",
+                    onClick = { /*TODO*/ }
                 )
+                Spacer(modifier = Modifier.height(30.dp))
+                InputField(value = confirmNum, label = "인증번호", onValueChanged = {confirmNum = it})
+                InputField(value = nickname, label = "닉네임", onValueChanged = {nickname = it})
+                Row(){
+                    PageBtn(
+                        navController = navController,
+                        "돌아가기",
+                        Routes.HOME
+                    )
+                    Spacer(modifier = Modifier.width(80.dp))
+                    FuncBtn(
+                        onClick = {changePage()},
+                        name = "다음으로"
+                    )
+                }
             }
         }
     }
@@ -113,11 +116,18 @@ fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
         ){
             MapInfo()
             Spacer(modifier = Modifier.height(50.dp))
-            PageBtn(
-                navController = navController,
-                name = "회원가입",
-                Routes.HOME
-            )
+            Row() {
+                FuncBtn(
+                    onClick = {changePage()},
+                    name = "이전으로"
+                )
+                Spacer(modifier = Modifier.width(80.dp))
+                PageBtn(
+                    navController = navController,
+                    name = "회원가입",
+                    Routes.HOME
+                )
+            }
 
         }
     }
