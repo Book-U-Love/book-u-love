@@ -6,9 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bookulove.api.book.model.request.BookSearchReq;
 import org.bookulove.api.book.model.response.BookSearchRes;
 import org.bookulove.api.book.model.service.BookService;
-import org.bookyoulove.exception.handler.ApiData;
-import org.bookyoulove.exception.handler.ApiError;
-import org.bookyoulove.exception.handler.ErrorCode;
+import org.bookyoulove.common.api.response.ApiData;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,14 +25,12 @@ class BookController {
 //    record Response(String message) {}
 
     @GetMapping("/search")
-//    ResponseEntity<Response> regist(@Valid @RequestBody final Request payload) {
-    ResponseEntity<?> search(@Valid @RequestParam final String payload) {
+    ApiData<BookSearchRes> search(@Valid @RequestParam final String isbn) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
-        BookSearchRes res = bookService.search(payload);
+        BookSearchRes res = bookService.search(isbn);
 
         log.info(logCurrent(getClassName(), getMethodName(), END));
-        return ResponseEntity
-                .ok(res);
+        return ApiData.ok(res);
     }
 
     @PostMapping
@@ -43,8 +39,4 @@ class BookController {
         return ResponseEntity.ok(null);
     }
 
-    @GetMapping("/test")
-    ApiData<String> asdasdasda(@RequestParam String msg) {
-        return ApiData.ok(msg);
-    }
 }

@@ -12,6 +12,8 @@ import org.bookulove.api.book.model.db.repository.BookRepository;
 import org.bookulove.api.book.model.feign.AladinFeignClient;
 import org.bookulove.api.book.model.feign.AladinSearch;
 import org.bookulove.api.book.model.response.BookSearchRes;
+import org.bookulove.exception.BookServiceException;
+import org.bookyoulove.common.error.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -41,14 +43,14 @@ public class BookService {
     @Value("${custom.aladin.version}")
     private String VERSION;
 
-    public BookSearchRes search(String payload) {
+    public BookSearchRes search(String isbn) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
+        log.info("ISBN : {}", isbn);
 
-        log.info("ISBN : {}", payload);
-        Book book = bookRepository.findByIsbn(payload)
-                .orElseGet( () -> searchAladinAndSave(payload) );
+        Book book = bookRepository.findByIsbn(isbn)
+                .orElseGet( () -> searchAladinAndSave(isbn) );
+
         log.info("book : {}", book);
-
         log.info(logCurrent(getClassName(), getMethodName(), END));
         return new BookSearchRes(book);
     }
@@ -64,7 +66,7 @@ public class BookService {
             } catch (IOException e) {
                 log.info("IOException : {}", e);
                 log.info(logCurrent(getClassName(), getMethodName(), END));
-                return null;
+                throw new BookServiceException(ErrorCode.IO_ERROR);
             }
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> map = null;
@@ -73,7 +75,7 @@ public class BookService {
             } catch (JsonProcessingException e) {
                 log.info("JsonProcessingException : {}", e);
                 log.info(logCurrent(getClassName(), getMethodName(), END));
-                return null;
+                throw new BookServiceException(ErrorCode.JSON_PARSE_ERROR);
             }
             AladinSearch aladinSearch = new AladinSearch((Map<String, Object>) ((ArrayList) map.get("item")).get(0));
             Book book = aladinSearch.to();
@@ -83,7 +85,7 @@ public class BookService {
         } else {    // 알라딘 API 통신에서 오류 발생 시 null 리턴
             log.info("response.status() : {}", response.status());
             log.info(logCurrent(getClassName(), getMethodName(), END));
-            return null;
+            throw new BookServiceException(ErrorCode.EXTERNAL_API_ERROR);
         }
 
     }
