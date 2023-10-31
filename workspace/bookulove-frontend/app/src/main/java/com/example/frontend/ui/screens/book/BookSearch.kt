@@ -51,12 +51,7 @@ fun BookSearch(){
     var border by remember{
         mutableStateOf(Color.White)
     }
-    val focusRequester by remember{
-        mutableStateOf(FocusRequester())
-    }
-    var focusedIndex by remember{
-        mutableStateOf(0)
-    }
+
     Box(modifier=Modifier.fillMaxSize()){
        Column(){
            Box(){
@@ -82,8 +77,8 @@ fun BookSearch(){
                        index, item ->
                        Box(modifier=Modifier.padding(start=5.dp, end=5.dp)){
                            TextButton(
-                               onClick = { focusRequester.requestFocus();
-                                         focusedIndex = index},
+                               onClick = {
+                                         },
                                modifier= Modifier
 
                            ) {

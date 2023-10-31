@@ -169,7 +169,7 @@ fun MainApp(){
 }
 @Composable
 fun MainNavigation(navController: NavHostController){
-    NavHost(navController = navController, startDestination = Routes.BOOKTOTAL) {
+    NavHost(navController = navController, startDestination = Routes.CHAT) {
         composable(route = Routes.HOME) {
             Home(navController = navController)
         }
