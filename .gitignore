@@ -1,7 +1,15 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,intellij,intellij+all,intellij+iml,gradle
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,intellij,intellij+all,intellij+iml,gradle
 
+**/application-local.*
+**/application-test.*
 **/application-env.*
+**/*.env
+**/axon-server-se/**
+**/db/**
+**/src/main/generated/**
+
+
 
 
 ### Intellij ###

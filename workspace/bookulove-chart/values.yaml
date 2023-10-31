@@ -26,5 +26,11 @@ mysqlBaseValues: &mysqlBaseValues
       enabled: false
 redis-fcm:
   !!merge <<: *redisBaseValues
+book-db:
+  !!merge <<: *mysqlBaseValues
 user-db:
+  !!merge <<: *mysqlBaseValues
+trade-db:
+  !!merge <<: *mysqlBaseValues
+notification-db:
   !!merge <<: *mysqlBaseValues
