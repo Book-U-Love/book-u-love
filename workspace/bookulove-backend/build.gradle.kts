@@ -4,7 +4,8 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import java.time.Instant
 
 val springCloudVersion = "2022.0.4"
-val axonVersion = "4.6.0"
+val axonVersion = "4.8.0"
+
 
 fun Project.isJavaProject(): Boolean {
     return properties["lang"] == "java"

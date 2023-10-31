@@ -44,28 +44,46 @@ services:
 #      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
 #      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
 
-  mysql:
+  user-mysql:
     image: mysql:8.0
     networks:
       - bookyoulove_network
     volumes:
-      - ./db/conf.d:/etc/mysql/conf.d
-      - ./db/data:/var/lib/mysql
-      - ./db/initdb.d:/docker-entrypoint-initdb.d
-    env_file: .env
+      - ./userdb/conf.d:/etc/mysql/conf.d
+      - ./userdb/data:/var/lib/mysql
+      - ./userdb/initdb.d:/docker-entrypoint-initdb.d
+#    env_file: .env
     ports:
-      - "13306:3306"
+      - "13303:3306"
     environment:
       - TZ=Asia/Seoul
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-bookyoulove678}
-      - MYSQL_USER=${MYSQL_USER:-bookyoulove}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-bookyoulove678}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-bookulove678}
+      - MYSQL_USER=${MYSQL_USER:-bookulove}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-bookulove678}
+      - MYSQL_DATABASE=bookulove
 
+  trade-mysql:
+    image: mysql:8.0
+    networks:
+      - bookyoulove_network
+    volumes:
+      - ./tradedb/conf.d:/etc/mysql/conf.d
+      - ./tradedb/data:/var/lib/mysql
+      - ./tradedb/initdb.d:/docker-entrypoint-initdb.d
+    #    env_file: .env
+    ports:
+      - "13303:3306"
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-bookulove678}
+      - MYSQL_USER=${MYSQL_USER:-bookulove}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-bookulove678}
+      - MYSQL_DATABASE=bookulove
 
 
   axon-server:
     container_name: axon-server
-    image: axoniq/axonserver:4.6.3-jdk-11-dev
+    image: axoniq/axonserver:latest-jdk-17-dev
     networks:
       - bookyoulove_network
     ports:
