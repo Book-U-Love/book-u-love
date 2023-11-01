@@ -74,12 +74,7 @@ fun Project.useSpringRESTDocs() {
 
 fun Project.useSpringWebMVC() {
     dependencies {
-        val compileOnly by configurations
         val implementation by configurations
-        val annotationProcessor by configurations
-        val testCompileOnly by configurations
-        val testImplementation by configurations
-        val testAnnotationProcessor by configurations
         implementation("org.springframework.boot:spring-boot-starter-web")
         implementation("org.springframework.boot:spring-boot-starter-validation")
     }

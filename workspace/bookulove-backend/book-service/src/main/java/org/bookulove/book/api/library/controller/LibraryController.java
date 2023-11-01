@@ -3,7 +3,7 @@ package org.bookulove.book.api.library.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bookulove.book.api.library.model.request.LibraryRegistReq;
+import org.bookyoulove.common.feignclient.book.LibraryRegistReq;
 import org.bookulove.book.api.library.model.service.LibraryService;
 import org.bookyoulove.common.api.response.ApiData;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +20,7 @@ public class LibraryController {
     private final LibraryService libraryService;
 
     @PostMapping()
-//    ApiData<String> regist(@Valid @RequestBody final LibraryRegistReq libraryRegistReq) {
+    ApiData<String> regist(@Valid @RequestBody final LibraryRegistReq libraryRegistReq) {
     ApiData<String> regist() {
 //        libraryService.regist(libraryRegistReq);
         libraryService.testRegist();

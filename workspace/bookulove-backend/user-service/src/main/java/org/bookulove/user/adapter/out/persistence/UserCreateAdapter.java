@@ -6,10 +6,12 @@ import org.bookulove.user.adapter.out.persistence.entity.UserEntity;
 import org.bookulove.user.adapter.out.persistence.repository.UserRepository;
 import org.bookulove.user.application.port.out.UserCreatePort;
 import org.bookulove.user.domain.UserCreateDomain;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
-public class UserAdapter implements UserCreatePort {
+public class UserCreateAdapter implements UserCreatePort {
 
     private final UserRepository userRepository;
 

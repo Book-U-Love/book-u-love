@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bookulove.book.api.library.model.db.entity.Library;
 import org.bookulove.book.api.library.model.db.repository.LibraryRepository;
-import org.bookulove.book.api.library.model.request.LibraryRegistReq;
+import org.bookyoulove.common.feignclient.book.LibraryRegistReq;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
