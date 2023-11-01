@@ -19,9 +19,6 @@ public enum ErrorCode {
     BOOK_NOT_FOUND(500, "B005", "book not found error!")
 
 
-    //Token
-    INVALID_TOKEN(401, "T001", "올바르지 않은 토큰입니다!"),
-
     ;
 
     private final int status;
