@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Badge
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,10 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
+@ExperimentalMaterial3Api
 @Composable
 fun ChatInfo(navController: NavController){
     Surface(modifier=Modifier.clickable{navController.navigate("chatroom")}){
         Box(){
+
             Row(modifier= Modifier
                 .height(100.dp)
                 .fillMaxWidth()){
@@ -56,10 +59,7 @@ fun ChatInfo(navController: NavController){
             }
 
         }
-        Divider(
-            color= Color.Black,
-            modifier=Modifier.height(1.dp)
-        )
-    }
 
+    }
+    Divider()
 }

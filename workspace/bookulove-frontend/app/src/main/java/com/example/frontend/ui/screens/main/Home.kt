@@ -1,5 +1,6 @@
 package com.example.frontend.ui.screens.main
 
+import android.os.Bundle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -30,6 +31,8 @@ import com.example.frontend.ui.screens.info.MyPage
 import com.example.frontend.ui.screens.user.Chat
 import com.example.frontend.ui.screens.user.Register
 import com.example.frontend.ui.vo.Routes
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 @Composable
 fun Home(navController: NavHostController) {

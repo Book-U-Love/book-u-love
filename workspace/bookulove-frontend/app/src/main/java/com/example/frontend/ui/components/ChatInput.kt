@@ -4,10 +4,12 @@ import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -18,11 +20,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.input.TextFieldValue
 import com.example.frontend.ui.vo.chatDataList
 import com.example.frontend.ui.vo.chatList
 
 
+@ExperimentalMaterial3Api
 @Composable
 fun ChatInput(){
     var text by remember{
@@ -32,19 +36,26 @@ fun ChatInput(){
     var lineCount by remember{
         mutableStateOf(1)
     }
+    var textFieldHeight by remember{
+        mutableStateOf(1)
+    }
     Surface(modifier = Modifier.fillMaxWidth()){
         Box(){
             Row(verticalAlignment = Alignment.CenterVertically){
-
                 TextField(
                     value = text,
                     onValueChange = {
                         text = it
                         lineCount = it.text.count { it == '\n' } + 1;
+                        Log.d("line", lineCount.toString());
+                        Log.d("height", textFieldHeight.toString());
                     },
                     modifier = Modifier
                         .fillMaxWidth(0.8f)
-                        .then(Modifier.verticalScroll(state))
+                        .then(Modifier.verticalScroll(state)
+                            .onGloballyPositioned { coordinates ->
+                                textFieldHeight = coordinates.size.height
+                            })
                 )
                 Box(){
                     Button(modifier=Modifier.fillMaxWidth(),
