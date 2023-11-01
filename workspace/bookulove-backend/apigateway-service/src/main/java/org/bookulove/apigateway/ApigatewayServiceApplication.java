@@ -1,4 +1,4 @@
-package org.bookyoulove.apigateway;
+package org.bookulove.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

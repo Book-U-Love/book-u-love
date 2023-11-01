@@ -1,4 +1,4 @@
-version: '3'
+version: '3.3'
 services:
 #  zookeeper:
 #    image: 'arm64v8/zookeeper:3.8'
@@ -45,55 +45,90 @@ services:
 #      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
 
   user-mysql:
-    image: mysql:8.0
-    networks:
-      - bookyoulove_network
+    image: mysql:8.0.33
+#    networks:
+#      - bookyoulove_network
     volumes:
       - ./userdb/conf.d:/etc/mysql/conf.d
       - ./userdb/data:/var/lib/mysql
       - ./userdb/initdb.d:/docker-entrypoint-initdb.d
 #    env_file: .env
     ports:
-      - "13303:3306"
+      - "23303:3306"
     environment:
       - TZ=Asia/Seoul
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-bookulove678}
-      - MYSQL_USER=${MYSQL_USER:-bookulove}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-bookulove678}
-      - MYSQL_DATABASE=bookulove
+      - MYSQL_ROOT_PASSWORD=bookulove678
+      - MYSQL_USER=bookulove
+      - MYSQL_PASSWORD=bookulove678
+      - MYSQL_DATABASE=user
 
   trade-mysql:
-    image: mysql:8.0
-    networks:
-      - bookyoulove_network
+    image: mysql:8.0.33
+#    networks:
+#      - bookyoulove_network
     volumes:
       - ./tradedb/conf.d:/etc/mysql/conf.d
       - ./tradedb/data:/var/lib/mysql
       - ./tradedb/initdb.d:/docker-entrypoint-initdb.d
     #    env_file: .env
     ports:
-      - "13303:3306"
+      - "23304:3306"
     environment:
       - TZ=Asia/Seoul
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-bookulove678}
-      - MYSQL_USER=${MYSQL_USER:-bookulove}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-bookulove678}
-      - MYSQL_DATABASE=bookulove
+      - MYSQL_ROOT_PASSWORD=bookulove678
+      - MYSQL_USER=bookulove
+      - MYSQL_PASSWORD=bookulove678
+      - MYSQL_DATABASE=trade
 
-
-  axon-server:
-    container_name: axon-server
-    image: axoniq/axonserver:latest-jdk-17-dev
-    networks:
-      - bookyoulove_network
-    ports:
-      - "8024:8024"
-      - "8124:8124"
+  book-mysql:
+    image: mysql:8.0.33
+#    networks:
+#      - bookyoulove_network
     volumes:
-      - axonserver-data:/axonserver/data
-      - axonserver-events:/axonserver/events
-      - axonserver-config:/axonserver/config:ro
+      - ./bookdb/conf.d:/etc/mysql/conf.d
+      - ./bookdb/data:/var/lib/mysql
+      - ./bookdb/initdb.d:/docker-entrypoint-initdb.d
+    #    env_file: .env
+    ports:
+      - "23305:3306"
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_ROOT_PASSWORD=bookulove678
+      - MYSQL_USER=bookulove
+      - MYSQL_PASSWORD=bookulove678
+      - MYSQL_DATABASE=book
 
+  alarm-mysql:
+    image: mysql:8.0.33
+#    networks:
+#      - bookyoulove_network
+    volumes:
+      - ./alarmdb/conf.d:/etc/mysql/conf.d
+      - ./alarmdb/data:/var/lib/mysql
+      - ./alarmdb/initdb.d:/docker-entrypoint-initdb.d
+    #    env_file: .env
+    ports:
+      - "23306:3306"
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_ROOT_PASSWORD=bookulove678
+      - MYSQL_USER=bookulove
+      - MYSQL_PASSWORD=bookulove678
+      - MYSQL_DATABASE=alarm
+
+#  axon-server:
+#    container_name: axon-server
+#    image: axoniq/axonserver:latest-jdk-17-dev
+#    networks:
+#      - bookyoulove_network
+#    ports:
+#      - "8024:8024"
+#      - "8124:8124"
+#    volumes:
+#      - axonserver-data:/axonserver/data
+#      - axonserver-events:/axonserver/events
+#      - axonserver-config:/axonserver/config:ro
+#
 #  apigatway-server:
 #    image: bookulove-backend-apigateway-service:1.0.0
 #    networks:
@@ -107,26 +142,26 @@ services:
 #      - AXON_SERIALIZER_EVENTS=jackson
 #      - AXON_SERIALIZER_MESSAGES=jackson
 #      - AXON_SERIALIZER_GENERAL=xstream
-
-volumes:
-  axonserver-data:
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: ${PWD}/axon-server-se/data
-  axonserver-events:
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: ${PWD}/axon-server-se/events
-  axonserver-config:
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: ${PWD}/axon-server-se/config
+#
+#volumes:
+#  axonserver-data:
+#    driver: local
+#    driver_opts:
+#      o: bind
+#      type: none
+#      device: ${PWD}/axon-server-se/data
+#  axonserver-events:
+#    driver: local
+#    driver_opts:
+#      o: bind
+#      type: none
+#      device: ${PWD}/axon-server-se/events
+#  axonserver-config:
+#    driver: local
+#    driver_opts:
+#      o: bind
+#      type: none
+#      device: ${PWD}/axon-server-se/config
 
 networks:
   bookyoulove_network:
