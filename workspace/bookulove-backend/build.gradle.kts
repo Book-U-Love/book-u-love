@@ -1,7 +1,7 @@
 import com.epages.restdocs.apispec.gradle.OpenApi3Extension
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
-import java.time.Instant
 
 val springCloudVersion = "2022.0.4"
 val axonVersion = "4.8.0"
@@ -27,7 +27,6 @@ fun Project.useSpringBoot() {
 
     tasks.withType<BootBuildImage> {
         imageName.set("bookulove/${this@useSpringBoot.name}:${this@useSpringBoot.version}")
-        createdDate.set(Instant.now().toString())
         environment.put("BP_JVM_VERSION", "17")
     }
 }
@@ -51,8 +50,8 @@ fun Project.useSpringDataRedis() {
 fun Project.useSpringRESTDocs() {
     apply(plugin = "com.epages.restdocs-api-spec")
 
-    ext {
-        set("snippetsDir", file("build/generated-snippets"))
+    extraProperties {
+        extra.set("snippetsDir", file("build/generated-snippets"))
     }
 
     dependencies {
