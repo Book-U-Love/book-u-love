@@ -1,6 +1,6 @@
-package org.bookulove.book.api.book.model.feign;
+package org.bookulove.api.book.model.feign;
 
-import org.bookulove.book.api.book.model.db.entity.Book;
+import org.bookulove.api.book.model.db.entity.Book;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

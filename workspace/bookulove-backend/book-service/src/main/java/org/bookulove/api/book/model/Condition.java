@@ -1,4 +1,4 @@
-package org.bookulove.book.api.book.model;
+package org.bookulove.api.book.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
