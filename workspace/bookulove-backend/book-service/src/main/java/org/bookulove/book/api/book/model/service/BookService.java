@@ -1,4 +1,4 @@
-package org.bookulove.api.book.model.service;
+package org.bookulove.book.api.book.model.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,11 +7,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
-import org.bookulove.api.book.model.db.entity.Book;
-import org.bookulove.api.book.model.db.repository.BookRepository;
-import org.bookulove.api.book.model.feign.AladinFeignClient;
-import org.bookulove.api.book.model.feign.AladinSearch;
-import org.bookulove.api.book.model.response.BookSearchRes;
+import org.bookulove.book.api.book.model.Condition;
+import org.bookulove.book.api.book.model.db.entity.Book;
+import org.bookulove.book.api.book.model.db.entity.BookLibraryRelation;
+import org.bookulove.book.api.book.model.db.entity.Library;
+import org.bookulove.book.api.book.model.db.repository.BookLibraryRelationRepository;
+import org.bookulove.book.api.book.model.db.repository.BookRepository;
+import org.bookulove.book.api.book.model.db.repository.LibraryRepository;
+import org.bookulove.book.api.book.model.feign.AladinFeignClient;
+import org.bookulove.book.api.book.model.feign.AladinSearch;
+import org.bookulove.book.api.book.model.request.BookSearchReq;
+import org.bookulove.book.api.book.model.response.BookSearchRes;
 import org.bookulove.exception.BookServiceException;
 import org.bookyoulove.common.error.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +38,8 @@ import static org.bookyoulove.common.util.LogCurrent.*;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final LibraryRepository libraryRepository;
+    private final BookLibraryRelationRepository bookLibraryRelationRepository;
     private final AladinFeignClient aladinFeignClient;
 
     @Value("${custom.aladin.key}")
@@ -50,7 +58,7 @@ public class BookService {
         Book book = bookRepository.findByIsbn(isbn)
                 .orElseGet( () -> searchAladinAndSave(isbn) );
 
-        log.info("book : {}", book);
+        log.info("book : {}", book.getIsbn());
         log.info(logCurrent(getClassName(), getMethodName(), END));
         return new BookSearchRes(book);
     }
@@ -80,14 +88,47 @@ public class BookService {
             AladinSearch aladinSearch = new AladinSearch((Map<String, Object>) ((ArrayList) map.get("item")).get(0));
             Book book = aladinSearch.to();
             bookRepository.save(book);
+
             log.info(logCurrent(getClassName(), getMethodName(), END));
             return book;
         } else {    // 알라딘 API 통신에서 오류 발생 시 null 리턴
             log.info("response.status() : {}", response.status());
+
+
+
             log.info(logCurrent(getClassName(), getMethodName(), END));
             throw new BookServiceException(ErrorCode.EXTERNAL_API_ERROR);
         }
 
     }
 
+    public void regist(BookSearchReq bookSearchReq) {
+        log.info(logCurrent(getClassName(), getMethodName(), START));
+
+        Long userId = 1l;
+
+        Library library = libraryRepository.findById(userId)
+                .orElseThrow( () -> new BookServiceException(ErrorCode.UNEXPECTED_ERROR) );
+        Book book = bookRepository.findByIsbn(bookSearchReq.isbn())
+                .orElseThrow( () -> new BookServiceException(ErrorCode.UNEXPECTED_ERROR) );
+
+        BookLibraryRelation relation = BookLibraryRelation.builder()
+                .book(book)
+                .library(library)
+                .condition(Condition.values()[bookSearchReq.condition()])
+                .build();
+        bookLibraryRelationRepository.save(relation);
+
+        log.info(logCurrent(getClassName(), getMethodName(), END));
+    }
+
+    public void testLibrary(long userId) {
+        Library library = Library.builder()
+                .userId(1l)
+                .name("장덕의 빛")
+                .description("장덕 다이소 앞")
+                .lat(0)
+                .lng(0)
+                .build();
+    }
 }

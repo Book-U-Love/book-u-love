@@ -1,4 +1,4 @@
-package org.bookulove.api.book.model.feign;
+package org.bookulove.book.api.book.model.feign;
 
 import feign.Response;
 import org.springframework.cloud.openfeign.FeignClient;

@@ -1,11 +1,11 @@
-package org.bookulove.api.book.controller;
+package org.bookulove.book.api.book.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bookulove.api.book.model.request.BookSearchReq;
-import org.bookulove.api.book.model.response.BookSearchRes;
-import org.bookulove.api.book.model.service.BookService;
+import org.bookulove.book.api.book.model.request.BookSearchReq;
+import org.bookulove.book.api.book.model.response.BookSearchRes;
+import org.bookulove.book.api.book.model.service.BookService;
 import org.bookyoulove.common.api.response.ApiData;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +34,16 @@ class BookController {
     }
 
     @PostMapping
-    ResponseEntity<?> regist(@RequestBody final BookSearchReq payload) {
-//        bookService.searchAladinAndSave(payload.isbn());
-        return ResponseEntity.ok(null);
+    ApiData<String> regist(@RequestBody final BookSearchReq bookSearchReq) {
+        bookService.regist(bookSearchReq);
+        return ApiData.ok("성공~~");
+    }
+
+    @PostMapping
+    ApiData<String> testLibrary(@RequestParam final long userId) {
+        bookService.testLibrary(userId);
+
+        return ApiData.ok("성공~!~!");
     }
 
 }
