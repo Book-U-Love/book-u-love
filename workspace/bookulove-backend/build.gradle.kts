@@ -113,7 +113,7 @@ fun Project.useAxon(axonVersion: String) {
 }
 
 buildscript {
-    val springBootVersion = "3.1.5"
+    val springBootVersion = "3.0.12"
 
     repositories {
         mavenCentral()
