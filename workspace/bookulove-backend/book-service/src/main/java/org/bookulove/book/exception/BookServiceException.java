@@ -1,4 +1,4 @@
-package org.bookulove.exception;
+package org.bookulove.book.exception;
 
 import org.bookyoulove.common.error.ErrorCode;
 import org.bookyoulove.common.error.exception.ServiceRuntimeException;

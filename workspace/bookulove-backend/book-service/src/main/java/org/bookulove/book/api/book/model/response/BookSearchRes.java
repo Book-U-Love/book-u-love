@@ -1,6 +1,6 @@
-package org.bookulove.api.book.model.response;
+package org.bookulove.book.api.book.model.response;
 
-import org.bookulove.api.book.model.db.entity.Book;
+import org.bookulove.book.api.book.model.db.entity.Book;
 
 public record BookSearchRes(
         Long bookId,

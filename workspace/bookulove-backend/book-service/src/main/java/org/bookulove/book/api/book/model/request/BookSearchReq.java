@@ -1,4 +1,4 @@
-package org.bookulove.api.book.model.request;
+package org.bookulove.book.api.book.model.request;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

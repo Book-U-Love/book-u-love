@@ -1,11 +1,11 @@
-package org.bookulove.api.book.controller;
+package org.bookulove.book.api.book.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bookulove.api.book.model.request.BookSearchReq;
-import org.bookulove.api.book.model.response.BookSearchRes;
-import org.bookulove.api.book.model.service.BookService;
+import org.bookulove.book.api.book.model.request.BookSearchReq;
+import org.bookulove.book.api.book.model.response.BookSearchRes;
+import org.bookulove.book.api.book.model.service.BookService;
 import org.bookyoulove.common.api.response.ApiData;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,11 +38,6 @@ class BookController {
         return ApiData.ok("성공~~");
     }
 
-    @PostMapping("/test")
-    ApiData<String> testLibrary() {
-        bookService.testLibrary();
 
-        return ApiData.ok("성공~!~!");
-    }
 
 }

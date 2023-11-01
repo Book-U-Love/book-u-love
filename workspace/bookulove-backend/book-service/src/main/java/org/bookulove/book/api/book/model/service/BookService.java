@@ -1,4 +1,4 @@
-package org.bookulove.api.book.model.service;
+package org.bookulove.book.api.book.model.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,18 +7,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
-import org.bookulove.api.book.model.Condition;
-import org.bookulove.api.book.model.db.entity.Book;
-import org.bookulove.api.book.model.db.entity.BookLibraryRelation;
-import org.bookulove.api.book.model.db.entity.Library;
-import org.bookulove.api.book.model.db.repository.BookLibraryRelationRepository;
-import org.bookulove.api.book.model.db.repository.BookRepository;
-import org.bookulove.api.book.model.db.repository.LibraryRepository;
-import org.bookulove.api.book.model.feign.AladinFeignClient;
-import org.bookulove.api.book.model.feign.AladinSearch;
-import org.bookulove.api.book.model.request.BookSearchReq;
-import org.bookulove.api.book.model.response.BookSearchRes;
-import org.bookulove.exception.BookServiceException;
+import org.bookulove.book.api.book.model.Condition;
+import org.bookulove.book.api.book.model.db.entity.Book;
+import org.bookulove.book.api.book.model.db.entity.BookLibraryRelation;
+import org.bookulove.book.api.book.model.db.repository.BookLibraryRelationRepository;
+import org.bookulove.book.api.book.model.db.repository.BookRepository;
+import org.bookulove.book.api.library.model.db.entity.Library;
+import org.bookulove.book.api.library.model.db.repository.LibraryRepository;
+import org.bookulove.book.exception.BookServiceException;
+import org.bookulove.book.api.book.model.feign.AladinFeignClient;
+import org.bookulove.book.api.book.model.feign.AladinSearch;
+import org.bookulove.book.api.book.model.request.BookSearchReq;
+import org.bookulove.book.api.book.model.response.BookSearchRes;
 import org.bookyoulove.common.error.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -122,19 +122,5 @@ public class BookService {
         log.info(logCurrent(getClassName(), getMethodName(), END));
     }
 
-    public void testLibrary() {
-        log.info(logCurrent(getClassName(), getMethodName(), START));
 
-        Library library = Library.builder()
-                .userId(1l)
-                .name("장덕의 빛")
-                .description("장덕 다이소 앞")
-                .lat(0)
-                .lng(0)
-                .build();
-        libraryRepository.save(library);
-        log.info("library : {}", library);
-
-        log.info(logCurrent(getClassName(), getMethodName(), END));
-    }
 }
