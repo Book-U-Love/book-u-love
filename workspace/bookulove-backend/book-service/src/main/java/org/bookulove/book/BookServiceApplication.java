@@ -1,4 +1,4 @@
-package org.bookulove;
+package org.bookulove.book;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

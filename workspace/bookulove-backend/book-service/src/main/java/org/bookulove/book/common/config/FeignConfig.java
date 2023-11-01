@@ -1,4 +1,4 @@
-package org.bookulove.common.config;
+package org.bookulove.book.common.config;
 
 import feign.*;
 import org.springframework.cloud.openfeign.EnableFeignClients;
