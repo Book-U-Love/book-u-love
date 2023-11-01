@@ -46,5 +46,4 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
         };
     }
 
-
 }

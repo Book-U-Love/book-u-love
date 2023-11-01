@@ -1,0 +1,6 @@
+server:
+  port: 9002
+
+  redis:
+    host: ${REDIS-HOST}
+    port: ${REDIS-PORT}
