@@ -48,9 +48,6 @@ import com.example.frontend.ui.vo.categoryList
 @ExperimentalMaterial3Api
 fun BookSearch(){
     val categoryState = rememberLazyListState();
-    var border by remember{
-        mutableStateOf(Color.White)
-    }
 
     Box(modifier=Modifier.fillMaxSize()){
        Column(){

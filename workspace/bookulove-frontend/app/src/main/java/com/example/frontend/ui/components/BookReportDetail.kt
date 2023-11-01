@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults.indicatorLine
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +28,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.frontend.ui.theme.SkyBlue
 import com.example.frontend.ui.vo.bookList
 
@@ -37,9 +40,7 @@ fun BookReportDetail(index:Int){
         mutableStateOf(bookList.get(index))
     }
 
-    var reportState by remember{
-        mutableStateOf(true)
-    }
+    val viewModel = viewModel<ReportDetailViewModel>();
     Column {
         Box(modifier=Modifier.padding(15.dp)){
             Text(text = report.bookReporter)
@@ -52,9 +53,12 @@ fun BookReportDetail(index:Int){
         Box(){
            BasicTextField(value = report.bookReportContent,
                onValueChange = {text-> report = report.copy(bookReportContent = text)},
-               modifier=Modifier.fillMaxWidth().fillMaxHeight(0.9f).padding(15.dp),
+               modifier= Modifier
+                   .fillMaxWidth()
+                   .fillMaxHeight(0.9f)
+                   .padding(15.dp),
                textStyle = TextStyle(fontSize = 18.sp),
-               readOnly=reportState,
+               readOnly=viewModel.reportState.value,
                )
            }
         }
@@ -63,14 +67,14 @@ fun BookReportDetail(index:Int){
             .fillMaxHeight()
             .fillMaxWidth()){
             TextButton(onClick = {
-                when(reportState){
-                    true-> reportState=false;
+                when(viewModel.reportState.value){
+                    true-> viewModel.changeState()
                     false-> {
-                        reportState=true;
+                        viewModel.changeState();
                         bookList.set(index, report)
                     }
                 };
-                Log.d("state",reportState.toString())
+
                 },
                 modifier= Modifier
                     .align(Alignment.BottomCenter)
@@ -78,10 +82,19 @@ fun BookReportDetail(index:Int){
                     .height(60.dp)
                     .background(SkyBlue, RoundedCornerShape(15.dp))
             ) {
-                Text(text = when(reportState){true -> "수정하기" false -> "수정 완료" } , color = androidx.compose.ui.graphics.Color.White
+                Text(text = when(viewModel.reportState.value){true -> "수정하기" false -> "수정 완료" } , color = androidx.compose.ui.graphics.Color.White
                 , fontWeight = FontWeight.Bold, fontSize = 18.sp)
             }
         }
 
 
+}
+
+class ReportDetailViewModel: ViewModel(){
+    private val _reportState = mutableStateOf(true)
+    val reportState: State<Boolean> = _reportState
+
+    fun changeState(){
+        _reportState.value = !_reportState.value
+    }
 }

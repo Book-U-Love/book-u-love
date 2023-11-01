@@ -21,7 +21,6 @@ import com.example.frontend.ui.vo.Routes
 
 @Composable
 fun BottomAppBar(navController: NavHostController){
-    var curRoute by remember { mutableStateOf(Routes.HOME) }
 
         Row(
             modifier = Modifier
