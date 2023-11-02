@@ -12,6 +12,7 @@ import org.bookulove.user.exception.UserServiceException;
 import org.bookyoulove.common.annotation.WebAdapter;
 import org.bookyoulove.common.api.response.ApiData;
 import org.bookyoulove.common.error.ErrorCode;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -22,12 +23,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
+    private final BCryptPasswordEncoder encoder;
     private final UserCreateUseCase userCreateUseCase;
 
     @PostMapping
     public ApiData<String> createUser(@RequestBody @Valid UserCreateReq req){
         log.info("회원가입 req: {}", req.toString());
-        userCreateUseCase.createUser(UserCreateCmd.of(req));
+
+        userCreateUseCase.createUser(UserCreateCmd.of(req, encoder.encode(req.password())));
         return ApiData.ok("회원가입에 성공하였습니다.");
     }
 

@@ -12,9 +12,9 @@ public record UserCreateCmd(
         double lng
 
 ) {
-    public static UserCreateCmd of(UserCreateReq req){
+    public static UserCreateCmd of(UserCreateReq req, String encodedPwd){
         return new UserCreateCmd(req.id(),
-                req.password(),
+                encodedPwd,
                 req.nickname(),
                 req.libraryName(),
                 req.lat(),

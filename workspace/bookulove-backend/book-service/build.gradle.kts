@@ -1,5 +1,7 @@
 dependencies {
     val implementation by configurations
     implementation(project(":common"));
-    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+
+    // openfeign
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.0.4")
 }

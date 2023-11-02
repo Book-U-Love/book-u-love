@@ -7,8 +7,10 @@ import org.bookulove.user.application.port.in.dto.command.UserCreateCmd;
 import org.bookulove.user.application.port.out.LibraryCreatePort;
 import org.bookulove.user.application.port.out.UserCreatePort;
 import org.bookulove.user.domain.UserCreateDomain;
+import org.bookulove.user.exception.UserServiceException;
 import org.bookyoulove.common.annotation.UseCase;
-import org.bookyoulove.common.feignclient.book.LibraryRegistReq;
+import org.bookyoulove.common.api.response.ApiData;
+import org.bookyoulove.common.feignclient.book.LibraryCreateReq;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,16 +22,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserCreateService implements UserCreateUseCase {
 
     private final UserCreatePort userCreatePort;
-//    private final LibraryCreatePort libraryCreatePort;
+    private final LibraryCreatePort libraryCreatePort;
 
     @Override
     public void createUser(UserCreateCmd req) {
-        log.info("회원가입 cmd:{}", req);
+        log.info("회원가입 cmd: {}", req);
 
         UserCreateDomain userCreateDomain = userCreatePort.createUser(req.Id(), req.password(), req.nickname());
-        log.info("회원가입 domain:{}", userCreateDomain);
+        log.info("회원가입 domain: {}", userCreateDomain);
 
-//        libraryCreatePort.createLibrary(LibraryRegistReq.of(req.libraryName(), req.lat(), req.lng()));
+        ApiData<?> td = libraryCreatePort.createLibrary(LibraryCreateReq.of(req.libraryName(), req.lat(), req.lng()));
+        log.info("Feign result: {}", td);
+
+        if(td.status() != 200){
+            throw new UserServiceException()
+        }
 
 
 

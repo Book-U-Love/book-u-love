@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bookulove.book.api.library.model.db.entity.Library;
 import org.bookulove.book.api.library.model.db.repository.LibraryRepository;
-import org.bookyoulove.common.feignclient.book.LibraryRegistReq;
+import org.bookyoulove.common.feignclient.book.LibraryCreateReq;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +20,7 @@ public class LibraryService {
 
     private final LibraryRepository libraryRepository;
 
-    public void regist(@Valid LibraryRegistReq libraryRegistReq) {
+    public void regist(@Valid LibraryCreateReq libraryRegistReq) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
 
         Library library = Library.builder()

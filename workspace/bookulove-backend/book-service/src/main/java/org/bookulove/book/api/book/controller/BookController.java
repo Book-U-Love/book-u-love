@@ -14,7 +14,7 @@ import static org.bookyoulove.common.util.LogCurrent.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/books")
+@RequestMapping("/api/books")
 class BookController {
 
     private final BookService bookService;

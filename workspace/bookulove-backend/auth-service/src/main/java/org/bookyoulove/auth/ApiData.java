@@ -1,7 +1,6 @@
-package org.bookyoulove.common.api.response;
+package org.bookyoulove.auth;
 
-import org.bookyoulove.common.error.ApiError;
-import org.bookyoulove.common.error.ErrorCode;
+import org.bookyoulove.auth.error.ErrorCode;
 import org.springframework.http.HttpStatus;
 
 public record ApiData<T>(
@@ -17,6 +16,10 @@ public record ApiData<T>(
         return new ApiData<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), data);
     }
 
+    public static <T> ApiData<T> of(int status, T data){
+        return new ApiData<>(status, null, data);
+    }
+
 //    public static <T> ApiData<T> of(int status, String code, T data){
 //        return new ApiData<>(status, code, data);
 //    }
@@ -27,13 +30,5 @@ public record ApiData<T>(
 
     public static ApiData<String> error(ErrorCode errorCode){
         return new ApiData<>(errorCode.getStatus(), errorCode.getCode(), errorCode.getMessage());
-    }
-
-    public static ApiData<String> error(int status, String code, String message){
-        return new ApiData<>(status, code, message);
-    }
-
-    public static <T> ApiData<T> of(int status, T data){
-        return new ApiData<>(status, null, data);
     }
 }
