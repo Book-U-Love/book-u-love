@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
 import com.example.frontend.ui.components.ChatInfo
 import com.example.frontend.ui.components.CustomDialog
+import com.example.frontend.ui.theme.Red
 
 
 @Composable
@@ -27,19 +28,5 @@ fun Chat(navController: NavController){
             ChatInfo(navController)
             ChatInfo(navController)
         }
-        Box(){
-            Button(onClick = {state=!state}) {
-                Text("test")
-            }
-            if(state){
-                CustomDialog(
-                    onDismissRequest = { state=false },
-                    onConfirmation = { state=false},
-                    dialogTitle = "테스트용",
-                    dialogText = "확인?"
-                )
-            }
-        }
-
     }
 }

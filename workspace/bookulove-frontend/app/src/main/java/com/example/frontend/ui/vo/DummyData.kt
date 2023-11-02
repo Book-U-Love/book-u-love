@@ -12,37 +12,42 @@ data class bookInfo(
 )
 val chatDataList = mutableListOf<chatList>(
     chatList(
-        userName="asdf",
-        userChat="hiasdfasdfasdfasdfadasdfdasfsdsf",
+        userName="김싸피",
+        userChat="안녕하세요 책 대여 가능할까요?",
     ),
     chatList(
         userName="나",
-        userChat="hi",
-    ),
-    chatList(
-        userName="asdf",
-        userChat="hiasdfsdafasdfdsfdasfadsfdsfsdafadsfasdfadsfasdfadsfdsaf",
+        userChat="안녕하세요!",
     ),
     chatList(
         userName="나",
-        userChat="hiasdfasdfasdfdasfasdfadsfsffsdfasdfadsfsdfafsdfasdfasdfsdfasdfasdfdsfasdfadsfadsfadsfdsafdsafadsfadsfdasfadsfdasfdasfdsfdsfadsfdsfadsfasdfds",
+        userChat="가능합니다.",
     ),
     chatList(
-        userName="asdf",
-        userChat="hiasdfsdafasdfdsfdasfadsfdsfsdafadsfasdfadsfasdfadsfdsaf",
+        userName="김싸피",
+        userChat="책 상태는 어떤가요?",
     ),
     chatList(
-        userName="asdf",
-        userChat="hiasdfsdafasdfdsfdasfadsfdsfsdafadsfasdfadsfasdfadsfdsaf",
+        userName="나",
+        userChat="표지에 살짝 얼룩이 있습니다. 그 외에 특이사항은 없어요!",
     ),
     chatList(
-        userName="asdf",
-        userChat="hiasdfsdafasdfdsfdasfadsfdsfsdafadsfasdfadsfasdfadsfdsaf",
+        userName="김싸피",
+        userChat="00일 00시 괜찮으신가요?",
     ),
     chatList(
-        userName="asdf",
-        userChat="hiasdfsdafasdfdsfdasfadsfdsfsdafadsfasdfadsfasdfadsfdsaf",
+        userName="나",
+        userChat="네 괜찮아요~",
     ),
+    chatList(
+        userName="김싸피",
+        userChat="그럼 등록하신 장소에서 00일 00시에 뵙겠습니다!",
+    ),
+    chatList(
+        userName="나",
+        userChat="감사합니다~",
+    ),
+
 )
 
 val categoryList = mutableListOf<String>(

@@ -36,6 +36,7 @@ import com.google.android.gms.location.LocationServices
 
 @Composable
 fun Home(navController: NavHostController) {
+
     Row(
         modifier = Modifier.fillMaxHeight(),
         verticalAlignment = Alignment.CenterVertically

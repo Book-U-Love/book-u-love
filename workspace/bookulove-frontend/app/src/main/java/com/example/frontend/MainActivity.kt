@@ -32,14 +32,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat
-import androidx.navigation.NavController
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -47,6 +47,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.frontend.ui.components.BookReportDetail
+import com.example.frontend.ui.components.ReportDetailViewModel
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
 import com.example.frontend.ui.screens.main.Home
@@ -56,9 +57,11 @@ import com.example.frontend.ui.screens.user.ChatRoom
 import com.example.frontend.ui.screens.user.Register
 import com.example.frontend.ui.theme.FrontEndTheme
 import com.example.frontend.ui.vo.Routes
+import com.example.frontend.ui.vo.bookList
+import com.example.frontend.viewmodel.MainViewModel
+import com.example.frontend.viewmodel.MainViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
+
 
 @SuppressLint("MissingPermission")
 class MainActivity : ComponentActivity() {
@@ -85,10 +88,13 @@ class MainActivity : ComponentActivity() {
             Manifest.permission.ACCESS_COARSE_LOCATION)
         )
         setContent {
+            val mainViewModel = ViewModelProvider(
+                this,MainViewModelFactory()
+            )[MainViewModel::class.java]
             FrontEndTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    MainApp()
+                    MainApp(mainViewModel)
                 }
             }
         }
@@ -97,9 +103,8 @@ class MainActivity : ComponentActivity() {
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
-@Preview
 @Composable
-fun MainApp(){
+fun MainApp(viewModel: MainViewModel){
     val navController = rememberNavController()
     Log.d("asdf", navController.toString())
 //    val pagerState = rememberPagerState(pageCount=2)
@@ -110,12 +115,12 @@ fun MainApp(){
                     containerColor = Color.White
                 ),
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(painter = painterResource(id = R.drawable.back), contentDescription ="goBack")
                     }
                 },
                 title = {
-                    Text(text = "마이페이지")
+                    Text(text = viewModel.navState.value)
                 },
                 actions = {
                     // RowScope here, so these icons will be placed horizontally
@@ -145,35 +150,46 @@ fun MainApp(){
                 verticalArrangement = Arrangement.spacedBy(1.dp),
             ) {
                 Divider()
-                MainNavigation(navController = navController)
+                MainNavigation(navController = navController,viewModel)
             }
 
         }
     }
 }
 @Composable
-fun MainNavigation(navController: NavHostController){
+fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
     NavHost(navController = navController, startDestination = Routes.CHAT) {
         composable(route = Routes.HOME) {
             Home(navController = navController)
         }
         composable(route = Routes.CHAT) {
             Chat(navController)
+            Log.d("check",navController.graph.id.toString())
+            viewModel.changeState("채팅")
+            Log.d("stack", navController.toString())
         }
         composable(route = Routes.MYPAGE) {
             MyPage()
+            viewModel.changeState("마이페이지")
+            Log.d("stack", navController.toString())
         }
         composable(route = Routes.BOOKSEARCH) {
             BookSearch()
+            viewModel.changeState("검색")
+            Log.d("stack", navController.toString())
         }
         composable(route = Routes.BOOKTOTAL) {
             BookTotal(navController)
+            viewModel.changeState("독후감")
+            Log.d("stack", navController.toString())
         }
         composable(route = Routes.CHATROOM) {
             ChatRoom()
+            viewModel.changeState("김싸피")
         }
         composable(route = Routes.REGISTER) {
             Register(navController = navController)
+            viewModel.changeState("회원가입")
         }
         composable(route = Routes.REPORTDETAIL+"/{index}",
             arguments = listOf(navArgument("index"){
@@ -181,7 +197,10 @@ fun MainNavigation(navController: NavHostController){
             })) {
             entry ->
             val reportIndex = entry.arguments?.getInt("index");
-           if(reportIndex!=null) BookReportDetail(reportIndex)
+           if(reportIndex!=null) {
+               BookReportDetail(reportIndex)
+
+           }
         }
     }
 
