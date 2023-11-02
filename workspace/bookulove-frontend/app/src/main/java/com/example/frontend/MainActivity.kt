@@ -33,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -47,12 +48,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.frontend.ui.components.BookReportDetail
+import com.example.frontend.ui.screens.book.BookList
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
 import com.example.frontend.ui.screens.main.Home
 import com.example.frontend.ui.screens.info.MyPage
 import com.example.frontend.ui.screens.user.Chat
 import com.example.frontend.ui.screens.user.ChatRoom
+import com.example.frontend.ui.screens.user.Modify
 import com.example.frontend.ui.screens.user.Register
 import com.example.frontend.ui.theme.FrontEndTheme
 import com.example.frontend.ui.vo.Routes
@@ -153,7 +156,7 @@ fun MainApp(){
 }
 @Composable
 fun MainNavigation(navController: NavHostController){
-    NavHost(navController = navController, startDestination = Routes.CHAT) {
+    NavHost(navController = navController, startDestination = Routes.HOME) {
         composable(route = Routes.HOME) {
             Home(navController = navController)
         }
@@ -161,7 +164,7 @@ fun MainNavigation(navController: NavHostController){
             Chat(navController)
         }
         composable(route = Routes.MYPAGE) {
-            MyPage()
+            MyPage(navController)
         }
         composable(route = Routes.BOOKSEARCH) {
             BookSearch()
@@ -182,6 +185,12 @@ fun MainNavigation(navController: NavHostController){
             entry ->
             val reportIndex = entry.arguments?.getInt("index");
            if(reportIndex!=null) BookReportDetail(reportIndex)
+        }
+        composable(route = Routes.MODIFYINFO){
+            Modify(navController)
+        }
+        composable(route = Routes.BOOKLIST){
+            BookList()
         }
     }
 

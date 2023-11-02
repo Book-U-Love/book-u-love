@@ -1,54 +1,57 @@
 package com.example.frontend.ui.screens.user
 
-import android.Manifest
-import android.os.Bundle
-import android.os.PersistableBundle
-import android.renderscript.ScriptGroup.Input
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.*
+import android.graphics.Paint.Align
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.frontend.ui.components.FuncBtn
-import com.example.frontend.ui.components.PageBtn
 import com.example.frontend.ui.components.InputField
 import com.example.frontend.ui.components.MapInfo
-import com.example.frontend.ui.theme.FrontEndTheme
+import com.example.frontend.ui.components.PageBtn
 import com.example.frontend.ui.vo.Routes
 import com.google.android.gms.maps.model.LatLng
 
 
 @Composable
-fun Register(navController: NavHostController){
+fun Modify(navController: NavHostController){
     var isFirst by remember {
         mutableStateOf(true)
     }
     if(isFirst){
-        FirstRegister(navController, changePage = {isFirst = false})
+        FirstModify(navController, changePage = {isFirst = false})
     } else{
-        SecondRegister(navController, changePage = {isFirst = true})
+        SecondModify(navController, changePage = {isFirst = true})
     }
 }
 
 @Composable
-fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
+fun FirstModify(navController: NavHostController, changePage: () -> Unit){
     var id by remember {
-        mutableStateOf("")
+        mutableStateOf("ssafy123")
     }
     var pw by remember {
         mutableStateOf("")
@@ -63,18 +66,18 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
         mutableStateOf("")
     }
     var nickname by remember {
-        mutableStateOf("")
+        mutableStateOf("김싸피")
     }
     var libName : String by remember{ mutableStateOf("") }
     var libDetail : String by remember{ mutableStateOf("") }
-    Row(
-        modifier = Modifier.fillMaxHeight(),
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        LazyColumn (
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
+    val state = rememberLazyListState()
+    Box(modifier = Modifier.fillMaxSize()){
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            state = state,
+            ){
             item{
                 InputField(value = id, label = "아이디", onValueChanged = {id = it})
                 InputField(value = pw, label = "비밀번호", isPassword = true, onValueChanged = {pw = it})
@@ -96,11 +99,13 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
                 InputField(value = nickname, label = "닉네임", onValueChanged = {nickname = it})
                 InputField(value = libName, label = "도서관명", onValueChanged = {libName = it})
                 InputField(value = libDetail, label = "상세설명", onValueChanged = {libDetail = it})
-                Row(){
+            }
+            item{
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
                     PageBtn(
                         navController = navController,
                         "돌아가기",
-                        Routes.HOME
+                        Routes.MYPAGE
                     )
                     Spacer(modifier = Modifier.width(80.dp))
                     FuncBtn(
@@ -114,17 +119,17 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
 }
 
 @Composable
-fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
+fun SecondModify(navController: NavHostController, changePage: () -> Unit){
+    val pos = remember { mutableStateOf(LatLng(0.0, 0.0)) }
     Row(
         modifier = Modifier.fillMaxHeight(),
         verticalAlignment = Alignment.CenterVertically
     ){
-        val pos = remember { mutableStateOf(LatLng(0.0, 0.0)) }
         Column (
             modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ){
-            MapInfo(pos= pos)
+            MapInfo(true, pos = pos)
             Spacer(modifier = Modifier.height(50.dp))
             Row() {
                 FuncBtn(
@@ -134,12 +139,8 @@ fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
                 Spacer(modifier = Modifier.width(80.dp))
                 PageBtn(
                     navController = navController,
-                    name = "회원가입",
-                    Routes.HOME
-                )
-                FuncBtn(
-                    onClick = {Log.i("Position", pos.value.toString())},
-                    name = "결과보기"
+                    name = "수정하기",
+                    Routes.MYPAGE
                 )
             }
 
