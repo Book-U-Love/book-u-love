@@ -9,4 +9,6 @@ object Routes{
     const val CHATROOM = "chatroom"
     const val REGISTER = "register"
     const val REPORTDETAIL = "reportdetail"
+    const val MODIFYINFO = "modifyinfo"
+    const val BOOKLIST = "booklist"
 }
