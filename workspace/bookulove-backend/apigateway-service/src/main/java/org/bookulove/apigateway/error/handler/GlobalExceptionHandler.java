@@ -12,7 +12,9 @@ import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.ServerWebInputException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,12 +31,13 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
 
-        List<Class<? extends RuntimeException>> jwtExceptions =
+        List<Class<? extends RuntimeException>> exceptions =
                 List.of(SecurityException.class,
                         MalformedJwtException.class,
                         ExpiredJwtException.class,
                         UnsupportedJwtException.class,
-                        IllegalArgumentException.class);
+                        IllegalArgumentException.class
+                );
 
         Class<? extends Throwable> exceptionClass = ex.getClass();
 
@@ -47,12 +50,19 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
             exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
             responseBody.put("code", "EXPIRED");
             responseBody.put("message", "Access Token is Expired!");
-        } else if (jwtExceptions.contains(exceptionClass)){
+        } else if (exceptions.contains(exceptionClass)){
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
             responseBody.put("code", "INVALID");
             responseBody.put("message", "Invalid Access Token");
-        } else {
+        } else if(exceptionClass.equals(ResponseStatusException.class)){
+            exchange.getResponse().setStatusCode(HttpStatus.NOT_FOUND);
+            exchange.getResponse().getHeaders().setContentType((MediaType.APPLICATION_JSON));
+            responseBody.put("status", "404");
+            responseBody.put("code", "A001");
+            responseBody.put("message", ex.getMessage());
+        }
+        else {
             exchange.getResponse().setStatusCode(exchange.getResponse().getStatusCode());
             exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
             responseBody.put("code", ex.getMessage());

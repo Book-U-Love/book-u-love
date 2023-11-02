@@ -1,7 +1,7 @@
 package org.bookulove.user.application.port.out;
 
-import org.bookyoulove.common.api.response.ApiData;
-import org.bookyoulove.common.feignclient.book.LibraryCreateReq;
+import org.bookulove.common.api.response.ApiData;
+import org.bookulove.common.feignclient.book.LibraryCreateReq;
 
 public interface LibraryCreatePort {
 

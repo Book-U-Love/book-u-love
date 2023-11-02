@@ -8,15 +8,14 @@ import org.bookulove.user.application.port.out.LibraryCreatePort;
 import org.bookulove.user.application.port.out.UserCreatePort;
 import org.bookulove.user.domain.UserCreateDomain;
 import org.bookulove.user.exception.UserServiceException;
-import org.bookyoulove.common.annotation.UseCase;
-import org.bookyoulove.common.api.response.ApiData;
-import org.bookyoulove.common.feignclient.book.LibraryCreateReq;
-import org.springframework.stereotype.Service;
+import org.bookulove.common.annotation.UseCase;
+import org.bookulove.common.api.response.ApiData;
+import org.bookulove.common.error.ErrorCode;
+import org.bookulove.common.feignclient.book.LibraryCreateReq;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @UseCase
-@Service
 @Transactional
 @RequiredArgsConstructor
 public class UserCreateService implements UserCreateUseCase {
@@ -25,20 +24,17 @@ public class UserCreateService implements UserCreateUseCase {
     private final LibraryCreatePort libraryCreatePort;
 
     @Override
-    public void createUser(UserCreateCmd req) {
-        log.info("회원가입 cmd: {}", req);
+    public void createUser(UserCreateCmd cmd) {
+        log.info("회원가입 cmd: {}", cmd);
 
-        UserCreateDomain userCreateDomain = userCreatePort.createUser(req.Id(), req.password(), req.nickname());
+        UserCreateDomain userCreateDomain = userCreatePort.createUser(cmd.Id(), cmd.password(), cmd.nickname());
         log.info("회원가입 domain: {}", userCreateDomain);
 
-        ApiData<?> td = libraryCreatePort.createLibrary(LibraryCreateReq.of(req.libraryName(), req.lat(), req.lng()));
-        log.info("Feign result: {}", td);
-
-        if(td.status() != 200){
-            throw new UserServiceException()
-        }
-
-
-
+//        ApiData<?> td = libraryCreatePort.createLibrary(LibraryCreateReq.of(cmd.libraryName(), cmd.lat(), cmd.lng()));
+//        log.info("Feign result: {}", td);
+//
+//        if(td.status() != 200){
+//            throw new UserServiceException(ErrorCode.LIBRARY_CREATE_ERROR, td.data().toString());
+//        }
     }
 }

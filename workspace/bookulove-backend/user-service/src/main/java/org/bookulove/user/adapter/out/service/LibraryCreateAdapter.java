@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bookulove.user.adapter.out.service.feign.LibraryCreateFeign;
 import org.bookulove.user.application.port.out.LibraryCreatePort;
-import org.bookyoulove.common.api.response.ApiData;
-import org.bookyoulove.common.feignclient.book.LibraryCreateReq;
-import org.springframework.stereotype.Component;
+import org.bookulove.common.annotation.WebAdapter;
+import org.bookulove.common.api.response.ApiData;
+import org.bookulove.common.feignclient.book.LibraryCreateReq;
 
 @Slf4j
-@Component
+@WebAdapter
 @RequiredArgsConstructor
 public class LibraryCreateAdapter implements LibraryCreatePort {
 

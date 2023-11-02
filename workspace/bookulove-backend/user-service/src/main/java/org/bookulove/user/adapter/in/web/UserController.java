@@ -7,11 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.bookulove.user.adapter.in.web.dto.request.UserCreateReq;
 import org.bookulove.user.application.port.in.UserCreateUseCase;
 import org.bookulove.user.application.port.in.dto.command.UserCreateCmd;
-import org.bookulove.user.domain.UserCreateDomain;
 import org.bookulove.user.exception.UserServiceException;
-import org.bookyoulove.common.annotation.WebAdapter;
-import org.bookyoulove.common.api.response.ApiData;
-import org.bookyoulove.common.error.ErrorCode;
+import org.bookulove.common.annotation.WebAdapter;
+import org.bookulove.common.api.response.ApiData;
+import org.bookulove.common.error.ErrorCode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 

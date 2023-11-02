@@ -42,7 +42,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             ServerHttpRequest request = exchange.getRequest();
 
             if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION))
-                return onError(exchange, "No authorization header", HttpStatus.UNAUTHORIZED);
+                return onError(exchange);
 
             String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
             String jwt = authorizationHeader.replace("Bearer", "");
@@ -60,10 +60,10 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         };
     }
 
-    private Mono<Void> onError(ServerWebExchange exchange, String err, HttpStatus httpStatus) {
+    private Mono<Void> onError(ServerWebExchange exchange) {
         ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(httpStatus);
-        log.error(err);
+        response.setStatusCode(HttpStatus.UNAUTHORIZED);
+        log.error("No authorization header");
 
         byte[] bytes = "The requested token is invalid.".getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bytes);

@@ -6,10 +6,10 @@ import org.bookulove.user.adapter.out.persistence.entity.UserEntity;
 import org.bookulove.user.adapter.out.persistence.repository.UserRepository;
 import org.bookulove.user.application.port.out.UserCreatePort;
 import org.bookulove.user.domain.UserCreateDomain;
-import org.springframework.stereotype.Component;
+import org.bookulove.common.annotation.WebAdapter;
 
 @Slf4j
-@Component
+@WebAdapter
 @RequiredArgsConstructor
 public class UserCreateAdapter implements UserCreatePort {
 

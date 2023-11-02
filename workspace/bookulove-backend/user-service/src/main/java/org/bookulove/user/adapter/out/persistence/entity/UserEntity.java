@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.bookulove.common.entity.BaseTimeEntity;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
@@ -14,7 +15,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Entity
 @Getter
 @NoArgsConstructor(access = PRIVATE)
-public class UserEntity {
+public class UserEntity extends BaseTimeEntity {
 
     @Id
     @Column(name = "user_id")
