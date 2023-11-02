@@ -19,22 +19,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.frontend.ui.components.Avatar
 import com.example.frontend.ui.components.FuncBtn
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 import com.example.frontend.R
+import com.example.frontend.ui.components.PageBtn
 import com.example.frontend.ui.components.ReviewCard
+import com.example.frontend.ui.vo.Routes
 
-@Preview(showBackground = true)
 @Composable
-fun MyPage(){
+fun MyPage(navController : NavHostController){
      var name = "김싸피"
      var bookCnt = 3
      var reviewCnt = 8
      LazyColumn(modifier = Modifier.fillMaxHeight()){
           item{
                Row(
-                    modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
+                    modifier = Modifier
+                         .fillMaxWidth()
+                         .padding(top = 40.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceAround
                ){
@@ -52,7 +56,7 @@ fun MyPage(){
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                ){
-                    FuncBtn(name = "프로필 수정", onClick = {})
+                    PageBtn(navController = navController, name = "프로필 수정", destination = Routes.MODIFYINFO)
                }
           }
           item{
@@ -111,7 +115,9 @@ fun MyPage(){
                               painter = painterResource(id = R.drawable.next),
                               contentDescription = "",
                               contentScale = ContentScale.Fit,
-                              modifier = Modifier.size(15.dp).clickable {  },
+                              modifier = Modifier
+                                   .size(15.dp)
+                                   .clickable {navController.navigate(Routes.BOOKLIST) },
                          )
                     }
                }
