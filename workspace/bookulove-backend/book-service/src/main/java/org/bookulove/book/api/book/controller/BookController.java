@@ -33,7 +33,7 @@ class BookController {
     @PostMapping
     ApiData<String> regist(@RequestBody final BookSearchReq bookSearchReq) {
         bookService.regist(bookSearchReq);
-        return ApiData.ok("성공~~");
+        return ApiData.ok("도서등록이 완료되었습니다.");
     }
 
 
