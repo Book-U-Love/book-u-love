@@ -1,6 +1,37 @@
+#
+# BINDING REQUIRE
+#
+# USER-DB-URL
+# USER-DB-USERNAME
+# USER-DB-PASSWORD
+# REDIS-HOST
+# REDIS-PORT
+# JWT-ACCESS-EXPIRE-TIME
+# JWT-REFRESH-EXPIRE-TIME
+
 server:
   port: 9002
 
+spring:
+  datasource:
+    url: ${USER-DB-URL}
+    username: ${USER-DB-USERNAME}
+    password: ${USER-DB-PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        highlight_sql: true
+        default_batch_fetch_size: 100
   redis:
     host: ${REDIS-HOST}
     port: ${REDIS-PORT}
+
+jwt:
+  secret: ${JWT-SECRET}
+  access-expire-time: ${JWT-ACCESS-EXPIRE-TIME}
+  refresh-expire-time: ${JWT-REFRESH-EXPIRE-TIME}
