@@ -1,17 +1,82 @@
+#
+# BINDING REQUIRE
+#
+# USER-SERVICE
+# AUTH-SERVICE
+# BOOK-SERVICE
+# TRADE-SERVICE
+# ALARM-SERVICE
+# JWT-SECRET
+
 server:
-  port: 0
+  port: 9001
 
 spring:
+  application:  #gateway service 이름름    name: apigateway-service
   cloud:
-    gateway:
+    gateway:  #gateway 설정
       default-filters:
+        - name: GlobalFilter #Global Filter로 지정된 java 파일 이름
+          args:
+            baseMessage: Spring Cloud Gateway Global Filter
+            preLogger: true
+            postLogger: true
+      routes:
+        - id: user-create
+          uri: ${USER-SERVICE}
+          predicates:
+            - Path=/user-service/users
+            - Method=POST
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
+        - id: auth-login
+          uri: ${AUTH-SERVICE}
+          predicates:
+            - Path=/auth-service/auths
+            - Method=POST
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
+        - id: auth-service
+          uri: ${AUTH-SERVICE}
+          predicates:
+            - Path=/auth-service/**
+          filters:
+            - RewritePath=/auth-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+
+        - id: user-service
+          uri: ${USER-SERVICE}
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+
+        - id: book-service
+          uri: ${BOOK-SERVICE}
+          predicates:
+            - Path=/book-service/**
+          filters:
+            - RewritePath=/book-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+
+        - id: trade-service
+          uri: ${TRADE-SERVICE}
+          predicates:
+            - Path=/trade-service/**
+          filters:
+            - RewritePath=/trade-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+
+        - id: alarm-service
+          uri: ${ALARM-SERVICE}
+          predicates:
+            - Path=/alarm-service/**
+          filters:
+            - RewritePath=/alarm-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
 
 jwt:
-  secret: ${secret}
-#      routes:
-#        - id:
-#          url:
-#          predicates:
-#          filters:
-
-
+  secret: ${JWT-SECRET}
