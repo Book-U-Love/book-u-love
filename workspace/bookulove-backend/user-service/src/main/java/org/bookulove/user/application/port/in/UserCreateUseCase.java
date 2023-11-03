@@ -4,6 +4,6 @@ import org.bookulove.user.application.port.in.dto.command.UserCreateCmd;
 
 public interface UserCreateUseCase {
 
-    void createUser(UserCreateCmd req);
+    void createUser(UserCreateCmd cmd);
 
 }

@@ -1,9 +1,9 @@
-package org.bookulove.user.adapter.out.service;
+package org.bookulove.user.adapter.out.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bookulove.user.adapter.out.service.feign.LibraryCreateFeign;
-import org.bookulove.user.application.port.out.LibraryCreatePort;
+import org.bookulove.user.adapter.out.web.feign.UserCreateLibraryFeign;
+import org.bookulove.user.application.port.out.UserCreateLibraryPort;
 import org.bookulove.common.annotation.WebAdapter;
 import org.bookulove.common.api.response.ApiData;
 import org.bookulove.common.feignclient.book.LibraryCreateReq;
@@ -11,9 +11,9 @@ import org.bookulove.common.feignclient.book.LibraryCreateReq;
 @Slf4j
 @WebAdapter
 @RequiredArgsConstructor
-public class LibraryCreateAdapter implements LibraryCreatePort {
+public class UserCreateLibraryAdapter implements UserCreateLibraryPort {
 
-    private final LibraryCreateFeign libraryCreateFeign;
+    private final UserCreateLibraryFeign libraryCreateFeign;
 
     @Override
     public ApiData<?> createLibrary(LibraryCreateReq req) {

@@ -3,11 +3,11 @@ package org.bookulove.auth.application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bookulove.auth.application.port.in.AuthCreateUseCase;
-import org.bookulove.auth.application.port.out.AuthFindPort;
+import org.bookulove.auth.application.port.out.AuthFindUserPort;
 import org.bookulove.auth.application.port.out.AuthSavePort;
 import org.bookulove.auth.domain.AuthCreateDomain;
 import org.bookulove.auth.application.port.in.dto.command.AuthCreateCmd;
-import org.bookulove.auth.domain.AuthFindDomain;
+import org.bookulove.auth.domain.AuthFindUserDomain;
 import org.bookulove.auth.global.exception.AuthServiceException;
 import org.bookulove.auth.global.jwt.JwtUtil;
 import org.bookulove.common.annotation.UseCase;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthCreateService implements AuthCreateUseCase {
 
     private final JwtUtil jwtUtil;
-    private final AuthFindPort authFindPort;
+    private final AuthFindUserPort authFindPort;
     private final AuthSavePort authSavePort;
     private final BCryptPasswordEncoder encoder;
 
@@ -30,7 +30,7 @@ public class AuthCreateService implements AuthCreateUseCase {
     public AuthCreateDomain createAuth(AuthCreateCmd cmd) {
         log.info("권한 생성 cmd: {}", cmd);
 
-        AuthFindDomain authFindDomain = authFindPort.findAuth(cmd.id());
+        AuthFindUserDomain authFindDomain = authFindPort.findUser(cmd.id());
         log.info("유저 조회 domain: {}", authFindDomain);
 
         if(!encoder.matches(cmd.password(), authFindDomain.password())){

@@ -2,7 +2,7 @@ package org.bookulove.auth.domain;
 
 import org.bookulove.auth.adapter.out.persistence.entity.UserEntity;
 
-public record AuthFindDomain(
+public record AuthFindUserDomain(
 
         Long id,
         String loginId,
@@ -10,7 +10,7 @@ public record AuthFindDomain(
 
 ) {
 
-    public static AuthFindDomain of(UserEntity user){
-        return new AuthFindDomain(user.getId(), user.getLoginId(), user.getPassword());
+    public static AuthFindUserDomain of(UserEntity user){
+        return new AuthFindUserDomain(user.getId(), user.getLoginId(), user.getPassword());
     }
 }

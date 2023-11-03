@@ -20,7 +20,6 @@ public class AuthDeleteService implements AuthDeleteUseCase {
     @Override
     public void deleteAuth() {
         Long userId = authUtil.getUserIdByHeader();
-        log.info("접속 유저 아이디: {}", userId);
 
         authDeletePort.deleteAuth(userId);
     }

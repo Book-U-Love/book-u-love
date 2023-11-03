@@ -18,6 +18,7 @@ public enum ErrorCode {
     INVALID_TOKEN_ERROR(400, "T001", "Invalid token error!"),
     LOGOUT_TOKEN(401, "T002", "Required login!"),
     UNAUTHORIZATION_ERROR(401, "T003", "Unauthorization error!"),
+    INVALID_REFRESH_ERROR(401, "T003", "Invalid refresh token error!"),
 
     // Book
     IO_ERROR(500, "B001", "IO errpr!"),

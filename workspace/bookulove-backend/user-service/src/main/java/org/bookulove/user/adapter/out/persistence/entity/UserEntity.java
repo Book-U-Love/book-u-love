@@ -45,12 +45,21 @@ public class UserEntity extends BaseTimeEntity {
         this.allowNoti = allowNoti;
     }
 
-    public static UserEntity of(String id, String password, String nickname){
+    public static UserEntity of(String id, String password, String nickname) {
         return UserEntity.builder()
                 .loginId(id)
                 .password(password)
                 .nickname(nickname)
                 .allowNoti(true)
                 .build();
+    }
+
+    public void updateUser(String password, String nickname) {
+        if (password != null) {
+            this.password = password;
+        }
+        if (nickname != null) {
+            this.nickname = nickname;
+        }
     }
 }

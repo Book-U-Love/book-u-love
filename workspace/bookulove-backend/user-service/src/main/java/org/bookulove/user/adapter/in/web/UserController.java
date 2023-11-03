@@ -5,8 +5,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bookulove.user.adapter.in.web.dto.request.UserCreateReq;
+import org.bookulove.user.adapter.in.web.dto.request.UserUpdatePasswordReq;
+import org.bookulove.user.adapter.in.web.dto.request.UserUpdateReq;
 import org.bookulove.user.application.port.in.UserCreateUseCase;
+import org.bookulove.user.application.port.in.UserUpdateUseCase;
 import org.bookulove.user.application.port.in.dto.command.UserCreateCmd;
+import org.bookulove.user.application.port.in.dto.command.UserUpdateCmd;
 import org.bookulove.user.exception.UserServiceException;
 import org.bookulove.common.annotation.WebAdapter;
 import org.bookulove.common.api.response.ApiData;
@@ -24,6 +28,7 @@ public class UserController {
 
     private final BCryptPasswordEncoder encoder;
     private final UserCreateUseCase userCreateUseCase;
+    private final UserUpdateUseCase userUpdateUseCase;
 
     @PostMapping
     public ApiData<String> createUser(@RequestBody @Valid UserCreateReq req){
@@ -33,14 +38,22 @@ public class UserController {
         return ApiData.ok("회원가입에 성공하였습니다.");
     }
 
-    @GetMapping
-    public ApiData<String> errorTest(){
-        throw new UserServiceException(ErrorCode.BAD_REQUEST);
+    @PatchMapping
+    public ApiData<String> updateUser(@RequestBody UserUpdateReq req){
+        log.info("회원정보수정 req: {}", req.toString());
+
+        String encodedPwd = (req.password() != null) ? encoder.encode(req.password()) : null;
+        userUpdateUseCase.updateUser(UserUpdateCmd.of(req, encodedPwd));
+
+        return ApiData.ok("회원정보수정에 성공하였습니다.");
     }
 
-    @PostMapping("/error")
-    public ApiData<String> apiTest(@RequestBody @Valid UserCreateReq req){
-        return ApiData.ok("테스트 성공!");
-    }
+    @PatchMapping("/password")
+    public ApiData<String> updatePassword(@RequestBody @Valid UserUpdatePasswordReq req){
+        log.info("비밀변호 변경 req: {}", req.toString());
 
+
+
+        return ApiData.ok("비밀번호 변경에 성공하였습니다.");
+    }
 }
