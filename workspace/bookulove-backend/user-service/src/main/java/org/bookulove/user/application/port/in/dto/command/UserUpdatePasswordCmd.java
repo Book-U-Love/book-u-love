@@ -9,7 +9,7 @@ public record UserUpdatePasswordCmd(
         String newPassword
 ) {
 
-    public static UserUpdatePasswordCmd of(UserUpdatePasswordReq req){
-        return new UserUpdatePasswordCmd(req.oldPassword(), req.newPassword());
+    public static UserUpdatePasswordCmd of(String oldPassword, String encodedNewPassword){
+        return new UserUpdatePasswordCmd(oldPassword, encodedNewPassword);
     }
 }

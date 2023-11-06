@@ -1,4 +1,4 @@
-package org.bookulove.apigateway.util;
+package org.bookulove.apigateway.global.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -37,7 +37,5 @@ public class JwtUtil {
 
         return null;
     }
-
-
 
 }
