@@ -6,15 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.bookulove.book.api.book.model.request.BookSearchReq;
 import org.bookulove.book.api.book.model.response.BookSearchRes;
 import org.bookulove.book.api.book.model.service.BookService;
-import org.bookyoulove.common.api.response.ApiData;
+import org.bookulove.common.api.response.ApiData;
 import org.springframework.web.bind.annotation.*;
-
-import static org.bookyoulove.common.util.LogCurrent.*;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/books")
+@RequestMapping("/api/books")
 class BookController {
 
     private final BookService bookService;
@@ -35,7 +33,7 @@ class BookController {
     @PostMapping
     ApiData<String> regist(@RequestBody final BookSearchReq bookSearchReq) {
         bookService.regist(bookSearchReq);
-        return ApiData.ok("성공~~");
+        return ApiData.ok("도서등록이 완료되었습니다.");
     }
 
 

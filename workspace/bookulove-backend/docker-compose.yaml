@@ -116,6 +116,12 @@ services:
       - MYSQL_PASSWORD=bookulove678
       - MYSQL_DATABASE=alarm
 
+  redis:
+    container_name: "redis"
+    image: "redis"
+    ports:
+      - "6379:6379"
+
 #  axon-server:
 #    container_name: axon-server
 #    image: axoniq/axonserver:latest-jdk-17-dev

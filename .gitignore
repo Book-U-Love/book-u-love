@@ -6,7 +6,6 @@
 **/application-env.*
 **/*.env
 **/axon-server-se/**
-**/db/**
 **/userdb/**
 **/tradedb/**
 **/librarydb/**

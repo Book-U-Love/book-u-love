@@ -1,7 +1,7 @@
 package org.bookulove.user.exception;
 
-import org.bookyoulove.common.error.ErrorCode;
-import org.bookyoulove.common.error.exception.ServiceRuntimeException;
+import org.bookulove.common.error.ErrorCode;
+import org.bookulove.common.error.exception.ServiceRuntimeException;
 
 public class UserServiceException extends ServiceRuntimeException {
 
