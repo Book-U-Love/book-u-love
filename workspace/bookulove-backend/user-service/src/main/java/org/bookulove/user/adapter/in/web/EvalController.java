@@ -2,6 +2,7 @@ package org.bookulove.user.adapter.in.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bookulove.common.api.response.ApiData;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class EvalController {
 
-//    @PostMapping
-
+    @PostMapping
+    public ApiData<String> createEval(){
+        return ApiData.ok(null);
+    }
 
 }
