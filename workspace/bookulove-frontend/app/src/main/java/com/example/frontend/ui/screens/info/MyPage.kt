@@ -29,7 +29,7 @@ import com.example.frontend.ui.components.ReviewCard
 import com.example.frontend.ui.vo.Routes
 
 @Composable
-fun MyPage(navController : NavHostController, isMine: Boolean = false){
+fun MyPage(navController : NavHostController, isMine: Boolean = false, userId: String){
      var name = "김싸피"
      var bookCnt = 3
      var reviewCnt = 8

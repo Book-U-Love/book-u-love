@@ -98,11 +98,11 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
 fun AfterLogin(navController: NavHostController){
     val pos = remember { mutableStateOf(LatLng(0.0, 0.0)) }
     var libList: List<Library> = listOf(
-        Library(LatLng(37.42267105057816,-122.08498723804952), "Test1", "Test1"),
-        Library(LatLng(37.41267105057816,-122.08498723804952), "Test2", "Test1"),
-        Library(LatLng(37.40267105057816,-122.08498723804952), "Test3", "Test1"),
-        Library(LatLng(37.42267105057816,-122.07498723804952), "Test4", "Test1"),
-        Library(LatLng(37.42267105057816,-122.05498723804952), "Test5", "Test1"),
+        Library("ssafy", LatLng(37.42267105057816,-122.08498723804952), "Test1", "Test1"),
+        Library("ssafy1", LatLng(37.41267105057816,-122.08498723804952), "Test2", "Test1"),
+        Library("ssafy2", LatLng(37.40267105057816,-122.08498723804952), "Test3", "Test1"),
+        Library("ssafy3", LatLng(37.42267105057816,-122.07498723804952), "Test4", "Test1"),
+        Library("ssafy4", LatLng(37.42267105057816,-122.05498723804952), "Test5", "Test1"),
     )
     Column(modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,

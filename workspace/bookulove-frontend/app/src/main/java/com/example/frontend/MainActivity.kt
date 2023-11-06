@@ -163,11 +163,18 @@ fun MainNavigation(navController: NavHostController){
         composable(route = Routes.CHAT) {
             Chat(navController)
         }
-        composable(route = Routes.MYPAGE) {
-            MyPage(navController, true)
-        }
-        composable(route = Routes.USERINFO){
-            MyPage(navController)
+        composable(route = Routes.MYPAGE + "/{userId}",
+                arguments = listOf(navArgument("userId"){
+                    type = NavType.StringType
+                })
+            ) {
+            entry ->
+            val userId = entry.arguments?.getString("userId")
+            if(userId != null){
+                MyPage(navController,
+                userId == "ssafy",
+                userId)
+            }
         }
         composable(route = Routes.BOOKSEARCH) {
             BookSearch()

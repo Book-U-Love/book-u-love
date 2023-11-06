@@ -4,7 +4,6 @@ object Routes{
     const val HOME = "home"
     const val BOOKSEARCH = "booksearch"
     const val MYPAGE = "mypage"
-    const val USERINFO = "userinfo"
     const val CHAT = "chat"
     const val BOOKTOTAL = "booktotal"
     const val CHATROOM = "chatroom"

@@ -108,11 +108,11 @@ fun MapInfo(
                         state = MarkerState(position = lib.libPos),
                         onInfoWindowClick = {
                             GlobalScope.launch(Dispatchers.Main){
-                                navController.navigate(Routes.MYPAGE)
+                                navController.navigate(Routes.MYPAGE+"/${lib.userId}")
                             }
                         }
                     ){
-                        PageBtn(navController = navController, name = "userInfo", destination = Routes.MYPAGE)
+                        FuncBtn(name = "유저정보"){}
                     }
                 }
             }

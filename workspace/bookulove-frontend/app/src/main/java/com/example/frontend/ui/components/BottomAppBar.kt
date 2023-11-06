@@ -52,7 +52,7 @@ fun BottomAppBar(navController: NavHostController){
                     contentDescription = "search"
                 )
             }
-            IconButton(onClick = { navController.navigate(Routes.MYPAGE) }) {
+            IconButton(onClick = { navController.navigate(Routes.MYPAGE + "/ssafy") }) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_settings_24),
                     contentDescription = "settings"
