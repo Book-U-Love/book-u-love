@@ -7,6 +7,6 @@ import retrofit2.http.Query
 
 interface BookApi{
     @GET("/books/search")
-    suspend fun bookSearech(@Query("isbn") isbn:String):Response<Book>
+    suspend fun getBookSearchList(@Query("isbn") isbn:String):Response<Book>
 
 }

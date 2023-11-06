@@ -33,10 +33,23 @@ import com.example.frontend.ui.screens.user.Register
 import com.example.frontend.ui.vo.Routes
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 
 @Composable
 fun Home(navController: NavHostController) {
+    var isLogin by remember {
+        mutableStateOf(false)
+    }
+    if(!isLogin){
+        BeforeLogin(navController = navController, changePage = {isLogin = true})
+    } else{
+        AfterLogin(navController = navController)
+    }
+}
 
+
+@Composable
+fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
     Row(
         modifier = Modifier.fillMaxHeight(),
         verticalAlignment = Alignment.CenterVertically
@@ -70,9 +83,13 @@ fun Home(navController: NavHostController) {
                 Spacer(modifier = Modifier.width(80.dp))
                 FuncBtn(
                     name = "로그인",
-                    onClick = {}
+                    onClick = {changePage()}
                 )
             }
         }
     }
+}
+
+@Composable
+fun AfterLogin(navController: NavHostController){
 }

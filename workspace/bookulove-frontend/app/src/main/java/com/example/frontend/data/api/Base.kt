@@ -5,14 +5,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 interface API{
     companion object{
-        private const val BASE_URL = "http://k9c209.p.ssafy.io"
-
+        private const val BASE_URL = "http://10.0.2.2:9001/api/"
 
         fun getInstance(): Retrofit{
-            val instance = Retrofit.
-            Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
-
-            return instance
+            return Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
         }
 
     }

@@ -1,10 +1,11 @@
 import com.epages.restdocs.apispec.gradle.OpenApi3Extension
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
-import java.time.Instant
 
-val springCloudVersion = "2022.0.4"
 val axonVersion = "4.8.0"
+val queryDslVersion = "5.0.0"
+val springCloudVersion = "2022.0.4"
 
 
 fun Project.isJavaProject(): Boolean {
@@ -27,8 +28,16 @@ fun Project.useSpringBoot() {
 
     tasks.withType<BootBuildImage> {
         imageName.set("bookulove/${this@useSpringBoot.name}:${this@useSpringBoot.version}")
-        createdDate.set(Instant.now().toString())
         environment.put("BP_JVM_VERSION", "17")
+    }
+}
+
+fun Project.useSpringSecurity(){
+    dependencies{
+        val implementation by configurations
+        val testImplementation by configurations
+        implementation ("org.springframework.boot:spring-boot-starter-security")
+        testImplementation ("org.springframework.security:spring-security-test")
     }
 }
 
@@ -48,11 +57,31 @@ fun Project.useSpringDataRedis() {
     }
 }
 
+fun Project.useJwt(){
+    dependencies{
+        val implementation by configurations
+        implementation("io.jsonwebtoken:jjwt-api:0.11.5");
+        implementation("io.jsonwebtoken:jjwt-impl:0.11.5");
+        implementation("io.jsonwebtoken:jjwt-jackson:0.11.5");
+    }
+}
+
+fun Project.useQueryDsl(){
+    dependencies{
+        val implementation by configurations
+        val annotationProcessor by configurations
+        implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+        annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}")
+        annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+        annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+    }
+}
+
 fun Project.useSpringRESTDocs() {
     apply(plugin = "com.epages.restdocs-api-spec")
 
-    ext {
-        set("snippetsDir", file("build/generated-snippets"))
+    extraProperties {
+        extra.set("snippetsDir", file("build/generated-snippets"))
     }
 
     dependencies {
@@ -75,14 +104,10 @@ fun Project.useSpringRESTDocs() {
 
 fun Project.useSpringWebMVC() {
     dependencies {
-        val compileOnly by configurations
         val implementation by configurations
-        val annotationProcessor by configurations
-        val testCompileOnly by configurations
-        val testImplementation by configurations
-        val testAnnotationProcessor by configurations
         implementation("org.springframework.boot:spring-boot-starter-web")
         implementation("org.springframework.boot:spring-boot-starter-validation")
+        implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.0.4")
     }
 }
 
@@ -113,7 +138,7 @@ fun Project.useAxon(axonVersion: String) {
 }
 
 buildscript {
-    val springBootVersion = "3.1.5"
+    val springBootVersion = "3.0.12"
 
     repositories {
         mavenCentral()
@@ -139,7 +164,6 @@ configure(subprojects.filter { it.isJavaProject() }) {
 
     dependencies {
         val compileOnly by configurations
-        val implementation by configurations
         val annotationProcessor by configurations
         val testCompileOnly by configurations
         val testImplementation by configurations
@@ -189,4 +213,17 @@ configure(subprojects.filter { it.isJavaProject() }) {
     if (includes("axon")) {
         useAxon(axonVersion)
     }
+
+    if(includes("jwt")){
+        useJwt()
+    }
+
+    if(includes("querydsl")){
+        useQueryDsl()
+    }
+
+    if(includes("spring-security")){
+        useSpringSecurity()
+    }
+
 }

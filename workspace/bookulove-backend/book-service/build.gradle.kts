@@ -1,3 +1,4 @@
 dependencies {
-    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+    val implementation by configurations
+    implementation(project(":common"));
 }
