@@ -13,6 +13,9 @@ public record UserCreateReq(
         @NotBlank(message = "패스워드는 필수값입니다.")
         String password,
 
+        @NotBlank(message = "핸드폰 번호는 핋수값입니다.")
+        String phoneNumber,
+
         @Size(max = 16, message = "닉네임 길이는 16글자 이하입니다.")
         @NotBlank(message = "닉네임은 필수값입니다.")
         String nickname,

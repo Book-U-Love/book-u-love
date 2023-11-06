@@ -17,8 +17,8 @@ public class UserCreateAdapter implements UserCreatePort {
     private final UserRepository userRepository;
 
     @Override
-    public UserCreateDomain createUser(String id, String password, String nickname) {
-        UserEntity user = UserEntity.of(id, password, nickname);
+    public UserCreateDomain createUser(String id, String password, String phoneNumber, String nickname) {
+        UserEntity user = UserEntity.of(id, password, phoneNumber, nickname);
         userRepository.save(user);
         return UserCreateDomain.of(user);
     }

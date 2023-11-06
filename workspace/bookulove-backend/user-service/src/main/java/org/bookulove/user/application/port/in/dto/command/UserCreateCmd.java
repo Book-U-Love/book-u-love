@@ -6,6 +6,7 @@ public record UserCreateCmd(
 
         String Id,
         String password,
+        String phoneNumber,
         String nickname,
         String libraryName,
         double lat,
@@ -15,6 +16,7 @@ public record UserCreateCmd(
     public static UserCreateCmd of(UserCreateReq req, String encodedPwd){
         return new UserCreateCmd(req.id(),
                 encodedPwd,
+                req.phoneNumber(),
                 req.nickname(),
                 req.libraryName(),
                 req.lat(),
