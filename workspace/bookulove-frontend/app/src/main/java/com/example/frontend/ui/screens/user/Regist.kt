@@ -138,7 +138,6 @@ fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
                     Routes.HOME
                 )
             }
-
         }
     }
 }

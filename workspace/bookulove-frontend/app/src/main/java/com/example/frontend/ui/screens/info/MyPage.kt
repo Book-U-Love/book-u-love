@@ -30,9 +30,18 @@ import com.example.frontend.ui.vo.Routes
 
 @Composable
 fun MyPage(navController : NavHostController, isMine: Boolean = false, userId: String){
-     var name = "김싸피"
-     var bookCnt = 3
-     var reviewCnt = 8
+     var name : String = ""
+     var bookCnt : Int = 0
+     var reviewCnt : Int = 0
+     if(userId == "ssafy"){
+          name = "김싸피"
+          bookCnt = 3
+          reviewCnt = 5
+     } else if(userId == "ssafy2"){
+          name = "박싸피"
+          bookCnt = 5
+          reviewCnt = 8
+     }
      // userId 기반으로 이름, 도서 수, 리뷰 수 받아오기
      LazyColumn(modifier = Modifier.fillMaxHeight()){
           item{

@@ -174,6 +174,8 @@ fun MainNavigation(navController: NavHostController){
                 MyPage(navController,
                 userId == "ssafy",
                 userId)
+            } else{
+                Home(navController = navController)
             }
         }
         composable(route = Routes.BOOKSEARCH) {

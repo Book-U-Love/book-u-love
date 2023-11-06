@@ -39,6 +39,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 
+var userId: String = ""
 @Composable
 fun Home(navController: NavHostController) {
     var isLogin by remember {
@@ -87,7 +88,10 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
                 Spacer(modifier = Modifier.width(80.dp))
                 FuncBtn(
                     name = "로그인",
-                    onClick = {changePage()}
+                    onClick = {
+                        userId = "ssafy"
+                        changePage()
+                    }
                 )
             }
         }
