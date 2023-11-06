@@ -104,7 +104,7 @@ fun MapInfo(
                 pos.value = LatLng(cameraPositionState.position.target.latitude, cameraPositionState.position.target.longitude)
             } else{
                 for(lib in libList){
-                    MarkerInfoWindow (
+                    MarkerInfoWindowContent (
                         state = MarkerState(position = lib.libPos),
                         onInfoWindowClick = {
                             GlobalScope.launch(Dispatchers.Main){
@@ -112,7 +112,10 @@ fun MapInfo(
                             }
                         }
                     ){
-                        FuncBtn(name = "유저정보"){}
+                        Column {
+                            Text(text = lib.detail)
+                            FuncBtn(name = lib.title){}
+                        }
                     }
                 }
             }
