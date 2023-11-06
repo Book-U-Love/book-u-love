@@ -1,5 +1,6 @@
 package com.example.frontend.ui.screens.main
 
+import android.graphics.Paint.Align
 import android.os.Bundle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,12 +26,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.frontend.R
 import com.example.frontend.ui.components.FuncBtn
 import com.example.frontend.ui.components.InputField
+import com.example.frontend.ui.components.MapInfo
 import com.example.frontend.ui.components.PageBtn
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
 import com.example.frontend.ui.screens.info.MyPage
 import com.example.frontend.ui.screens.user.Chat
 import com.example.frontend.ui.screens.user.Register
+import com.example.frontend.ui.vo.Library
 import com.example.frontend.ui.vo.Routes
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -92,4 +96,17 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
 
 @Composable
 fun AfterLogin(navController: NavHostController){
+    val pos = remember { mutableStateOf(LatLng(0.0, 0.0)) }
+    var libList: List<Library> = listOf(
+        Library(LatLng(37.42267105057816,-122.08498723804952), "Test1", "Test1"),
+        Library(LatLng(37.41267105057816,-122.08498723804952), "Test2", "Test1"),
+        Library(LatLng(37.40267105057816,-122.08498723804952), "Test3", "Test1"),
+        Library(LatLng(37.42267105057816,-122.07498723804952), "Test4", "Test1"),
+        Library(LatLng(37.42267105057816,-122.05498723804952), "Test5", "Test1"),
+    )
+    Column(modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ){
+        MapInfo(pos = pos, libList = libList, height = 800, navController = navController)
+    }
 }

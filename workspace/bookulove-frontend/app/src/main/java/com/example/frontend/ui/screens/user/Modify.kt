@@ -129,7 +129,7 @@ fun SecondModify(navController: NavHostController, changePage: () -> Unit){
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            MapInfo(true, pos = pos)
+            MapInfo(isModify = true, pos = pos, title = "modify", detail = "modify")
             Spacer(modifier = Modifier.height(50.dp))
             Row() {
                 FuncBtn(

@@ -29,10 +29,11 @@ import com.example.frontend.ui.components.ReviewCard
 import com.example.frontend.ui.vo.Routes
 
 @Composable
-fun MyPage(navController : NavHostController){
+fun MyPage(navController : NavHostController, isMine: Boolean = false){
      var name = "김싸피"
      var bookCnt = 3
      var reviewCnt = 8
+     // userId 기반으로 이름, 도서 수, 리뷰 수 받아오기
      LazyColumn(modifier = Modifier.fillMaxHeight()){
           item{
                Row(
@@ -51,12 +52,14 @@ fun MyPage(navController : NavHostController){
                     )
                }
           }
-          item{
-               Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-               ){
-                    PageBtn(navController = navController, name = "프로필 수정", destination = Routes.MODIFYINFO)
+          if(isMine){
+               item{
+                    Row(
+                         modifier = Modifier.fillMaxWidth(),
+                         horizontalArrangement = Arrangement.Center
+                    ){
+                         PageBtn(navController = navController, name = "프로필 수정", destination = Routes.MODIFYINFO)
+                    }
                }
           }
           item{

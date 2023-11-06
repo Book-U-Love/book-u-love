@@ -164,6 +164,9 @@ fun MainNavigation(navController: NavHostController){
             Chat(navController)
         }
         composable(route = Routes.MYPAGE) {
+            MyPage(navController, true)
+        }
+        composable(route = Routes.USERINFO){
             MyPage(navController)
         }
         composable(route = Routes.BOOKSEARCH) {
@@ -193,5 +196,4 @@ fun MainNavigation(navController: NavHostController){
             BookList()
         }
     }
-
 }
