@@ -53,6 +53,7 @@ import com.example.frontend.data.api.API
 import com.example.frontend.data.api.UserApi
 import com.example.frontend.ui.components.BookReportDetail
 import com.example.frontend.ui.components.ReportDetailViewModel
+import com.example.frontend.ui.screens.book.BookList
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
 import com.example.frontend.ui.screens.main.Home
@@ -178,7 +179,7 @@ fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
             Log.d("stack", navController.toString())
         }
         composable(route = Routes.MYPAGE) {
-            MyPage(navController)
+            MyPage(navController,true,"asdf")
             viewModel.changeState("마이페이지")
             Log.d("stack", navController.toString())
         }

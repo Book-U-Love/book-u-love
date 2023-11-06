@@ -38,10 +38,6 @@ fun Chat(navController: NavController){
             ChatInfo(navController)
             ChatInfo(navController)
         }
-        Button(onClick = {
 
-        }) {
-            Text("asfd")
-        }
     }
 }

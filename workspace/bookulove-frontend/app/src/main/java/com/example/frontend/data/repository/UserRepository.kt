@@ -12,7 +12,7 @@ class UserRepository(
     suspend fun signUp(userInfo:UserRegistDto){
         val response = api.signUp(userInfo)
         if(response.code()==200){
-
+            Log.d("testresult","good")
         }
     }
 }
