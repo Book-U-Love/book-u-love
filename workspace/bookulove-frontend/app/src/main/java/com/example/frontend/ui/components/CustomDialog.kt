@@ -32,6 +32,7 @@ fun CustomDialog(
     onConfirmation:() ->Unit,
     dialogTitle: String,
     dialogText: String,
+    dialogColor: Color,
 ){
     Surface(color=Color.Transparent){
         Column(modifier= Modifier
@@ -44,7 +45,7 @@ fun CustomDialog(
                     RoundedCornerShape(15.dp)).padding(25.dp))
                 {
                     Box(modifier=Modifier.fillMaxWidth()){
-                        Text("삭제하시겠습니까?",
+                        Text(dialogTitle,
                             fontSize = 24.sp,modifier=Modifier.align(Alignment.Center)
                         ,   fontWeight = FontWeight.Bold)
                     }
@@ -54,17 +55,17 @@ fun CustomDialog(
                         , horizontalArrangement = Arrangement.Center){
                             TextButton(
                                 onClick = {onConfirmation()},
-                                modifier=Modifier.background(Red,shape= RoundedCornerShape(15.dp))
+                                modifier=Modifier.background(dialogColor,shape= RoundedCornerShape(15.dp))
                                 ) {
-                                Text("삭제", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp,
+                                Text(dialogText, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp,
                                     modifier=Modifier.padding(start=40.dp, end=40.dp, top=10.dp, bottom=10.dp))
                             }
                             Spacer(modifier = Modifier.padding(end=15.dp))
                             TextButton(
                                 onClick = { onDismissRequest()},
-                                modifier=Modifier.border(1.dp, Red, RoundedCornerShape(15.dp))
+                                modifier=Modifier.border(1.dp, dialogColor, RoundedCornerShape(15.dp))
                                     ) {
-                                Text("취소",color = Red, fontWeight = FontWeight.Bold, fontSize = 18.sp,modifier=Modifier.padding(start=40.dp, end=40.dp, top=10.dp, bottom=10.dp))
+                                Text("취소",color = dialogColor, fontWeight = FontWeight.Bold, fontSize = 18.sp,modifier=Modifier.padding(start=40.dp, end=40.dp, top=10.dp, bottom=10.dp))
                             }
                         }
                     }

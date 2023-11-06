@@ -1,36 +1,33 @@
 package com.example.frontend.ui.screens.user
 
-import android.Manifest
-import android.os.Bundle
-import android.os.PersistableBundle
-import android.renderscript.ScriptGroup.Input
+
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import com.example.frontend.data.api.API
+import com.example.frontend.data.api.UserApi
+import com.example.frontend.data.model.UserRegistDto
 import com.example.frontend.ui.components.FuncBtn
 import com.example.frontend.ui.components.PageBtn
 import com.example.frontend.ui.components.InputField
 import com.example.frontend.ui.components.MapInfo
-import com.example.frontend.ui.theme.FrontEndTheme
 import com.example.frontend.ui.vo.Routes
+import com.example.frontend.viewmodel.MainViewModel
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -100,7 +97,7 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
                     PageBtn(
                         navController = navController,
                         "돌아가기",
-                        Routes.HOME
+                        Routes.HOME,
                     )
                     Spacer(modifier = Modifier.width(80.dp))
                     FuncBtn(
@@ -115,6 +112,8 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
 
 @Composable
 fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
+    val composableScope = rememberCoroutineScope()
+    val userRepository:MainViewModel = MainViewModel()
     Row(
         modifier = Modifier.fillMaxHeight(),
         verticalAlignment = Alignment.CenterVertically
@@ -135,7 +134,17 @@ fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
                 PageBtn(
                     navController = navController,
                     name = "회원가입",
-                    Routes.HOME
+                    Routes.HOME,
+                )
+                Button( onClick={
+                    userRepository.signUp(UserRegistDto("asdf@naver.com","asdf","asdf","asdf",123.124,44.444))
+
+                }) {
+                        Text("회원가입테스트")
+                }
+                FuncBtn(
+                    onClick = {Log.i("Position", pos.value.toString())},
+                    name = "결과보기"
                 )
             }
         }

@@ -15,13 +15,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.frontend.R
 import com.example.frontend.ui.vo.Routes
 
 @Composable
 fun BottomAppBar(navController: NavHostController){
-    var curRoute by remember { mutableStateOf(Routes.HOME) }
 
         Row(
             modifier = Modifier
@@ -29,36 +29,44 @@ fun BottomAppBar(navController: NavHostController){
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            IconButton(onClick = { navController.navigate(Routes.HOME) }) {
+            IconButton(onClick = {
+                navPopUpTo(navController, Routes.HOME) }) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_home_24),
                     contentDescription = "home"
                 )
             }
-            IconButton(onClick = { navController.navigate(Routes.CHAT) }) {
+            IconButton(onClick = { navPopUpTo(navController, Routes.CHAT) }) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_chat_bubble_outline_24),
                     contentDescription = "chat"
                 )
             }
-            IconButton(onClick={navController.navigate(Routes.BOOKTOTAL)}){
+            IconButton(onClick = { navPopUpTo(navController, Routes.BOOKTOTAL)}){
                 Icon(painter = painterResource(id=R.drawable.baseline_menu_book_24),
                     contentDescription = "bookTotal"
                 )
             }
-            IconButton(onClick = { navController.navigate(Routes.BOOKSEARCH) }) {
+            IconButton(onClick = { navPopUpTo(navController, Routes.BOOKSEARCH)}) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_search_24),
                     contentDescription = "search"
                 )
             }
-            IconButton(onClick = { navController.navigate(Routes.MYPAGE + "/ssafy") }) {
+            IconButton(onClick = { navPopUpTo(navController, Routes.MYPAGE) })
+            {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_settings_24),
                     contentDescription = "settings"
                 )
             }
         }
-
 }
+fun navPopUpTo(navController: NavController, route:String){
+    navController.navigate(route){
+        popUpTo(navController.graph.id){
+            inclusive = true
 
+        }
+    }
+}
