@@ -1,4 +1,4 @@
-package org.bookulove.apigateway.filter;
+package org.bookulove.apigateway.global.filter;
 
 
 import lombok.Data;

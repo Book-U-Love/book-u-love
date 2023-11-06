@@ -1,4 +1,4 @@
-package org.bookulove.apigateway.error.handler;
+package org.bookulove.apigateway.global.error.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

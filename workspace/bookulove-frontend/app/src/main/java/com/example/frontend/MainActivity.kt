@@ -32,6 +32,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -70,20 +72,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
-interface JsonPlaceHolderApi{
-    @GET("/todos")
-    suspend fun getTodos(): List<Todo>
-}
-data class Todo(
-    val userId:Number=0,
-    val id: Number=1234,
-    val title:String="asdf",
-    val completed: Boolean=true,
-)
 @SuppressLint("MissingPermission")
 class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    val api = API.getInstance().create(UserApi::class.java)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val curLocation = registerForActivityResult(
@@ -116,7 +107,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
     }
 }
 
@@ -192,6 +182,22 @@ fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
             viewModel.changeState("마이페이지")
             Log.d("stack", navController.toString())
         }
+        composable(route = Routes.MYPAGE + "/{userId}",
+                arguments = listOf(navArgument("userId"){
+                    type = NavType.StringType
+                })
+            ) { entry ->
+            val userId = entry.arguments?.getString("userId")
+            if (userId != null) {
+                MyPage(
+                    navController,
+                    userId == "ssafy",
+                    userId
+                )
+            } else {
+                Home(navController = navController)
+            }
+        }
         composable(route = Routes.BOOKSEARCH) {
             BookSearch()
             viewModel.changeState("검색")
@@ -220,6 +226,9 @@ fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
                BookReportDetail(reportIndex)
 
            }
+        }
+        composable(route = Routes.BOOKLIST){
+            BookList()
         }
     }
 

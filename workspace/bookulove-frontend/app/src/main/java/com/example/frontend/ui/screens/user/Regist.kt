@@ -123,7 +123,7 @@ fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ){
-            MapInfo(pos= pos)
+            MapInfo(pos= pos, title = "regist", detail = "regist")
             Spacer(modifier = Modifier.height(50.dp))
             Row() {
                 FuncBtn(
@@ -147,7 +147,6 @@ fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
                     name = "결과보기"
                 )
             }
-
         }
     }
 }
