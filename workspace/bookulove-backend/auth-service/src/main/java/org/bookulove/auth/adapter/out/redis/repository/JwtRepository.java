@@ -26,7 +26,6 @@ public class JwtRepository {
         this.jwtRedisTemplate = redisTemplate;
     }
 
-
     public void saveAuth(Long id, String refreshToken) {
         jwtRedisTemplate.opsForValue().set(id.toString(), refreshToken, expireTime);
         jwtRedisTemplate.delete(BLACKLIST_PREFIX + id.toString());

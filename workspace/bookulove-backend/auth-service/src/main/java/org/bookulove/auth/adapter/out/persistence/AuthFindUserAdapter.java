@@ -6,11 +6,12 @@ import org.bookulove.auth.adapter.out.persistence.repository.UserRepository;
 import org.bookulove.auth.application.port.out.AuthFindUserPort;
 import org.bookulove.auth.domain.AuthFindUserDomain;
 import org.bookulove.auth.global.exception.AuthServiceException;
+import org.bookulove.common.annotation.PersistenceAdapter;
 import org.bookulove.common.annotation.WebAdapter;
 import org.bookulove.common.error.ErrorCode;
 
 @Slf4j
-@WebAdapter
+@PersistenceAdapter
 @RequiredArgsConstructor
 public class AuthFindUserAdapter implements AuthFindUserPort {
 
