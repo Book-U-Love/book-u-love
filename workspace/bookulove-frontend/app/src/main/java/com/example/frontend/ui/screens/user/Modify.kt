@@ -15,6 +15,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -27,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.frontend.ui.components.FuncBtn
 import com.example.frontend.ui.components.InputField
@@ -36,6 +39,7 @@ import com.example.frontend.ui.vo.Routes
 import com.google.android.gms.maps.model.LatLng
 
 
+@ExperimentalMaterial3Api
 @Composable
 fun Modify(navController: NavHostController){
     var isFirst by remember {
@@ -43,11 +47,12 @@ fun Modify(navController: NavHostController){
     }
     if(isFirst){
         FirstModify(navController, changePage = {isFirst = false})
-    } else{
-        SecondModify(navController, changePage = {isFirst = true})
+    } else {
+        SecondModify(navController, changePage = { isFirst = true })
     }
 }
 
+@ExperimentalMaterial3Api
 @Composable
 fun FirstModify(navController: NavHostController, changePage: () -> Unit){
     var id by remember {
@@ -80,15 +85,25 @@ fun FirstModify(navController: NavHostController, changePage: () -> Unit){
             ){
             item{
                 InputField(value = id, label = "아이디", onValueChanged = {id = it})
-                InputField(value = pw, label = "비밀번호", isPassword = true, onValueChanged = {pw = it})
-                InputField(value = confirmPw, label = "비밀번호 확인", isPassword = true, needSpacer = false, onValueChanged = {confirmPw = it})
-                if(pw == "" || confirmPw == ""){
-                    Spacer(modifier = Modifier.height(30.dp))
-                } else if (pw == confirmPw){
-                    Text(text = "비밀번호가 일치합니다", color = MaterialTheme.colorScheme.secondary, modifier = Modifier.height(30.dp))
-                } else{
-                    Text(text = "비밀번호가 일치하지 않습니다", color = MaterialTheme.colorScheme.error, modifier = Modifier.height(30.dp))
+                val openDialog = remember{ mutableStateOf(false) }
+
+                FuncBtn(name = "비밀번호 수정") {
+                    openDialog.value = !openDialog.value
                 }
+                if(openDialog.value){
+                    PwModify(
+                        onDismissRequest = { openDialog.value = false },
+                        onConfirmation = { 
+                            openDialog.value = false
+                            //패스워드 변경 함수 진행
+                         },
+                        pw = pw,
+                        confirmPw = confirmPw,
+                        onPwChanged = {pw = it},
+                        onConfirmPwChanged = {confirmPw = it}
+                    )
+                }
+                Spacer(modifier = Modifier.height(30.dp))
                 InputField(value = phNum, label = "전화번호", onValueChanged = {phNum = it})
                 FuncBtn(
                     name = "인증번호 받기",
@@ -129,7 +144,7 @@ fun SecondModify(navController: NavHostController, changePage: () -> Unit){
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            MapInfo(true, pos = pos)
+            MapInfo(isModify = true, pos = pos, title = "modify", detail = "modify")
             Spacer(modifier = Modifier.height(50.dp))
             Row() {
                 FuncBtn(
@@ -144,6 +159,49 @@ fun SecondModify(navController: NavHostController, changePage: () -> Unit){
                 )
             }
 
+        }
+    }
+}
+
+@ExperimentalMaterial3Api
+@Composable
+fun PwModify(
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
+    pw: String,
+    confirmPw: String,
+    onPwChanged: (String) -> Unit,
+    onConfirmPwChanged: (String) -> Unit
+){
+    Dialog(onDismissRequest = { onDismissRequest() }) {
+        Card (
+            modifier = Modifier.fillMaxWidth(),
+        ){
+            Column (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                InputField(value = pw, label = "비밀번호", isPassword = true, onValueChanged = onPwChanged)
+                InputField(value = confirmPw, label = "비밀번호 확인", isPassword = true, needSpacer = false, onValueChanged = onConfirmPwChanged)
+                if(pw == "" || confirmPw == ""){
+                    Spacer(modifier = Modifier.height(30.dp))
+                } else if (pw == confirmPw){
+                    Text(text = "비밀번호가 일치합니다", color = MaterialTheme.colorScheme.secondary, modifier = Modifier.height(30.dp))
+                } else{
+                    Text(text = "비밀번호가 일치하지 않습니다", color = MaterialTheme.colorScheme.error, modifier = Modifier.height(30.dp))
+                }
+                Row(modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround){
+                    FuncBtn(name = "취소") {
+                        onDismissRequest()
+                    }
+                    FuncBtn(name = "수정") {
+                        if(pw == confirmPw){
+                            onConfirmation()
+                        }
+                    }
+                }
+            }
         }
     }
 }
