@@ -102,6 +102,13 @@ fun Project.useSpringRESTDocs() {
     }
 }
 
+fun Project.useWebSocket(){
+    dependencies {
+        val implementation by configurations
+        implementation("org.springframework.boot:spring-boot-starter-websocket")
+    }
+}
+
 fun Project.useSpringWebMVC() {
     dependencies {
         val implementation by configurations
@@ -224,6 +231,10 @@ configure(subprojects.filter { it.isJavaProject() }) {
 
     if(includes("spring-security")){
         useSpringSecurity()
+    }
+
+    if(includes("websocket")){
+        useWebSocket()
     }
 
 }

@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static org.bookulove.common.util.LogCurrent.*;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor

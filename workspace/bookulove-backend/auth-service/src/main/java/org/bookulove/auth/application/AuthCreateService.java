@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bookulove.auth.application.port.in.AuthCreateUseCase;
 import org.bookulove.auth.application.port.out.AuthFindUserPort;
-import org.bookulove.auth.application.port.out.AuthSavePort;
+import org.bookulove.auth.application.port.out.AuthCreatePort;
 import org.bookulove.auth.domain.AuthCreateDomain;
 import org.bookulove.auth.application.port.in.dto.command.AuthCreateCmd;
 import org.bookulove.auth.domain.AuthFindUserDomain;
@@ -23,7 +23,7 @@ public class AuthCreateService implements AuthCreateUseCase {
 
     private final JwtUtil jwtUtil;
     private final AuthFindUserPort authFindPort;
-    private final AuthSavePort authSavePort;
+    private final AuthCreatePort authSavePort;
     private final BCryptPasswordEncoder encoder;
 
     @Override
@@ -41,7 +41,7 @@ public class AuthCreateService implements AuthCreateUseCase {
         String refreshToken = jwtUtil.generateRefreshToken(authFindDomain.id());
         log.info("accessToken: {} \n refreshToken: {}", accessToken, refreshToken);
 
-        authSavePort.saveAuth(authFindDomain.id(), refreshToken);
+        authSavePort.createAuth(authFindDomain.id(), refreshToken);
 
         return AuthCreateDomain.of(accessToken, refreshToken);
     }

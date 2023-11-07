@@ -20,6 +20,9 @@ public enum ErrorCode {
     UNAUTHORIZATION_ERROR(401, "T003", "Unauthorization error!"),
     INVALID_REFRESH_ERROR(401, "T003", "Invalid refresh token error!"),
 
+    // Sms
+    AUTHCODE_NOT_MATCH(400, "S001", "Authcode not match error!"),
+
     // Book
     IO_ERROR(500, "B001", "IO errpr!"),
     JSON_PARSE_ERROR(500, "B002", "Json parse errpr!"),
