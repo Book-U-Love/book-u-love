@@ -28,6 +28,7 @@ import com.example.frontend.ui.components.InputField
 import com.example.frontend.ui.components.MapInfo
 import com.example.frontend.ui.vo.Routes
 import com.example.frontend.viewmodel.MainViewModel
+import com.example.frontend.viewmodel.UserViewModel
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
@@ -120,8 +121,7 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
 
 @Composable
 fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
-    val composableScope = rememberCoroutineScope()
-    val userRepository:MainViewModel = MainViewModel()
+    val userRepository:UserViewModel = UserViewModel()
     val response = remember{ mutableStateOf("") }
 
     Row(

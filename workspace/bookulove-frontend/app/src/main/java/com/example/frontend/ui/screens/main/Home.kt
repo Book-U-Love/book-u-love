@@ -36,6 +36,7 @@ import com.example.frontend.ui.screens.user.Chat
 import com.example.frontend.ui.screens.user.Register
 import com.example.frontend.ui.vo.Library
 import com.example.frontend.ui.vo.Routes
+import com.example.frontend.viewmodel.AuthViewModel
 import com.example.frontend.viewmodel.MainViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -57,7 +58,7 @@ fun Home(navController: NavHostController) {
 
 @Composable
 fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
-    val userRepository: MainViewModel = MainViewModel()
+    val authRepository: AuthViewModel = AuthViewModel()
     var id by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
     val response = remember{ mutableStateOf("") }
@@ -90,7 +91,7 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
                     name = "로그인",
                     onClick = {
                         val user:User = User(id, pw)
-                        userRepository.logIn(user, response)
+                        authRepository.logIn(user, response)
                     }
                 )
             }

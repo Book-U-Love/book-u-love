@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class MainViewModel: ViewModel(){
-    private val userRepository: UserRepository = UserRepository()
     private val _navState = mutableStateOf("")
 
     val navState: State<String> = _navState
@@ -25,17 +24,7 @@ class MainViewModel: ViewModel(){
         _navState.value = state
     }
 
-    fun signUp(userInfo:UserRegistDto, response : MutableState<String>){
-        viewModelScope.launch{
-           userRepository.signUp(userInfo, response)
-        }
-    }
 
-    fun logIn(user: User, response: MutableState<String>){
-        viewModelScope.launch{
-            userRepository.logIn(user, response)
-        }
-    }
 }
 
 class MainViewModelFactory(): ViewModelProvider.Factory{
