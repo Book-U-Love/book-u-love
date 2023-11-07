@@ -9,6 +9,8 @@ import org.bookulove.book.api.book.model.service.BookService;
 import org.bookulove.common.api.response.ApiData;
 import org.springframework.web.bind.annotation.*;
 
+import static org.bookulove.common.util.LogCurrent.*;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
