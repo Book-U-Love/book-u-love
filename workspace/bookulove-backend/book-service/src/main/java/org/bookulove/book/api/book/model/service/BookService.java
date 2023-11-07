@@ -51,7 +51,7 @@ public class BookService {
     @Value("${custom.aladin.version}")
     private String VERSION;
 
-    public BookSearchRes gu(String isbn) {
+    public BookSearchRes search(String isbn) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
         log.info("ISBN : {}", isbn);
 
