@@ -3,7 +3,9 @@ package com.example.frontend.ui.components
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import com.example.frontend.ui.vo.chatDataList
 import com.example.frontend.ui.vo.chatList
 
@@ -47,23 +50,22 @@ fun ChatInput(){
                     onValueChange = {
                         text = it
                         lineCount = it.text.count { it == '\n' } + 1;
-                        Log.d("line", lineCount.toString());
-                        Log.d("height", textFieldHeight.toString());
                     },
                     modifier = Modifier
                         .fillMaxWidth(0.8f)
+                        .fillMaxHeight()
                         .then(Modifier.verticalScroll(state)
                             .onGloballyPositioned { coordinates ->
                                 textFieldHeight = coordinates.size.height
                             })
                 )
                 Box(){
-                    Button(modifier=Modifier.fillMaxWidth(),
+                    Button(modifier=Modifier.fillMaxWidth().fillMaxHeight(),
                         onClick = {
-                            chatDataList.add(chatList("나",text.text))
-                            Log.d("text",text.text)
-                            Log.d("size", chatDataList.toString())
-                            }, shape = RoundedCornerShape(0)) {
+                            chatDataList.add(chatList("나",text.text));
+                            text=TextFieldValue("");
+                            },
+                        shape = RoundedCornerShape(0)) {
                         Text("전송")
                     }
                 }

@@ -6,6 +6,8 @@
 # BOOK-SERVICE
 # TRADE-SERVICE
 # ALARM-SERVICE
+# REDIS-HOST
+# REDIS-PORT
 # JWT-SECRET
 
 server:
@@ -77,6 +79,9 @@ spring:
           filters:
             - RewritePath=/alarm-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
+  redis:
+    host: ${REDIS-HOST}
+    port: ${REDIS-PORT}
 
 jwt:
   secret: ${JWT-SECRET}

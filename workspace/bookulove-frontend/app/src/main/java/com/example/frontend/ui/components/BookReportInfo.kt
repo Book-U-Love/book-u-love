@@ -13,6 +13,9 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,6 +30,9 @@ import com.example.frontend.ui.vo.bookList
 
 @Composable
 fun BookReportInfo(navController: NavController, index:Int){
+    val book by remember{
+        mutableStateOf(bookList.get(index))
+    }
     Column(modifier=Modifier.clickable{navController.navigate("reportdetail/$index"); Log.d("test",index.toString())}){
         Row(modifier= Modifier.padding(top=15.dp, bottom=15.dp,start=5.dp, end=5.dp)){
             Box(modifier=Modifier.padding(30.dp)){
@@ -35,10 +41,10 @@ fun BookReportInfo(navController: NavController, index:Int){
             Box {
                 Column {
                     Box(modifier=Modifier.padding(bottom=10.dp)){
-                        Text(text = bookList.get(index).bookName, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                        Text(text = book.bookName, fontSize = 24.sp, fontWeight = FontWeight.Bold)
                     }
                     Box {
-                        Text(text = bookList.get(index).bookReporter)
+                        Text(text = book.bookReporter)
                     }
                     Box{
                         Text(text = "작가")
@@ -47,7 +53,7 @@ fun BookReportInfo(navController: NavController, index:Int){
             }
 
             Box(modifier=Modifier.fillMaxWidth()){
-                Text(text = bookList.get(index).bookReportDate ,modifier=Modifier.align(Alignment.BottomEnd))
+                Text(text = book.bookReportDate ,modifier=Modifier.align(Alignment.BottomEnd))
             }
 
         }

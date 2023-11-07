@@ -19,7 +19,7 @@ import org.bookulove.book.api.book.model.feign.AladinFeignClient;
 import org.bookulove.book.api.book.model.feign.AladinSearch;
 import org.bookulove.book.api.book.model.request.BookSearchReq;
 import org.bookulove.book.api.book.model.response.BookSearchRes;
-import org.bookyoulove.common.error.ErrorCode;
+import org.bookulove.common.error.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,8 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
-
-import static org.bookyoulove.common.util.LogCurrent.*;
 
 @Slf4j
 @Service

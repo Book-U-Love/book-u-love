@@ -1,3 +1,11 @@
+#
+# BINDING REQUIRE
+#
+# USER-DB-URL
+# USER-DB-USERNAME
+# USER-DB-PASSWORD
+# DOMAIN-URL
+
 server:
   port: 0
 
@@ -16,3 +24,6 @@ spring:
         format_sql: true
         highlight_sql: true
         default_batch_fetch_size: 100
+
+domain:
+  url: ${DOMAIN-URL}
