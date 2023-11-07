@@ -8,6 +8,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,9 +28,11 @@ import com.example.frontend.ui.components.InputField
 import com.example.frontend.ui.components.MapInfo
 import com.example.frontend.ui.vo.Routes
 import com.example.frontend.viewmodel.MainViewModel
+import com.example.frontend.viewmodel.UserViewModel
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
+private val userDto: UserRegistDto = UserRegistDto("", "", "", "", 0.0, 0.0)
 
 @Composable
 fun Register(navController: NavHostController){
@@ -92,7 +96,6 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
                 InputField(value = confirmNum, label = "인증번호", onValueChanged = {confirmNum = it})
                 InputField(value = nickname, label = "닉네임", onValueChanged = {nickname = it})
                 InputField(value = libName, label = "도서관명", onValueChanged = {libName = it})
-                InputField(value = libDetail, label = "상세설명", onValueChanged = {libDetail = it})
                 Row(){
                     PageBtn(
                         navController = navController,
@@ -101,7 +104,13 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
                     )
                     Spacer(modifier = Modifier.width(80.dp))
                     FuncBtn(
-                        onClick = {changePage()},
+                        onClick = {
+                            userDto.id = id
+                            userDto.password = pw
+                            userDto.nickname = nickname
+                            userDto.libraryName = libName
+                            changePage()
+                          },
                         name = "다음으로"
                     )
                 }
@@ -112,8 +121,9 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
 
 @Composable
 fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
-    val composableScope = rememberCoroutineScope()
-    val userRepository:MainViewModel = MainViewModel()
+    val userRepository:UserViewModel = UserViewModel()
+    val response = remember{ mutableStateOf("") }
+
     Row(
         modifier = Modifier.fillMaxHeight(),
         verticalAlignment = Alignment.CenterVertically
@@ -131,21 +141,18 @@ fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
                     name = "이전으로"
                 )
                 Spacer(modifier = Modifier.width(80.dp))
-                PageBtn(
-                    navController = navController,
-                    name = "회원가입",
-                    Routes.HOME,
-                )
-                Button( onClick={
-                    userRepository.signUp(UserRegistDto("asdf@naver.com","asdf","asdf","asdf",123.124,44.444))
-
-                }) {
-                        Text("회원가입테스트")
-                }
                 FuncBtn(
-                    onClick = {Log.i("Position", pos.value.toString())},
-                    name = "결과보기"
+                    onClick = {
+                        userDto.lat = pos.value.latitude
+                        userDto.lng = pos.value.longitude
+                        userRepository.signUp(userDto, response)
+                    },
+                    name = "회원가입"
                 )
+                if(response.value == "Success"){
+                    response.value = ""
+                    navController.navigate(Routes.HOME)
+                }
             }
         }
     }

@@ -64,6 +64,8 @@ import com.example.frontend.ui.screens.user.Register
 import com.example.frontend.ui.theme.FrontEndTheme
 import com.example.frontend.ui.vo.Routes
 import com.example.frontend.ui.vo.bookList
+import com.example.frontend.viewmodel.AuthViewModel
+import com.example.frontend.viewmodel.AuthViewModelFactory
 import com.example.frontend.viewmodel.MainViewModel
 import com.example.frontend.viewmodel.MainViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
