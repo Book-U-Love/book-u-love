@@ -4,7 +4,7 @@
 # USER-SERVICE
 # AUTH-SERVICE
 # BOOK-SERVICE
-# TRADE-SERVICE
+# CHATTING-SERVICE
 # ALARM-SERVICE
 # REDIS-HOST
 # REDIS-PORT
@@ -118,12 +118,12 @@ spring:
             - RewritePath=/book-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
 
-        - id: trade-service
-          uri: ${TRADE-SERVICE}
+        - id: chatting-service
+          uri: ${CHATTING-SERVICE}
           predicates:
-            - Path=/api/trade-service/**
+            - Path=/api/chatting-service/**
           filters:
-            - RewritePath=/trade-service/(?<segment>.*), /$\{segment}
+            - RewritePath=/chatting-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
 
         - id: alarm-service
@@ -133,6 +133,7 @@ spring:
           filters:
             - RewritePath=/alarm-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
+
   redis:
     host: ${REDIS-HOST}
     port: ${REDIS-PORT}
