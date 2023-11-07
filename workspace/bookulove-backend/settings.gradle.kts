@@ -1,7 +1,6 @@
 rootProject.name = "bookulove-backend"
 include("common")
 include("example-service")
-include("trade-service")
 include("user-service")
 include("book-service")
 include("alarm-service")

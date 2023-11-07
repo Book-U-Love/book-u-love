@@ -6,4 +6,5 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan("org.bookulove.common")
 public class ChattingConfig {
+
 }

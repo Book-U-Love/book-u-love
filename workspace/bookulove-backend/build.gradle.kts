@@ -77,6 +77,13 @@ fun Project.useQueryDsl(){
     }
 }
 
+fun Project.useKafka(){
+    dependencies{
+        val implementation by configurations
+        implementation ("org.springframework.kafka:spring-kafka")
+    }
+}
+
 fun Project.useSpringRESTDocs() {
     apply(plugin = "com.epages.restdocs-api-spec")
 
@@ -235,6 +242,10 @@ configure(subprojects.filter { it.isJavaProject() }) {
 
     if(includes("websocket")){
         useWebSocket()
+    }
+
+    if(includes("kafka")){
+        useKafka()
     }
 
 }

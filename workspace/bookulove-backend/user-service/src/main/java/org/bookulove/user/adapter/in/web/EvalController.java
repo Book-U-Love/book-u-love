@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @WebAdapter
 @RestController
-@RequestMapping("/api/user-evals")
+@RequestMapping("/api/evals")
 @RequiredArgsConstructor
 public class EvalController {
 
-    @PostMapping
+    @PostMapping()
     public ApiData<String> createEval(){
         return ApiData.ok(null);
     }
