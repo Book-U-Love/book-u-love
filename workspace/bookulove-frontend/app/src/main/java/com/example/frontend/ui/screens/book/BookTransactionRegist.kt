@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -39,6 +41,9 @@ fun BookTransactionRegist(){
     val transactionState = remember{
         mutableStateOf(true)
     }
+    var titleValue = remember{
+        mutableStateOf("")
+    }
     var descValue = remember{
         mutableStateOf("")
     }
@@ -51,6 +56,19 @@ fun BookTransactionRegist(){
                     DropDown(onClick = { /*TODO*/ }) {
                     }
                 }
+            }
+            Box(modifier = Modifier.padding(top=15.dp)){
+                Column {
+                    Text("제목", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                    OutlinedTextField(value = titleValue.value,
+                        onValueChange ={titleValue.value=it},
+                        maxLines=5,
+                        modifier= Modifier
+                            .fillMaxWidth()
+                            .verticalScroll(scrollState),
+                        placeholder = {Text("제목")})
+                }
+
             }
             Box(modifier=Modifier.padding(top=15.dp)){
                 Column {
@@ -74,12 +92,36 @@ fun BookTransactionRegist(){
                     OutlinedTextField(value = descValue.value,
                         onValueChange ={descValue.value=it},
                         maxLines=5,
-                        modifier=Modifier.fillMaxWidth().verticalScroll(scrollState),
+                        modifier= Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.5f)
+                            .verticalScroll(scrollState),
                         placeholder = {Text("책과 관련된 사항을 모두 작성해주세요. ")})
                 }
 
             }
+            Box(modifier = Modifier.padding(top=15.dp)){
+                Column {
+                    Text("거래 장소", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                    OutlinedTextField(value = descValue.value,
+                        onValueChange ={descValue.value=it},
+                        maxLines=5,
+                        modifier= Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.5f)
+                            .verticalScroll(scrollState),
+                        placeholder = {Text("거래 장소를 선택해주세요.")})
+                }
 
+            }
+            Box(modifier = Modifier.padding(top=15.dp)){
+                Column {
+                   Button(onClick = { /*TODO*/ }, modifier=Modifier.fillMaxWidth()) {
+                       Text("asdf")
+                   }
+                }
+
+            }
         }
     }
 }
