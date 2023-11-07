@@ -56,6 +56,7 @@ import com.example.frontend.ui.components.ReportDetailViewModel
 import com.example.frontend.ui.screens.book.BookList
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
+import com.example.frontend.ui.screens.book.BookTransactionRegist
 import com.example.frontend.ui.screens.main.Home
 import com.example.frontend.ui.screens.info.MyPage
 import com.example.frontend.ui.screens.user.Chat
@@ -168,9 +169,10 @@ fun MainApp(viewModel: MainViewModel){
 }
 @Composable
 fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
-    NavHost(navController = navController, startDestination = Routes.CHAT) {
+    NavHost(navController = navController, startDestination = Routes.BOOKTRANSACTIONREGIST) {
         composable(route = Routes.HOME) {
             Home(navController = navController)
+            viewModel.changeState("홈")
         }
         composable(route = Routes.CHAT) {
             Chat(navController)
@@ -200,7 +202,7 @@ fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
             }
         }
         composable(route = Routes.BOOKSEARCH) {
-            BookSearch()
+            BookSearch(navController)
             viewModel.changeState("검색")
             Log.d("stack", navController.toString())
         }
@@ -230,6 +232,9 @@ fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
         }
         composable(route = Routes.BOOKLIST){
             BookList()
+        }
+        composable(route = Routes.BOOKTRANSACTIONREGIST){
+            BookTransactionRegist()
         }
     }
 
