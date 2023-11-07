@@ -1,11 +1,14 @@
 package com.example.frontend.viewmodel
 
+import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.frontend.data.model.User
 import com.example.frontend.data.model.UserRegistDto
 import com.example.frontend.data.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
@@ -22,9 +25,15 @@ class MainViewModel: ViewModel(){
         _navState.value = state
     }
 
-    fun signUp(userInfo:UserRegistDto){
+    fun signUp(userInfo:UserRegistDto, response : MutableState<String>){
         viewModelScope.launch{
-            userRepository.signUp(userInfo)
+           userRepository.signUp(userInfo, response)
+        }
+    }
+
+    fun logIn(user: User, response: MutableState<String>){
+        viewModelScope.launch{
+            userRepository.logIn(user, response)
         }
     }
 }

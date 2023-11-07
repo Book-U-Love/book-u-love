@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.frontend.R
+import com.example.frontend.data.model.User
 import com.example.frontend.ui.components.FuncBtn
 import com.example.frontend.ui.components.InputField
 import com.example.frontend.ui.components.MapInfo
@@ -35,6 +36,7 @@ import com.example.frontend.ui.screens.user.Chat
 import com.example.frontend.ui.screens.user.Register
 import com.example.frontend.ui.vo.Library
 import com.example.frontend.ui.vo.Routes
+import com.example.frontend.viewmodel.MainViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -55,6 +57,10 @@ fun Home(navController: NavHostController) {
 
 @Composable
 fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
+    val userRepository: MainViewModel = MainViewModel()
+    var id by remember { mutableStateOf("") }
+    var pw by remember { mutableStateOf("") }
+    val response = remember{ mutableStateOf("") }
     Row(
         modifier = Modifier.fillMaxHeight(),
         verticalAlignment = Alignment.CenterVertically
@@ -71,13 +77,7 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
                     modifier = Modifier.size(250.dp, 250.dp)
                 )
             }
-            var id by remember {
-                mutableStateOf("")
-            }
             InputField(id, "id", onValueChanged = { id = it })
-            var pw by remember {
-                mutableStateOf("")
-            }
             InputField(pw, "password", true, onValueChanged = { pw = it })
             Row() {
                 PageBtn(
@@ -89,10 +89,13 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
                 FuncBtn(
                     name = "로그인",
                     onClick = {
-                        userId = "ssafy"
-                        changePage()
+                        val user:User = User(id, pw)
+                        userRepository.logIn(user, response)
                     }
                 )
+            }
+            if(response.value == "Success"){
+                changePage()
             }
         }
     }
