@@ -5,12 +5,12 @@ data class User(
     val password: String,
 )
 data class UserRegistDto(
-    val id: String,
-    val password: String,
-    val nickname: String,
-    val libraryName: String,
-    val lat: Double,
-    val lng: Double,
+    var id: String,
+    var password: String,
+    var nickname: String,
+    var libraryName: String,
+    var lat: Double,
+    var lng: Double,
 )
 data class Default(
     val status: Number,

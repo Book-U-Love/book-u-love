@@ -10,11 +10,11 @@ public interface AladinFeignClient {
 
     @GetMapping()
     Response aladinSearch(
-            @RequestParam String ttbkey,
-            @RequestParam String itemIdType,
-            @RequestParam String itemId,
-            @RequestParam String output,
-            @RequestParam String version
+            @RequestParam(name = "ttbkey") String ttbkey,
+            @RequestParam(name = "itemIdType")  String itemIdType,
+            @RequestParam(name = "itemId")  String itemId,
+            @RequestParam(name = "output")  String output,
+            @RequestParam(name = "version")  String version
     );
 
 }
