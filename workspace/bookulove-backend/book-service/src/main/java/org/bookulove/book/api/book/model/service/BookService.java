@@ -123,6 +123,7 @@ public class BookService {
                 .library(library)
                 .condition(Condition.getInstance(bookSearchReq.condition()))
                 .build();
+
         bookLibraryRelationRepository.save(relation);
 
         log.info(logCurrent(getClassName(), getMethodName(), END));
@@ -147,6 +148,7 @@ public class BookService {
         bookUpdateReq.condition().ifPresent(relation::updateCondition);
         bookUpdateReq.allowSale().ifPresent(relation::updateAllowSale);
         bookUpdateReq.allowBorrow().ifPresent(relation::updateAllowBorrow);
+        bookUpdateReq.isBorrow().ifPresent(relation::updateIsBorrow);
         bookUpdateReq.details().ifPresent(relation::updateDetails);
 
         log.info(logCurrent(getClassName(), getMethodName(), END));

@@ -15,6 +15,8 @@ public record BookUpdateReq(
 
         Optional<Boolean> allowBorrow,
 
+        Optional<Boolean> isBorrow,
+
         Optional<String> details
 
 ) {

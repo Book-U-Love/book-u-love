@@ -41,18 +41,23 @@ public class BookLibraryRelation {
     @ColumnDefault("false")
     private boolean allowBorrow;
 
+    @ColumnDefault("false")
+    private boolean isBorrow;
+
     private String details;
 
     @ColumnDefault("false")
     private boolean isRemoved;
 
-    @Builder(toBuilder = true)
-    public BookLibraryRelation(@NotNull Book book, @NotNull Library library, @NotNull Condition condition, boolean allowSale, boolean allowBorrow, String details, boolean isRemoved) {
+//    @Builder(toBuilder = true)
+    @Builder
+    public BookLibraryRelation(@NotNull Book book, @NotNull Library library, @NotNull Condition condition, boolean allowSale, boolean allowBorrow, boolean isBorrow, String details, boolean isRemoved) {
         this.book = book;
         this.library = library;
         this.condition = condition;
         this.allowSale = allowSale;
         this.allowBorrow = allowBorrow;
+        this.isBorrow = isBorrow;
         this.details = details;
         this.isRemoved = isRemoved;
     }
@@ -71,6 +76,10 @@ public class BookLibraryRelation {
 
     public void updateAllowBorrow(boolean allowBorrow) {
         this.allowBorrow = allowBorrow;
+    }
+
+    public void updateIsBorrow(boolean isBorrow) {
+        this.isBorrow = isBorrow;
     }
 
     public void updateDetails(String details) {
