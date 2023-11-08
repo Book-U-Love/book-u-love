@@ -5,7 +5,7 @@ global:
     storage:
       storageClass: &globalStorageClass standard
 
-auth-redis:
+redis:
   auth:
     password: *globalAuthPassword
   master:
@@ -74,7 +74,7 @@ universe-db:
       user: root
       password: MYSQL_ROOT_PASSWORD
       filters:
-      - "REPLICATE_DO_DB = (`bookulove`)"
+      - "REPLICATE_DO_DB = (bookulove)"
     - !!merge <<: *aboutReplicationSource
       name: book-db
     - !!merge <<: *aboutReplicationSource

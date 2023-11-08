@@ -4,6 +4,7 @@ public class LogCurrent {
 
     public static final String START = "Start";
     public static final String END = "End";
+    public static final String VIA = "Via";
 
     /**
      * 실행중인 클래스 이름을 취득

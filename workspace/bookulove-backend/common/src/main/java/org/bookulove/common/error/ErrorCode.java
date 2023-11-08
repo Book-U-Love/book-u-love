@@ -26,9 +26,11 @@ public enum ErrorCode {
     // Book
     IO_ERROR(500, "B001", "IO errpr!"),
     JSON_PARSE_ERROR(500, "B002", "Json parse errpr!"),
-    EXTERNAL_API_ERROR(500, "B003", "External API error!"),
-    LIBRARY_NOT_FOUND(500, "B004", "Library not found error!"),
-    BOOK_NOT_FOUND(500, "B005", "book not found error!"),
+    EXTERNAL_API_ERROR(504, "B003", "External API error!"),
+    LIBRARY_NOT_FOUND(404, "B004", "Library not found error!"),
+    BOOK_NOT_FOUND(404, "B005", "Book not found error!"),
+    RELATION_NOT_FOUND(404, "B005", "Book not found error!"),
+    USER_NOT_HAVE_BOOK_ERROR(403, "B007", "User not have book error!"),
 
     // Library
     LIBRARY_CREATE_ERROR(400, "L001", "Library create error!"),
