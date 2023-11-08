@@ -102,10 +102,12 @@ spec:
         - -ec
         - |
           until mysql -h127.0.0.1 -uroot -p"${MYSQL_ROOT_PASSWORD}" -e"SELECT 1"; do sleep 1; done
+          mysqladmin -h127.0.0.1 -uroot -p"${MYSQL_ROOT_PASSWORD}" stop-replica
+
           {{- range $source := .Values.multiSourceReplication.sources }}
           {{- with $source }}
           until mysql -h'{{ $.Release.Name }}-{{ .name }}' -uroot -p"${MYSQL_ROOT_PASSWORD}" -e"SELECT 1"; do sleep 1; done
-          mysql -h127.0.0.1 -uroot -p"${MYSQL_ROOT_PASSWORD}" -e"CHANGE REPLICATION SOURCE TO SOURCE_HOST='{{ $.Release.Name }}-{{ .name }}', SOURCE_USER='{{ .user }}', SOURCE_PASSWORD='${{ .password }}', SOURCE_AUTO_POSITION=1 FOR CHANNEL '{{ .name | replace "-" "_" }}'"
+          mysql -h127.0.0.1 -uroot -p"${MYSQL_ROOT_PASSWORD}" -e"CHANGE REPLICATION SOURCE TO SOURCE_HOST='{{ $.Release.Name }}-{{ .name }}', SOURCE_USER='{{ .user }}', SOURCE_PASSWORD='${{ .password }}', SOURCE_AUTO_POSITION=1, GET_SOURCE_PUBLIC_KEY=1 FOR CHANNEL '{{ .name | replace "-" "_" }}'"
 
           {{- if .filters }}
           {{- $filter := "" }}
