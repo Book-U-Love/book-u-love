@@ -17,13 +17,21 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
         highlight_sql: true
         default_batch_fetch_size: 100
+        auto_quote_keyword: true
+        globally_quoted_identifiers: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: trace
 
 domain:
   url: ${DOMAIN-URL}

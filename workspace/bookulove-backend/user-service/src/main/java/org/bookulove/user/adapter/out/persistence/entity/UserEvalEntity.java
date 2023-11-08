@@ -28,7 +28,6 @@ public class UserEvalEntity extends BaseTimeEntity {
     private int grade;
 
     @NotEmpty(message = "평가 내용은 필수값입니다.")
-    @Column(columnDefinition = "LONGTEXT")
     private String content;
 
     @NotNull(message = "평가자는 필수값입니다.")
