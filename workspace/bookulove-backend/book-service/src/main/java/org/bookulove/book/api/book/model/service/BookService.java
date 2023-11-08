@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
-import org.bookulove.book.api.book.model.Condition;
 import org.bookulove.book.api.book.model.db.entity.Book;
 import org.bookulove.book.api.book.model.db.entity.BookLibraryRelation;
 import org.bookulove.book.api.book.model.db.repository.BookLibraryRelationRepository;
@@ -19,7 +18,7 @@ import org.bookulove.book.api.library.model.db.repository.LibraryRepository;
 import org.bookulove.book.exception.BookServiceException;
 import org.bookulove.book.api.book.model.feign.AladinFeignClient;
 import org.bookulove.book.api.book.model.feign.AladinSearch;
-import org.bookulove.book.api.book.model.request.BookSearchReq;
+import org.bookulove.book.api.book.model.request.BookRegistReq;
 import org.bookulove.book.api.book.model.response.BookSearchRes;
 import org.bookulove.common.error.ErrorCode;
 import org.bookulove.common.util.AuthUtil;
@@ -105,7 +104,7 @@ public class BookService {
 
     }
 
-    public void regist(BookSearchReq bookSearchReq) {
+    public void regist(BookRegistReq bookRegistReq) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
 
         Long userId = null;
@@ -117,10 +116,10 @@ public class BookService {
 
         Library library = libraryRepository.findById(userId)
                 .orElseThrow( () -> new BookServiceException(ErrorCode.LIBRARY_NOT_FOUND) );
-        Book book = bookRepository.findByIsbn(bookSearchReq.isbn())
+        Book book = bookRepository.findByIsbn(bookRegistReq.isbn())
                 .orElseThrow( () -> new BookServiceException(ErrorCode.BOOK_NOT_FOUND) );
 
-        BookLibraryRelation relation = bookSearchReq.to(book, library);
+        BookLibraryRelation relation = bookRegistReq.to(book, library);
 
         bookLibraryRelationRepository.save(relation);
 

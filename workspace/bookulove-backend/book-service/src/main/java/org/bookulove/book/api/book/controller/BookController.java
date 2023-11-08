@@ -3,7 +3,7 @@ package org.bookulove.book.api.book.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bookulove.book.api.book.model.request.BookSearchReq;
+import org.bookulove.book.api.book.model.request.BookRegistReq;
 import org.bookulove.book.api.book.model.request.BookUpdateReq;
 import org.bookulove.book.api.book.model.response.BookInfo;
 import org.bookulove.book.api.book.model.response.BookSearchRes;
@@ -34,10 +34,10 @@ class BookController {
     }
 
     @PostMapping
-    ApiData<String> regist(@RequestBody final BookSearchReq bookSearchReq) {
+    ApiData<String> regist(@RequestBody final BookRegistReq bookRegistReq) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
 
-        bookService.regist(bookSearchReq);
+        bookService.regist(bookRegistReq);
 
         log.info(logCurrent(getClassName(), getMethodName(), END));
         return ApiData.ok("도서 등록이 완료되었습니다.");

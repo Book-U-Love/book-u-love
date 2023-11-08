@@ -9,7 +9,7 @@ import org.bookulove.book.api.book.model.db.entity.Book;
 import org.bookulove.book.api.book.model.db.entity.BookLibraryRelation;
 import org.bookulove.book.api.library.model.db.entity.Library;
 
-public record BookSearchReq (
+public record BookRegistReq(
 
         @NotBlank(message = "ISBN이 입력되지 않았습니다.")
         @Size(max = 13, min = 13, message = "유효한 13자리 ISBN13을 입력해주세요.")
@@ -32,6 +32,9 @@ public record BookSearchReq (
                 .book(book)
                 .library(library)
                 .condition(Condition.getInstance(condition))
+                .allowBorrow(allowSale)
+                .allowBorrow(allowBorrow)
+                .details(details)
                 .build();
     }
 
