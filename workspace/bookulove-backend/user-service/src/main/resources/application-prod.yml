@@ -7,7 +7,7 @@
 # DOMAIN-URL
 
 server:
-  port: 0
+  port: 9003
 
 spring:
   datasource:

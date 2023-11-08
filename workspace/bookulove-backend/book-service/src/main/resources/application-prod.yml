@@ -1,0 +1,40 @@
+#
+# BINDING REQUIRE
+#
+# BOOK-DB-URL
+# BOOK-DB-USERNAME
+# BOOK-DB-PASSWORD
+# ALADIN-SECRET-KEY
+
+
+server:
+  port: 9004
+
+spring:
+  datasource:
+    url: ${BOOK-DB-URL}
+    username: ${BOOK-DB-USERNAME}
+    password: ${BOOK-DB-PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        highlight_sql: true
+        default_batch_fetch_size: 100
+        globally_quoted_identifiers: true
+
+  main:
+    web-application-type: reactive
+
+custom:
+  aladin:
+    url:
+      lookUp: http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx
+    key: ${ALADIN-SECRET-KEY}
+    type: ISBN13
+    output: js
+    version: 20131101
