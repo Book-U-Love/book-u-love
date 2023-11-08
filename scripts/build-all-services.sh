@@ -5,7 +5,14 @@ repo_dir="$(realpath "$(dirname "$0")/..")"
 # shellcheck disable=all
 . $repo_dir/scripts/include/log.sh
 # shellcheck disable=all
-. $repo_dir/scripts/require-gradle-8.3.0-jdk17-jammy-docker.sh
+. $repo_dir/scripts/include/require-gradle-8.3.0-jdk17-jammy-docker.sh
+
+for service_dir in "$repo_dir/workspace/bookulove-backend/"*; do
+    if test -d "$service_dir/src/main/resources"; then
+        application_yaml="$(find "$service_dir/src/main/resources" -type f -regex ".+/application.ya?ml" -print)"
+        yq -i ".spring.profiles.active = \"prod\"" "$application_yaml"
+    fi
+done
 
 docker run --rm -it \
     --volume /var/run/docker.sock:/var/run/docker.sock \
