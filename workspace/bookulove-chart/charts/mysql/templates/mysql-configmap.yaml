@@ -1,0 +1,22 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: "{{ .Release.Name }}-{{ .Chart.Name }}"
+  namespace: "{{ .Release.Namespace }}"
+data:
+  gtid.cnf: |
+    [mysqld]
+    gtid_mode=ON
+    enforce-gtid-consistency=ON
+  charset.cnf: |
+    [mysqld]
+    init-connect="SET NAMES 'utf8mb4'"
+    character-set-server=utf8mb4
+    collation-server=utf8mb4_unicode_ci
+    skip-character-set-client-handshake
+  {{- if .Values.initDBScripts }}
+  {{- range $k, $v := .Values.initDBScripts }}
+  {{ $k }}: {{ . | toYaml | indent 2 | trim }}
+  {{- end }}
+  {{- end }}
+
