@@ -36,6 +36,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,6 +52,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.frontend.data.api.API
 import com.example.frontend.data.api.UserApi
+import com.example.frontend.data.local.addFocusCleaner
 import com.example.frontend.ui.components.BookReportDetail
 import com.example.frontend.ui.components.ReportDetailViewModel
 import com.example.frontend.ui.screens.book.BookList
@@ -121,7 +123,7 @@ fun MainApp(viewModel: MainViewModel){
     val navController = rememberNavController()
     Log.d("asdf", navController.toString())
 //    val pagerState = rememberPagerState(pageCount=2)
-    Surface {
+    Surface(modifier=Modifier.addFocusCleaner(LocalFocusManager.current)){
         Scaffold(topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
