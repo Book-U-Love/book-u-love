@@ -74,7 +74,7 @@ universe-db:
       user: root
       password: MYSQL_ROOT_PASSWORD
       filters:
-      - "REPLICATE_DO_DB = (bookulove)"
+      - "REPLICATE_IGNORE_DB = (information_schema, mysql, performance_schema, sys)"
     - !!merge <<: *aboutReplicationSource
       name: book-db
     - !!merge <<: *aboutReplicationSource
