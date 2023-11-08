@@ -6,6 +6,7 @@
 # USER-DB-PASSWORD
 # REDIS-HOST
 # REDIS-PORT
+# JWT-SECRET
 # JWT-ACCESS-EXPIRE-TIME
 # JWT-REFRESH-EXPIRE-TIME
 # COOLSMS-API-KEY
@@ -30,6 +31,8 @@ spring:
         format_sql: true
         highlight_sql: true
         default_batch_fetch_size: 100
+        globally_quoted_identifiers: true
+
   redis:
     host: ${REDIS-HOST}
     port: ${REDIS-PORT}
