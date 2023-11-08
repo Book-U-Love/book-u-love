@@ -8,6 +8,9 @@
 # REDIS-PORT
 # JWT-ACCESS-EXPIRE-TIME
 # JWT-REFRESH-EXPIRE-TIME
+# COOLSMS-API-KEY
+# COOLSMS-API-SECRET-KEY
+# COOLSMS-SEND-PHONE-NUMBER
 
 server:
   port: 9002
@@ -20,7 +23,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
@@ -35,3 +38,8 @@ jwt:
   secret: ${JWT-SECRET}
   access-expire-time: ${JWT-ACCESS-EXPIRE-TIME}
   refresh-expire-time: ${JWT-REFRESH-EXPIRE-TIME}
+
+coolsms:
+  api-key: ${COOLSMS-API-KEY}
+  api-secret-key: ${COOLSMS-API-SECRET-KEY}
+  send-phone-number: ${COOLSMS-SEND-PHONE-NUMBER}

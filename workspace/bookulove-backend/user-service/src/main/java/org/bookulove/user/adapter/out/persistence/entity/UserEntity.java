@@ -27,10 +27,14 @@ public class UserEntity extends BaseTimeEntity {
 
     @Size(max = 32, message = "로그인 아이디는 32글자 이하입니다.")
     @NotNull(message = "로그인 아이디는 필수값입니다.")
+    @Column(unique = true)
     private String loginId;
 
     @NotNull(message = "패스워드는 필수값입니다.")
     private String password;
+
+    @NotNull(message = "핸드폰번호는 필수값입니다.")
+    private String phoneNumber;
 
     @Size(max = 16, message = "닉네임은 16글자 이하입니다.")
     @NotNull(message = "닉네임은 필수값입니다.")
@@ -46,20 +50,22 @@ public class UserEntity extends BaseTimeEntity {
     private List<UserEvalEntity> reviewees;
 
     @Builder
-    public UserEntity(Long id, String loginId, String password, String nickname, boolean allowNoti, List<UserEvalEntity> reviewers, List<UserEvalEntity> reviewees) {
+    public UserEntity(Long id, String loginId, String password, String phoneNumber, String nickname, boolean allowNoti, List<UserEvalEntity> reviewers, List<UserEvalEntity> reviewees) {
         this.id = id;
         this.loginId = loginId;
         this.password = password;
+        this.phoneNumber = phoneNumber;
         this.nickname = nickname;
         this.allowNoti = allowNoti;
         this.reviewers = reviewers;
         this.reviewees = reviewees;
     }
 
-    public static UserEntity of(String id, String password, String nickname) {
+    public static UserEntity of(String id, String password, String phoneNumber, String nickname) {
         return UserEntity.builder()
                 .loginId(id)
                 .password(password)
+                .phoneNumber(phoneNumber)
                 .nickname(nickname)
                 .allowNoti(true)
                 .build();

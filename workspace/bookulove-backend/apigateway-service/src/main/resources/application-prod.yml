@@ -4,7 +4,7 @@
 # USER-SERVICE
 # AUTH-SERVICE
 # BOOK-SERVICE
-# TRADE-SERVICE
+# CHATTING-SERVICE
 # ALARM-SERVICE
 # REDIS-HOST
 # REDIS-PORT
@@ -14,7 +14,6 @@ server:
   port: 9001
 
 spring:
-  application:  #gateway service 이름름    name: apigateway-service
   cloud:
     gateway:  #gateway 설정
       default-filters:
@@ -23,27 +22,82 @@ spring:
             baseMessage: Spring Cloud Gateway Global Filter
             preLogger: true
             postLogger: true
+
+      globalcors:
+        cors-configurations:
+          "[/**]":
+            allowedOrigins:
+              - "http://localhost:9001"
+              - "https://k9c209.p.ssafy.io"
+
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTIONS
+              - DELETE
+              - PATCH
+            allowedHeaders: "*"
+            allow-credentials: true
+
       routes:
+
+        ## jwt token not required
+
+        #회원가입
         - id: user-create
           uri: ${USER-SERVICE}
           predicates:
-            - Path=/user-service/users
+            - Path=/api/user-service/users
             - Method=POST
           filters:
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
 
+        #도서관 등록
+        - id: library-create
+          uri: ${BOOK-SERVICE}
+          predicates:
+            - Path=/api/book-service/libraries
+            - Method=POST
+          filters:
+            - RewritePath=/book-service/(?<segment>.*), /$\{segment}
+
+        #로그인
         - id: auth-login
           uri: ${AUTH-SERVICE}
           predicates:
-            - Path=/auth-service/auths
+            - Path=/api/auth-service/auths
             - Method=POST
           filters:
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - RewritePath=/auth-service/(?<segment>.*), /$\{segment}
+
+        #인증번호 전송
+        - id: sms-send
+          uri: ${AUTH-SERVICE}
+          predicates:
+            - Path=/api/auth-service/sms
+            - Method=POST
+          filters:
+            - RewritePath=/auth-service/(?<segment>.*), /$\{segment}
+
+        #인증번호 확인
+        - id: sms-check
+          uri: ${AUTH-SERVICE}
+          predicates:
+            - Path=/api/auth-service/sms
+            - Method=DELETE
+          filters:
+            - RewritePath=/auth-service/(?<segment>.*), /$\{segment}
+
+
+        ## jwt token required
+
 
         - id: auth-service
           uri: ${AUTH-SERVICE}
           predicates:
-            - Path=/auth-service/**
+            - Path=/api/auth-service/**
           filters:
             - RewritePath=/auth-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
@@ -51,7 +105,7 @@ spring:
         - id: user-service
           uri: ${USER-SERVICE}
           predicates:
-            - Path=/user-service/**
+            - Path=/api/user-service/**
           filters:
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
@@ -59,26 +113,27 @@ spring:
         - id: book-service
           uri: ${BOOK-SERVICE}
           predicates:
-            - Path=/book-service/**
+            - Path=/api/book-service/**
           filters:
             - RewritePath=/book-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
 
-        - id: trade-service
-          uri: ${TRADE-SERVICE}
+        - id: chatting-service
+          uri: ${CHATTING-SERVICE}
           predicates:
-            - Path=/trade-service/**
+            - Path=/api/chatting-service/**
           filters:
-            - RewritePath=/trade-service/(?<segment>.*), /$\{segment}
+            - RewritePath=/chatting-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
 
         - id: alarm-service
           uri: ${ALARM-SERVICE}
           predicates:
-            - Path=/alarm-service/**
+            - Path=/api/alarm-service/**
           filters:
             - RewritePath=/alarm-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
+
   redis:
     host: ${REDIS-HOST}
     port: ${REDIS-PORT}

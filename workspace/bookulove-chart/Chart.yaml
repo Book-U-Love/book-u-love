@@ -26,25 +26,25 @@ appVersion: "1.0.0"
 dependencies:
 - name: redis
   version: 18.1.6
-  alias: redis-fcm
+  alias: auth-redis
   repository: oci://registry-1.docker.io/bitnamicharts
 
 - name: mysql
-  version: 9.14.1
+  version: 1.8035.0
   alias: user-db
-  repository: oci://registry-1.docker.io/bitnamicharts
 
 - name: mysql
-  version: 9.14.1
-  alias: trade-db
-  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 1.8035.0
+  alias: chatting-db
 
 - name: mysql
-  version: 9.14.1
+  version: 1.8035.0
   alias: book-db
-  repository: oci://registry-1.docker.io/bitnamicharts
 
 - name: mysql
-  version: 9.14.1
+  version: 1.8035.0
   alias: notification-db
-  repository: oci://registry-1.docker.io/bitnamicharts
+
+- name: mysql
+  version: 1.8035.0
+  alias: universe-db

@@ -10,6 +10,8 @@ public record UserCreateDomain(
 
         String password,
 
+        String phoneNumber,
+
         String nickname,
 
         boolean allowNoti
@@ -20,6 +22,7 @@ public record UserCreateDomain(
         return new UserCreateDomain(user.getId(),
                 user.getLoginId(),
                 user.getPassword(),
+                user.getPhoneNumber(),
                 user.getNickname(),
                 user.isAllowNoti());
     }

@@ -24,7 +24,11 @@ public class UserCreateService implements UserCreateUseCase {
         log.info("회원가입 cmd: {}", cmd);
 
         // TODO: 2023-11-03 need refactoring: cud 는 결과값 반환 x
-        UserCreateDomain userCreateDomain = userCreatePort.createUser(cmd.Id(), cmd.password(), cmd.nickname());
+        UserCreateDomain userCreateDomain =
+                userCreatePort.createUser(cmd.Id(),
+                        cmd.password(),
+                        cmd.phoneNumber(),
+                        cmd.nickname());
         log.info("회원가입 domain: {}", userCreateDomain);
 
         // TODO: 2023-11-03 createLibrary 구현 후 주석 제거
