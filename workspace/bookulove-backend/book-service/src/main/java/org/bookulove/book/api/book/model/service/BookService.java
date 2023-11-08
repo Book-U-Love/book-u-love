@@ -13,6 +13,7 @@ import org.bookulove.book.api.book.model.db.entity.BookLibraryRelation;
 import org.bookulove.book.api.book.model.db.repository.BookLibraryRelationRepository;
 import org.bookulove.book.api.book.model.db.repository.BookRepository;
 import org.bookulove.book.api.book.model.request.BookUpdateReq;
+import org.bookulove.book.api.book.model.response.BookInfo;
 import org.bookulove.book.api.library.model.db.entity.Library;
 import org.bookulove.book.api.library.model.db.repository.LibraryRepository;
 import org.bookulove.book.exception.BookServiceException;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static org.bookulove.common.util.LogCurrent.*;
@@ -118,15 +120,34 @@ public class BookService {
         Book book = bookRepository.findByIsbn(bookSearchReq.isbn())
                 .orElseThrow( () -> new BookServiceException(ErrorCode.BOOK_NOT_FOUND) );
 
-        BookLibraryRelation relation = BookLibraryRelation.builder()
-                .book(book)
-                .library(library)
-                .condition(Condition.getInstance(bookSearchReq.condition()))
-                .build();
+        BookLibraryRelation relation = bookSearchReq.to(book, library);
 
         bookLibraryRelationRepository.save(relation);
 
         log.info(logCurrent(getClassName(), getMethodName(), END));
+    }
+
+    public List<BookInfo> getBookList() {
+        log.info(logCurrent(getClassName(), getMethodName(), START));
+
+        Long userId = null;
+        try {
+            userId = authUtil.getUserIdByHeader();
+        } catch (Exception e) {
+            userId = 1l;
+        }
+
+        Library library = libraryRepository.findById(userId)
+                .orElseThrow( () -> new BookServiceException(ErrorCode.LIBRARY_NOT_FOUND) );
+
+        List<BookInfo> res = new ArrayList<>();
+        List<BookLibraryRelation> list = bookLibraryRelationRepository.findAllByLibrary(library);
+        for (BookLibraryRelation relation : list) {
+            res.add(new BookInfo(relation));
+        }
+
+        log.info(logCurrent(getClassName(), getMethodName(), END));
+        return res;
     }
 
     public void update(BookUpdateReq bookUpdateReq) {
@@ -153,4 +174,5 @@ public class BookService {
 
         log.info(logCurrent(getClassName(), getMethodName(), END));
     }
+
 }

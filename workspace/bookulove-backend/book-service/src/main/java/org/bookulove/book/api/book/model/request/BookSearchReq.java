@@ -4,6 +4,10 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.bookulove.book.api.book.model.Condition;
+import org.bookulove.book.api.book.model.db.entity.Book;
+import org.bookulove.book.api.book.model.db.entity.BookLibraryRelation;
+import org.bookulove.book.api.library.model.db.entity.Library;
 
 public record BookSearchReq (
 
@@ -22,5 +26,13 @@ public record BookSearchReq (
         String details
 
 ) {
-//        public BookSearchReq to
+
+    public BookLibraryRelation to(Book book, Library library) {
+        return BookLibraryRelation.builder()
+                .book(book)
+                .library(library)
+                .condition(Condition.getInstance(condition))
+                .build();
+    }
+
 }
