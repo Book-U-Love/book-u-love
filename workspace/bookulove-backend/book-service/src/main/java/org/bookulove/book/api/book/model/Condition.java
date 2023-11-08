@@ -17,6 +17,10 @@ public enum Condition {
 
     private static Condition[] list = Condition.values();
 
+    public static Condition getInstance(int index) {
+        return list[index];
+    }
+
     public static String getCondition(int num) {
         return list[num].getKrName();
     }

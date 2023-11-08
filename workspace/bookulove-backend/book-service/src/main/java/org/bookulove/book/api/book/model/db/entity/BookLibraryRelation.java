@@ -31,7 +31,7 @@ public class BookLibraryRelation {
     @JoinColumn(name = "userId")
     private Library library;
 
-    @NotNull
+//    @NotNull
     @Enumerated(EnumType.STRING)
     private Condition condition;
 
@@ -46,7 +46,7 @@ public class BookLibraryRelation {
     @ColumnDefault("false")
     private boolean isRemoved;
 
-    @Builder
+    @Builder(toBuilder = true)
     public BookLibraryRelation(@NotNull Book book, @NotNull Library library, @NotNull Condition condition, boolean allowSale, boolean allowBorrow, String details, boolean isRemoved) {
         this.book = book;
         this.library = library;
@@ -56,4 +56,29 @@ public class BookLibraryRelation {
         this.details = details;
         this.isRemoved = isRemoved;
     }
+
+    public void updateLibrary(Library library) {
+        this.library = library;
+    }
+
+    public void updateCondition(int index) {
+        this.condition = Condition.getInstance(index);
+    }
+
+    public void updateAllowSale(boolean allowSale) {
+        this.allowSale = allowSale;
+    }
+
+    public void updateAllowBorrow(boolean allowBorrow) {
+        this.allowBorrow = allowBorrow;
+    }
+
+    public void updateDetails(String details) {
+        this.details = details;
+    }
+
+    public void deleteRelation(boolean isRemoved) {
+        this.isRemoved = isRemoved;
+    }
+
 }
