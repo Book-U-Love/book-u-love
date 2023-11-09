@@ -43,7 +43,7 @@ public class StompHandler implements ChannelInterceptor {
                 stompCreateConnPort.createConn(1L, roomId);
             }
             case SEND -> {
-
+                log.info("sendhandling");
             }
         }
         return message;

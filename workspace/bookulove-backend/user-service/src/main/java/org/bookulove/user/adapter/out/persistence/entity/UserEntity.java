@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.bookulove.common.entity.BaseTimeEntity;
+import org.bookulove.common.feignclient.user.UserFindRes;
 
 import java.util.List;
 
@@ -69,6 +70,10 @@ public class UserEntity extends BaseTimeEntity {
                 .nickname(nickname)
                 .allowNoti(true)
                 .build();
+    }
+
+    public UserFindRes toUserFindRes(){
+        return UserFindRes.of(loginId, nickname, phoneNumber, allowNoti);
     }
 
     public void updateUser(String password, String nickname) {

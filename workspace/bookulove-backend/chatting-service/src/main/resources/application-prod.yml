@@ -7,6 +7,7 @@
 # REDIS-HOST
 # REDIS-PORT
 # JWT-SECRET
+# DOMAIN-URL
 
 server:
   port: 9005
@@ -41,3 +42,6 @@ logging:
 
 jwt:
   secret: ${JWT-SECRET}
+
+domain:
+  url: ${DOMAIN-URL}

@@ -6,7 +6,6 @@ import org.bookulove.user.application.port.in.UserCreateUseCase;
 import org.bookulove.user.application.port.in.dto.command.UserCreateCmd;
 import org.bookulove.user.application.port.out.UserCreateLibraryPort;
 import org.bookulove.user.application.port.out.UserCreatePort;
-import org.bookulove.user.domain.UserCreateDomain;
 import org.bookulove.common.annotation.UseCase;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +22,10 @@ public class UserCreateService implements UserCreateUseCase {
     public void createUser(UserCreateCmd cmd) {
         log.info("회원가입 cmd: {}", cmd);
 
-        // TODO: 2023-11-03 need refactoring: cud 는 결과값 반환 x
-        UserCreateDomain userCreateDomain =
-                userCreatePort.createUser(cmd.Id(),
-                        cmd.password(),
-                        cmd.phoneNumber(),
-                        cmd.nickname());
-        log.info("회원가입 domain: {}", userCreateDomain);
+        userCreatePort.createUser(cmd.Id(),
+                cmd.password(),
+                cmd.phoneNumber(),
+                cmd.nickname());
 
         // TODO: 2023-11-03 createLibrary 구현 후 주석 제거
 //        ApiData<?> td = libraryCreatePort.createLibrary(LibraryCreateReq.of(cmd.libraryName(), cmd.lat(), cmd.lng()));

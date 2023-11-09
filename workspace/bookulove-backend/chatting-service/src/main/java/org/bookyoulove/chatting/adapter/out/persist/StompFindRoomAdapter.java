@@ -18,7 +18,7 @@ public class StompFindRoomAdapter implements StompFindRoomPort {
 
     @Override
     public ChattingRoomDomain findRoom(Long roomId) {
-        ChattingRoomDomain chattingRoomDomain = org.bookyoulove.chatting.domain.ChattingRoomDomain.of(roomRepository.findById(roomId).orElseThrow(
+        ChattingRoomDomain chattingRoomDomain = ChattingRoomDomain.of(roomRepository.findById(roomId).orElseThrow(
                 () -> new ChatServiceException(ErrorCode.ROOM_NOT_FOUND)
         ));
 

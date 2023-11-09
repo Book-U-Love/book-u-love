@@ -4,10 +4,12 @@ package org.bookulove.user.adapter.in.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bookulove.common.feignclient.user.UserFindRes;
 import org.bookulove.user.adapter.in.web.dto.request.UserCreateReq;
 import org.bookulove.user.adapter.in.web.dto.request.UserUpdatePasswordReq;
 import org.bookulove.user.adapter.in.web.dto.request.UserUpdateReq;
 import org.bookulove.user.application.port.in.UserCreateUseCase;
+import org.bookulove.user.application.port.in.UserFindUseCase;
 import org.bookulove.user.application.port.in.UserUpdatePasswordUseCase;
 import org.bookulove.user.application.port.in.UserUpdateUseCase;
 import org.bookulove.user.application.port.in.dto.command.UserCreateCmd;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final BCryptPasswordEncoder encoder;
+    private final UserFindUseCase userFindUseCase;
     private final UserCreateUseCase userCreateUseCase;
     private final UserUpdateUseCase userUpdateUseCase;
     private final UserUpdatePasswordUseCase userUpdatePasswordUseCase;
@@ -39,6 +42,12 @@ public class UserController {
 
         userCreateUseCase.createUser(UserCreateCmd.of(req, encoder.encode(req.password())));
         return ApiData.ok("회원가입에 성공하였습니다.");
+    }
+
+    @GetMapping
+    public ApiData<UserFindRes> findUser(){
+        log.info("회원조회");
+        return ApiData.ok(userFindUseCase.findUser());
     }
 
     @PatchMapping
