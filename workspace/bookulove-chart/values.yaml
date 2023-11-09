@@ -1,9 +1,13 @@
-# PVC 생성에 사용할 기본 storageClass
-defaultStorageClass: &defaultStorageClass standard
-# bitnami/redis helm chart에 사용할 기본 redis 설정
-redisBaseValues: &redisBaseValues
+global:
   auth:
-    password: bookulove
+    password: &globalAuthPassword bookulove
+  persistence:
+    storage:
+      storageClass: &globalStorageClass standard
+
+redis:
+  auth:
+    password: *globalAuthPassword
   master:
     persistence:
       enabled: false
@@ -11,26 +15,69 @@ redisBaseValues: &redisBaseValues
     replicaCount: 0
     persistence:
       enabled: false
-# bitnami/mysql helm chart에 사용할 기본 mysql 설정
-mysqlBaseValues: &mysqlBaseValues
-  auth:
-    rootPassword: bookulove
-    database: bookulove
-  primary:
-    persistence:
-      storageClass: *defaultStorageClass
-      size: 1G
-  secondary:
-    replicaCount: 0
-    persistence:
-      enabled: false
-redis-fcm:
-  !!merge <<: *redisBaseValues
-book-db:
-  !!merge <<: *mysqlBaseValues
+
 user-db:
-  !!merge <<: *mysqlBaseValues
-trade-db:
-  !!merge <<: *mysqlBaseValues
+  auth:
+    password: *globalAuthPassword
+  offsetServerID: 1000
+  initDBScripts: &mySQLInitDBScripts
+    00-bookulove-database.sql: |
+      CREATE DATABASE IF NOT EXISTS `bookulove` DEFAULT CHARSET='utf8mb4' COLLATE='utf8mb4_unicode_ci';
+  persistence:
+    storage:
+      storageClass: *globalStorageClass
+      size: 1Gi
+
+book-db:
+  offsetServerID: 2000
+  auth:
+    password: *globalAuthPassword
+  initDBScripts: *mySQLInitDBScripts
+  persistence:
+    storage:
+      storageClass: *globalStorageClass
+      size: 1Gi
+
+chatting-db:
+  offsetServerID: 3000
+  auth:
+    password: *globalAuthPassword
+  initDBScripts: *mySQLInitDBScripts
+  persistence:
+    storage:
+      storageClass: *globalStorageClass
+      size: 1Gi
+
 notification-db:
-  !!merge <<: *mysqlBaseValues
+  offsetServerID: 4000
+  auth:
+    password: *globalAuthPassword
+  initDBScripts: *mySQLInitDBScripts
+  persistence:
+    storage:
+      storageClass: *globalStorageClass
+      size: 1Gi
+
+universe-db:
+  offsetServerID: 9999
+  auth:
+    password: *globalAuthPassword
+  persistence:
+    storage:
+      storageClass: *globalStorageClass
+      size: 4Gi
+  multiSourceReplication:
+    sources:
+    - &aboutReplicationSource
+      name: user-db
+      port: 3306
+      user: root
+      password: MYSQL_ROOT_PASSWORD
+      filters:
+      - "REPLICATE_DO_DB = (bookulove)"
+    - !!merge <<: *aboutReplicationSource
+      name: book-db
+    - !!merge <<: *aboutReplicationSource
+      name: chatting-db
+    - !!merge <<: *aboutReplicationSource
+      name: notification-db

@@ -6,6 +6,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+// TODO: 2023-11-08 redis repository로 이름 고민해보기 
+
 @Slf4j
 @Repository
 @RequiredArgsConstructor
