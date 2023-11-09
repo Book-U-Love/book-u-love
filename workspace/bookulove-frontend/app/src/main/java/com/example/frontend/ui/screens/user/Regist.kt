@@ -32,7 +32,7 @@ import com.example.frontend.viewmodel.UserViewModel
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
-private val userDto: UserRegistDto = UserRegistDto("", "", "", "", 0.0, 0.0)
+private val userDto: UserRegistDto = UserRegistDto("", "", "", "", "",0.0, 0.0)
 
 @Composable
 fun Register(navController: NavHostController){
@@ -109,6 +109,7 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
                             userDto.password = pw
                             userDto.nickname = nickname
                             userDto.libraryName = libName
+                            userDto.phoneNumber = phNum
                             changePage()
                           },
                         name = "다음으로"
