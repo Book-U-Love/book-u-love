@@ -23,10 +23,11 @@ fun PageBtn(navController: NavHostController, name: String, destination: String)
 }
 
 @Composable
-fun FuncBtn(name: String, onClick: () -> Unit){
+fun FuncBtn(name: String, onClick: () -> Unit, enable: Boolean = true){
     Button(
         onClick = {onClick()},
         shape = RoundedCornerShape(5.dp),
+        enabled = enable
     ){
         Text(text = name)
     }

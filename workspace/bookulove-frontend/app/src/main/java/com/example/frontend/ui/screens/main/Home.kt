@@ -2,6 +2,7 @@ package com.example.frontend.ui.screens.main
 
 import android.graphics.Paint.Align
 import android.os.Bundle
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -28,6 +29,7 @@ import com.example.frontend.data.model.User
 import com.example.frontend.ui.components.FuncBtn
 import com.example.frontend.ui.components.InputField
 import com.example.frontend.ui.components.MapInfo
+import com.example.frontend.ui.components.Message
 import com.example.frontend.ui.components.PageBtn
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
@@ -40,6 +42,7 @@ import com.example.frontend.viewmodel.AuthViewModel
 import com.example.frontend.viewmodel.MainViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.LocationSource
 import com.google.android.gms.maps.model.LatLng
 
 var userId: String = ""
@@ -62,6 +65,7 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
     var id by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
     val response = remember{ mutableStateOf("") }
+    val errorFind = remember{ mutableStateOf(false) }
     Row(
         modifier = Modifier.fillMaxHeight(),
         verticalAlignment = Alignment.CenterVertically
@@ -96,7 +100,16 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
                 )
             }
             if(response.value == "Success"){
+                response.value = ""
                 changePage()
+            } else if(response.value == "Fail"){
+                response.value = ""
+                errorFind.value = true
+            }
+            when{
+                errorFind.value -> {
+                    Message(dialogClose = { errorFind.value = false }, content = "로그인 정보가 일치하지 않습니다.")
+                }
             }
         }
     }
