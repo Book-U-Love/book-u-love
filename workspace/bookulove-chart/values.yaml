@@ -81,3 +81,32 @@ universe-db:
       name: chatting-db
     - !!merge <<: *aboutReplicationSource
       name: notification-db
+
+user-service:
+  metadata:
+    org: bookulove
+    name: user-service
+    version: 1.0.0
+  replicas: 1
+  server:
+    port: 9003
+  datasource:
+    main:
+      host: "$releaseName-user-db"
+      port: 3306
+      auth:
+        user: root
+        password: *globalAuthPassword
+
+apigateway-service:
+  metadata:
+    org: bookulove
+    name: apigateway-service
+    version: 1.0.0
+  replicas: 1
+  server:
+    port: 9001
+  datasource:
+    redis:
+      host: "$releaseName-redis-master"
+      port: "6379"
