@@ -14,7 +14,7 @@ data class UserRegistDto(
     var lng: Double,
 )
 data class Default(
-    val status: Number,
+    val status: Int,
     val code: String,
-    val data: String,
+    val data: Object,
 )
