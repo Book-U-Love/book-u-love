@@ -7,6 +7,7 @@ data class User(
 data class UserRegistDto(
     var id: String,
     var password: String,
+    var phoneNumber: String,
     var nickname: String,
     var libraryName: String,
     var lat: Double,

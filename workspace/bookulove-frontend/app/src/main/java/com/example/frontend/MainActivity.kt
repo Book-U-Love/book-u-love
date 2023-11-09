@@ -36,6 +36,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,11 +52,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.frontend.data.api.API
 import com.example.frontend.data.api.UserApi
+import com.example.frontend.data.local.addFocusCleaner
 import com.example.frontend.ui.components.BookReportDetail
 import com.example.frontend.ui.components.ReportDetailViewModel
 import com.example.frontend.ui.screens.book.BookList
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
+import com.example.frontend.ui.screens.book.BookTransactionRegist
 import com.example.frontend.ui.screens.main.Home
 import com.example.frontend.ui.screens.info.MyPage
 import com.example.frontend.ui.screens.user.Chat
@@ -120,7 +123,7 @@ fun MainApp(viewModel: MainViewModel){
     val navController = rememberNavController()
     Log.d("asdf", navController.toString())
 //    val pagerState = rememberPagerState(pageCount=2)
-    Surface {
+    Surface(modifier=Modifier.addFocusCleaner(LocalFocusManager.current)){
         Scaffold(topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -170,9 +173,10 @@ fun MainApp(viewModel: MainViewModel){
 }
 @Composable
 fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
-    NavHost(navController = navController, startDestination = Routes.CHAT) {
+    NavHost(navController = navController, startDestination = Routes.BOOKTRANSACTIONREGIST) {
         composable(route = Routes.HOME) {
             Home(navController = navController)
+            viewModel.changeState("홈")
         }
         composable(route = Routes.CHAT) {
             Chat(navController)
@@ -202,7 +206,7 @@ fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
             }
         }
         composable(route = Routes.BOOKSEARCH) {
-            BookSearch()
+            BookSearch(navController)
             viewModel.changeState("검색")
             Log.d("stack", navController.toString())
         }
@@ -232,6 +236,9 @@ fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
         }
         composable(route = Routes.BOOKLIST){
             BookList()
+        }
+        composable(route = Routes.BOOKTRANSACTIONREGIST){
+            BookTransactionRegist()
         }
     }
 
