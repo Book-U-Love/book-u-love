@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -25,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.frontend.R
 import com.example.frontend.ui.vo.categoryList
 
@@ -33,7 +35,7 @@ import com.example.frontend.ui.vo.categoryList
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @ExperimentalMaterial3Api
-fun BookSearch(){
+fun BookSearch(navController:NavController){
     val categoryState = rememberLazyListState();
 
     Box(modifier=Modifier.fillMaxSize()){
@@ -72,6 +74,7 @@ fun BookSearch(){
                    }
                }
            }
+
            Divider()
        }
         // 책 추가 버튼
@@ -82,6 +85,8 @@ fun BookSearch(){
 //                Icon(painter = painterResource(R.drawable.baseline_add_24), contentDescription ="addBook" )
 //            }
 //        }
-
+        FloatingActionButton(onClick = {navController.navigate("booktransactionregist")}, modifier=Modifier.align(Alignment.BottomEnd).padding(bottom = 40.dp, end=20.dp)) {
+            Icon(painter = painterResource(id = R.drawable.baseline_add_24), contentDescription = "add book report")
+        }
     }
 }

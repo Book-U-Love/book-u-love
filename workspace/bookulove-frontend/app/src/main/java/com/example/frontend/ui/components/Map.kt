@@ -38,6 +38,7 @@ import com.example.frontend.ui.vo.Library
 import com.example.frontend.ui.vo.Routes
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.UiSettings
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -53,6 +54,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
+
 @SuppressLint("MissingPermission")
 @Composable
 fun MapInfo(
@@ -66,6 +68,7 @@ fun MapInfo(
         navController: NavHostController = rememberNavController()
     ){
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(LocalContext.current)
+    Log.d("location", fusedLocationClient.lastLocation.toString())
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(pos.value.latitude, pos.value.longitude), 18f)
     }
@@ -73,6 +76,7 @@ fun MapInfo(
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location : Location? ->
                 if(location != null){
+                    Log.i("location", location.toString())
                     val update = CameraUpdateFactory.newLatLngZoom(
                         LatLng(location.latitude, location.longitude),
                         18f)
@@ -86,6 +90,14 @@ fun MapInfo(
             .width(width.dp)
     ){
         var posInfo = LatLng(0.0, 0.0)
+        val uiSettings: MapUiSettings = MapUiSettings(
+            compassEnabled = true,
+            indoorLevelPickerEnabled = true,
+            mapToolbarEnabled = true,
+            myLocationButtonEnabled = true,
+            rotationGesturesEnabled = true,
+
+        )
         GoogleMap(
             modifier = Modifier
                 .fillMaxSize(),
@@ -93,7 +105,8 @@ fun MapInfo(
             onMapClick = {
                 pos: LatLng ->
                 posInfo = pos
-            }
+            },
+            uiSettings = uiSettings
         ) {
             if(libList.isEmpty()){
                 Marker(
@@ -114,25 +127,26 @@ fun MapInfo(
                     ){
                         Column {
                             Text(text = lib.detail)
-                            FuncBtn(name = lib.title){}
+                            FuncBtn(name = lib.title, onClick = {})
                         }
                     }
                 }
             }
         }
-        Button(onClick = {
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location : Location? ->
-                    if(location != null){
-                        val update = CameraUpdateFactory.newLatLngZoom(
-                            LatLng(location.latitude, location.longitude),
-                            18f)
-                        cameraPositionState.move(update)
-                    }
-                }
-        }) {
-            Text(text = "현재위치로")
-        }
+//        Button(onClick = {
+//            Log.i("location", cameraPositionState.position.toString())
+//            fusedLocationClient.lastLocation
+//                .addOnSuccessListener { location : Location? ->
+//                    if(location != null){
+//                        val update = CameraUpdateFactory.newLatLngZoom(
+//                            LatLng(location.latitude, location.longitude),
+//                            18f)
+//                        cameraPositionState.move(update)
+//                    }
+//                }
+//        }) {
+//            Text(text = "현재위치로")
+//        }
 
     }
 }

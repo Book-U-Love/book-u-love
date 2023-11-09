@@ -12,4 +12,6 @@ import retrofit2.http.POST
 interface UserApi {
     @POST("user-service/users")
     suspend fun signUp(@Body userInfo:UserRegistDto):Response<Default>
+
+
 }
