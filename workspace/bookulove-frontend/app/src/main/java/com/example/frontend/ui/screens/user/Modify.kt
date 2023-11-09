@@ -87,9 +87,7 @@ fun FirstModify(navController: NavHostController, changePage: () -> Unit){
                 InputField(value = id, label = "아이디", onValueChanged = {id = it})
                 val openDialog = remember{ mutableStateOf(false) }
 
-                FuncBtn(name = "비밀번호 수정") {
-                    openDialog.value = !openDialog.value
-                }
+                FuncBtn(name = "비밀번호 수정", onClick = {openDialog.value = !openDialog.value})
                 if(openDialog.value){
                     PwModify(
                         onDismissRequest = { openDialog.value = false },
@@ -192,14 +190,12 @@ fun PwModify(
                 }
                 Row(modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround){
-                    FuncBtn(name = "취소") {
-                        onDismissRequest()
-                    }
-                    FuncBtn(name = "수정") {
+                    FuncBtn(name = "취소", onClick = {onDismissRequest()})
+                    FuncBtn(name = "수정", onClick = {
                         if(pw == confirmPw){
                             onConfirmation()
                         }
-                    }
+                    })
                 }
             }
         }
