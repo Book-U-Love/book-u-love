@@ -13,7 +13,7 @@ import java.time.Duration;
 @Slf4j
 @Repository
 public class JwtRepository {
-    private static final String BLACKLIST_PREFIX = "BLACKLISTID:";
+    private static final String BLACKLIST_PREFIX = "BLACKLISTID: ";
 
     private final StringRedisTemplate jwtRedisTemplate;
 

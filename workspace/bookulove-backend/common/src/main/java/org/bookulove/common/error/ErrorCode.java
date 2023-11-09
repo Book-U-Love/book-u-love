@@ -37,8 +37,12 @@ public enum ErrorCode {
 
     // User
     USER_NOT_FOUND(400, "U001", "User not found error!"),
-    PASSWORD_NOT_MATCH(400, "U002", "Password not matched error!");
+    PASSWORD_NOT_MATCH(400, "U002", "Password not matched error!"),
 
+    // Chat
+    ROOM_NOT_FOUND(400, "C001", "Room not found error!"),
+
+    ;
 
     private final int status;
     private final String code;
