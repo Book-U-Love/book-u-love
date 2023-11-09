@@ -1,7 +1,7 @@
 package com.example.frontend.data.model
 
 data class User(
-    val loginId: String,
+    val id: String,
     val password: String,
 )
 data class UserRegistDto(
@@ -17,4 +17,19 @@ data class Default(
     val status: Int,
     val code: String,
     val data: Object,
+)
+
+data class PhoneNumber(
+    val phoneNumber: String
+)
+
+data class Certification(
+    val phoneNumber: String,
+    val authCode: String
+)
+
+data class Tmp(
+    val status: Number,
+    val code: String,
+    val data: Map<String, String>
 )

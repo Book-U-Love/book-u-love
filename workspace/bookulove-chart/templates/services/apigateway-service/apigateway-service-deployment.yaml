@@ -1,0 +1,32 @@
+{{- $service := index .Values "apigateway-service" }}
+{{ include "service.deployment.head" (list . $service.metadata.name) }}
+spec:
+  replicas: {{ $service.replicas }}
+  selector:
+    matchLabels: *labels
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      containers:
+      - name: apigateway-service
+        image: {{ include "service.image" $service }}
+        env:
+        - name: JWT-SECRET
+          value: bookulove01234567890123456789012345678901234567890123456789
+        - name: REDIS-HOST
+          value: {{ $service.datasource.redis.host | replace "$releaseName" .Release.Name }}
+        - name: REDIS-PORT
+          value: {{ $service.datasource.redis.port | quote }}
+        - name: AUTH-SERVICE
+          value: http://abc-auth-service
+        - name: USER-SERVICE
+          value: http://{{ include "service.release.name" (list . "user-service") }}:{{ index .Values "user-service" "server" "port" }}
+        - name: BOOK-SERVICE
+          value: http://abc-book-service
+        - name: CHATTING-SERVICE
+          value: http://abc-chatting-service
+        - name: ALARM-SERVICE
+          value: http://abc-alarm-service
+        ports:
+        - containerPort: {{ $service.server.port }}

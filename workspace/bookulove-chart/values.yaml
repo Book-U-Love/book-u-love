@@ -74,10 +74,39 @@ universe-db:
       user: root
       password: MYSQL_ROOT_PASSWORD
       filters:
-      - "REPLICATE_DO_DB = (bookulove)"
+      - "REPLICATE_IGNORE_DB = (information_schema, mysql, performance_schema, sys)"
     - !!merge <<: *aboutReplicationSource
       name: book-db
     - !!merge <<: *aboutReplicationSource
       name: chatting-db
     - !!merge <<: *aboutReplicationSource
       name: notification-db
+
+user-service:
+  metadata:
+    org: bookulove
+    name: user-service
+    version: 1.0.0
+  replicas: 1
+  server:
+    port: 9003
+  datasource:
+    main:
+      host: "$releaseName-user-db"
+      port: 3306
+      auth:
+        user: root
+        password: *globalAuthPassword
+
+apigateway-service:
+  metadata:
+    org: bookulove
+    name: apigateway-service
+    version: 1.0.0
+  replicas: 1
+  server:
+    port: 9001
+  datasource:
+    redis:
+      host: "$releaseName-redis-master"
+      port: "6379"
