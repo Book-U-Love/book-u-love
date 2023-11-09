@@ -6,6 +6,8 @@ public record ChattingRoomDomain(
 
         Long roomId,
 
+        Long buId,
+
         Long sellerId,
 
         Long buyerId
@@ -13,6 +15,7 @@ public record ChattingRoomDomain(
 
     public static ChattingRoomDomain of(ChattingRoomEntity entity) {
         return new ChattingRoomDomain(entity.getId(),
+                entity.getBuId(),
                 entity.getSellorId(),
                 entity.getBuyerId());
     }
