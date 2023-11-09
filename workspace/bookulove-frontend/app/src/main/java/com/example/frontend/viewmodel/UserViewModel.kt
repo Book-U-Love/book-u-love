@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 class UserViewModel: ViewModel(){
     private val userRepository: UserRepository = UserRepository()
 
-    fun signUp(userInfo: UserRegistDto, response : MutableState<String>){
+    fun signUp(userInfo: UserRegistDto){
         viewModelScope.launch{
-            userRepository.signUp(userInfo, response)
+//            userRepository.signUp(userInfo, response)
         }
     }
 }
