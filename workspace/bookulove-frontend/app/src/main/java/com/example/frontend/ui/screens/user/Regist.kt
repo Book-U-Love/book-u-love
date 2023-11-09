@@ -1,6 +1,8 @@
 package com.example.frontend.ui.screens.user
 
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
@@ -41,9 +43,11 @@ fun Register(navController: NavHostController){
     }
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
-    val authRepository: AuthViewModel = AuthViewModel()
+    val authViewModel: AuthViewModel = AuthViewModel()
+    val userViewModel:UserViewModel = UserViewModel()
     var id by remember { mutableStateOf("")}
     var pw by remember { mutableStateOf("")}
     var confirmPw by remember { mutableStateOf("")}
@@ -52,12 +56,15 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
     var nickname by remember { mutableStateOf("") }
     var libName : String by remember{ mutableStateOf("") }
     val pwCheck = remember{ mutableStateOf(false) }
-    val certRes = remember{ mutableStateOf("") }
+    val certRes by authViewModel.certSendRes.collectAsState()
     val certCheck = remember{ mutableStateOf(false) }
-    val certChkRes = remember{ mutableStateOf("") }
-    val msgChk = remember{ mutableStateOf(false) }
-    val msgCon = remember{ mutableStateOf("") }
-    val userViewModel:UserViewModel = UserViewModel()
+    val certChkRes by authViewModel.certChkRes.collectAsState()
+    val errChk = remember{ mutableStateOf(false) }
+    val errMsg = remember{ mutableStateOf("") }
+    val sucChk = remember{ mutableStateOf(false) }
+    val sucMsg = remember{ mutableStateOf("") }
+    val sucFun = remember{ mutableStateOf({}) }
+    val regChk by userViewModel.signupRes.collectAsState()
     Row(
         modifier = Modifier.fillMaxHeight(),
         verticalAlignment = Alignment.CenterVertically
@@ -68,6 +75,9 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             item{
+                Spacer(modifier = Modifier.height(30.dp))
+                FuncBtn(name = "위치 등록", onClick = { changePage() })
+                Spacer(modifier = Modifier.height(30.dp))
                 InputField(value = id, label = "아이디", onValueChanged = {id = it})
                 InputField(value = pw, label = "비밀번호", isPassword = true, onValueChanged = {pw = it})
                 InputField(value = confirmPw, label = "비밀번호 확인", isPassword = true, needSpacer = false, onValueChanged = {confirmPw = it})
@@ -84,12 +94,12 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
                 InputField(value = phNum, label = "전화번호", onValueChanged = {phNum = it}, enable = !certCheck.value)
                 FuncBtn(
                     name = "인증번호 받기",
-//                    onClick = { authRepository.sendCertification(PhoneNumber(phNum), certRes) },
+//                    onClick = { authRepository.sendCertification(PhoneNumber(phNum)) },
                     onClick = {},
                     enable = !certCheck.value
                 )
 
-                if(certRes.value == "Success"){
+                if(certRes == "Success"){
                     Text(text = "인증번호가 전송되었습니다.", color = Color.Green, modifier = Modifier.height(30.dp))
                 } else{
                     Spacer(modifier = Modifier.height(30.dp))
@@ -97,11 +107,11 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
                 InputField(value = confirmNum, label = "인증번호", onValueChanged = {confirmNum = it}, enable = !certCheck.value)
                 FuncBtn(
                     name = "인증",
-//                    onClick = { authRepository.checkCertification(Certification(phNum, confirmNum), certChkRes)},
-                    onClick = {},
+//                    onClick = { authRepository.checkCertification(Certification(phNum, confirmNum))},
+                    onClick = {certCheck.value = true},
                     enable = !certCheck.value
                 )
-                if(certChkRes.value == "Success"){
+                if(certChkRes == "Success"){
                     certCheck.value = true
                     Text(text = "인증이 성공하였습니다", color = Color.Green, modifier = Modifier.height(30.dp))
                 } else{
@@ -109,10 +119,7 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
                 }
                 InputField(value = nickname, label = "닉네임", onValueChanged = {nickname = it})
                 InputField(value = libName, label = "도서관명", onValueChanged = {libName = it})
-                FuncBtn(name = "위치 등록", onClick = { changePage() })
-                Spacer(modifier = Modifier.height(30.dp))
-//                Text("위도 + ${userDto.lat}")
-//                Text("경도 + ${userDto.lng}")
+
                 Row(){
                     PageBtn(
                         navController = navController,
@@ -120,15 +127,31 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
                         Routes.HOME,
                     )
                     Spacer(modifier = Modifier.width(80.dp))
-                    FuncBtn(name = "회원가입", onClick = {})
-
-
+                    FuncBtn(name = "회원가입", onClick = {
+                        userDto.id = id
+                        userDto.password = pw
+                        userDto.phoneNumber = phNum
+                        userDto.nickname = nickname
+                        userDto.libraryName = libName
+                        userViewModel.signUp(userDto)
+                    })
                 }
 
             }
+            if(regChk == "success"){
+                sucChk.value = true
+                sucMsg.value = "회원가입에 성공했습니다"
+                sucFun.value = {navController.navigate(Routes.HOME)}
+            } else if(regChk == "fail"){
+                errChk.value = true
+                errMsg.value = "회원가입에 실패했습니다"
+            }
         }
-        if(msgChk.value){
-            Message(dialogClose = { msgChk.value = false }, content = msgCon.value)
+        if(errChk.value){
+            Message(title = "Success", dialogClose = { errChk.value = false }, content = errMsg.value)
+        }
+        if(sucChk.value){
+            Message(title = "Error", dialogClose = {sucChk.value = false}, content = sucMsg.value, confirmButton = sucFun.value)
         }
     }
 }
@@ -154,7 +177,6 @@ fun SecondRegister(navController: NavHostController, changePage: () -> Unit){
                     onClick = {
                         userDto.lat = pos.value.latitude
                         userDto.lng = pos.value.longitude
-                        userViewModel.signUp(userDto)
                         changePage()
                       }
                     ,name="확인"

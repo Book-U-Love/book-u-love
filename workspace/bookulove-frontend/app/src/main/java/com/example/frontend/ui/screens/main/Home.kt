@@ -3,6 +3,7 @@ package com.example.frontend.ui.screens.main
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,7 +45,7 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
     val authRepository: AuthViewModel = AuthViewModel()
     var id by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
-    val response = remember{ mutableStateOf("") }
+    val loginRes by authRepository.loginRes.collectAsState()
     val errorFind = remember{ mutableStateOf(false) }
     Row(
         modifier = Modifier.fillMaxHeight(),
@@ -79,16 +80,14 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
                     }
                 )
             }
-            if(response.value == "Success"){
-                response.value = ""
+            if(loginRes == "success"){
                 changePage()
-            } else if(response.value == "Fail"){
-                response.value = ""
+            } else if(loginRes == "fail"){
                 errorFind.value = true
             }
             when{
                 errorFind.value -> {
-                    Message(dialogClose = { errorFind.value = false }, content = "로그인 정보가 일치하지 않습니다.")
+                    Message(title = "Error", dialogClose = { errorFind.value = false }, content = "로그인 정보가 일치하지 않습니다.")
                 }
             }
         }
