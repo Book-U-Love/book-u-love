@@ -1,12 +1,7 @@
 package com.example.frontend.ui.screens.main
 
-import android.graphics.Paint.Align
-import android.os.Bundle
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,15 +10,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.frontend.R
 import com.example.frontend.data.model.User
 import com.example.frontend.ui.components.FuncBtn
@@ -31,18 +20,9 @@ import com.example.frontend.ui.components.InputField
 import com.example.frontend.ui.components.MapInfo
 import com.example.frontend.ui.components.Message
 import com.example.frontend.ui.components.PageBtn
-import com.example.frontend.ui.screens.book.BookSearch
-import com.example.frontend.ui.screens.book.BookTotal
-import com.example.frontend.ui.screens.info.MyPage
-import com.example.frontend.ui.screens.user.Chat
-import com.example.frontend.ui.screens.user.Register
 import com.example.frontend.ui.vo.Library
 import com.example.frontend.ui.vo.Routes
 import com.example.frontend.viewmodel.AuthViewModel
-import com.example.frontend.viewmodel.MainViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.LocationSource
 import com.google.android.gms.maps.model.LatLng
 
 var userId: String = ""
@@ -95,7 +75,7 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
                     name = "로그인",
                     onClick = {
                         val user:User = User(id, pw)
-                        authRepository.logIn(user, response)
+                        authRepository.logIn(user)
                     }
                 )
             }
