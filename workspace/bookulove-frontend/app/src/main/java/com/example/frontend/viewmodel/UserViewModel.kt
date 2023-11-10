@@ -24,7 +24,8 @@ class UserViewModel: ViewModel(){
     private val userRepository: UserRepository = UserRepository()
 
     private val _signupRes: MutableStateFlow<String> = MutableStateFlow("init")
-    val signupRes : StateFlow<String> = _signupRes
+    val signupRes : StateFlow<String>
+        get() = _signupRes
 
     fun signUp(userInfo: UserRegistDto){
         GlobalScope.async{
@@ -32,10 +33,8 @@ class UserViewModel: ViewModel(){
                 userRepository.signUp(userInfo).collect(){
                     res->
                     _signupRes.value = res;
-
                 }
             }catch (e:Exception){
-
             }
         }
     }

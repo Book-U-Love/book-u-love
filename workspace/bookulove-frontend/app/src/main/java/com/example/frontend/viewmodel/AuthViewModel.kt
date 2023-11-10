@@ -1,6 +1,7 @@
 package com.example.frontend.viewmodel
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -8,26 +9,59 @@ import com.example.frontend.data.model.Certification
 import com.example.frontend.data.model.PhoneNumber
 import com.example.frontend.data.model.User
 import com.example.frontend.data.repository.AuthRepository
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AuthViewModel: ViewModel(){
     private val authRepository: AuthRepository = AuthRepository()
-
+    private val _loginRes: MutableStateFlow<String> = MutableStateFlow("init")
+    private val _certChkRes: MutableStateFlow<String> = MutableStateFlow("init")
+    private val _certSendRes: MutableStateFlow<String> = MutableStateFlow("init")
+    val loginRes : StateFlow<String>
+        get() = _loginRes
+    val certChkRes : StateFlow<String>
+        get() = _certChkRes
+    val certSendRes : StateFlow<String>
+        get() = _certSendRes
     fun logIn(user: User){
-        viewModelScope.launch{
-//            authRepository.logIn(user, response)
+        GlobalScope.async{
+            try{
+                authRepository.logIn(user).collect(){
+                    res ->
+                    _loginRes.value = res
+                }
+            } catch (e:Exception){
+                _loginRes.value = "fail"
+            }
         }
     }
 
     fun sendCertification(phoneNumber: PhoneNumber){
-        viewModelScope.launch{
-//            authRepository.sendCertification(phoneNumber, response)
+        GlobalScope.async {
+            try {
+                authRepository.sendCertification(phoneNumber).collect(){
+                    res ->
+                    _certSendRes.value = res
+                }
+            } catch (e:Exception){
+            }
         }
     }
 
     fun checkCertification(certification: Certification){
-        viewModelScope.launch {
-//            authRepository.checkCertification(certification, response)
+        GlobalScope.async {
+            try {
+                authRepository.checkCertification(certification).collect(){
+                    res ->
+                    _certChkRes.value = res
+                }
+            } catch (e:Exception){
+
+            }
         }
     }
 }

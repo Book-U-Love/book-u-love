@@ -61,15 +61,16 @@ fun InputField(value: String, label: String, isPassword: Boolean = false, needSp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NumberField(value: String, label: String, isPassword: Boolean = false, needSpacer: Boolean = true, onValueChanged: (String) -> Unit){
+fun NumberField(value: String, label: String, isPassword: Boolean = false, needSpacer: Boolean = true, onValueChanged: (String) -> Unit, enable: Boolean = true){
     Row(verticalAlignment = Alignment.CenterVertically)
     {
         OutlinedTextField(
             value = value,
-            label = {Text(text = "label")},
-            placeholder = {Text(text = "label")},
+            label = {Text(label)},
+            placeholder = {Text(label)},
             onValueChange = {onValueChanged(it)},
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            enabled = enable
         )
     }
     Spacer(modifier = Modifier.height(30.dp))

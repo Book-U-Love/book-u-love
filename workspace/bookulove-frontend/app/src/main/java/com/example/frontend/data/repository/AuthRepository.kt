@@ -7,36 +7,37 @@ import com.example.frontend.data.api.AuthApi
 import com.example.frontend.data.model.Certification
 import com.example.frontend.data.model.PhoneNumber
 import com.example.frontend.data.model.User
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class AuthRepository(
     private val api: AuthApi = API.getInstance().create(AuthApi::class.java)
 ) {
 
-    suspend fun logIn(user: User, result: MutableState<String>){
+    suspend fun logIn(user: User): Flow<String> = flow{
         val response = api.logIn(user)
-        Log.d("find", response.body()!!.toString())
         if(response.body()!!.code == "OK"){
-            result.value = "Success"
+            emit("success")
         } else{
-            result.value = "Fail"
+            emit("fail")
         }
     }
 
-    suspend fun sendCertification(phoneNumber: PhoneNumber, result: MutableState<String>){
+    suspend fun sendCertification(phoneNumber: PhoneNumber): Flow<String> = flow{
         val response = api.sendCertification(phoneNumber)
         if(response.body()!!.code == "OK"){
-            result.value = "Success"
+            emit("success")
         } else{
-            result.value = "Fail"
+            emit("success")
         }
     }
 
-    suspend fun checkCertification(certification: Certification, result: MutableState<String>){
+    suspend fun checkCertification(certification: Certification): Flow<String> = flow{
         val response = api.checkCertification(certification)
         if(response.body()!!.code == "OK"){
-            result.value = "Success"
+            emit("success")
         } else{
-            result.value = "Fail"
+            emit("fail")
         }
     }
 }

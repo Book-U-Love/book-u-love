@@ -175,7 +175,7 @@ fun MainApp(viewModel: MainViewModel){
 fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
     NavHost(navController = navController, startDestination = Routes.BOOKTRANSACTIONREGIST) {
         composable(route = Routes.HOME) {
-            Home(navController = navController)
+            Home(navController = navController, viewModel)
             viewModel.changeState("홈")
         }
         composable(route = Routes.CHAT) {
@@ -202,7 +202,7 @@ fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
                     userId
                 )
             } else {
-                Home(navController = navController)
+                Home(navController = navController, viewModel)
             }
         }
         composable(route = Routes.BOOKSEARCH) {

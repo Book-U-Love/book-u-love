@@ -17,14 +17,16 @@ import java.lang.Exception
 
 class MainViewModel: ViewModel(){
     private val _navState = mutableStateOf("")
-
+    private val _isLogin = mutableStateOf(false)
     val navState: State<String> = _navState
-
+    val isLogin: State<Boolean> = _isLogin
     fun changeState(state:String){
         _navState.value = state
     }
 
-
+    fun changeLoginState(state: Boolean){
+        _isLogin.value = state
+    }
 }
 
 class MainViewModelFactory(): ViewModelProvider.Factory{
