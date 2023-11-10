@@ -7,7 +7,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bookulove.common.entity.BaseTimeEntity;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;

@@ -66,12 +66,15 @@ fun Project.useJwt(){
     }
 }
 
-fun Project.useQueryDsl(){
-    dependencies{
+fun Project.useQueryDsl() {
+
+    val queryDslVersion = "5.0.0"
+
+    dependencies {
         val implementation by configurations
         val annotationProcessor by configurations
         implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
-        annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}")
+        annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
         annotationProcessor("jakarta.annotation:jakarta.annotation-api")
         annotationProcessor("jakarta.persistence:jakarta.persistence-api")
     }
