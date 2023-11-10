@@ -1,4 +1,4 @@
-package org.bookulove.common.entity;
+package org.bookyoulove.chatting.adapter.out.persist.entity;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
