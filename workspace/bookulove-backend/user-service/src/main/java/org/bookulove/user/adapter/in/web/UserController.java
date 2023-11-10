@@ -8,10 +8,7 @@ import org.bookulove.common.feignclient.user.UserFindRes;
 import org.bookulove.user.adapter.in.web.dto.request.UserCreateReq;
 import org.bookulove.user.adapter.in.web.dto.request.UserUpdatePasswordReq;
 import org.bookulove.user.adapter.in.web.dto.request.UserUpdateReq;
-import org.bookulove.user.application.port.in.UserCreateUseCase;
-import org.bookulove.user.application.port.in.UserFindUseCase;
-import org.bookulove.user.application.port.in.UserUpdatePasswordUseCase;
-import org.bookulove.user.application.port.in.UserUpdateUseCase;
+import org.bookulove.user.application.port.in.*;
 import org.bookulove.user.application.port.in.dto.command.UserCreateCmd;
 import org.bookulove.user.application.port.in.dto.command.UserUpdateCmd;
 import org.bookulove.user.application.port.in.dto.command.UserUpdatePasswordCmd;
@@ -34,6 +31,7 @@ public class UserController {
     private final UserFindUseCase userFindUseCase;
     private final UserCreateUseCase userCreateUseCase;
     private final UserUpdateUseCase userUpdateUseCase;
+    private final UserFindLoginIdUseCase userFindLoginIdUseCase;
     private final UserUpdatePasswordUseCase userUpdatePasswordUseCase;
 
     @PostMapping
@@ -54,8 +52,7 @@ public class UserController {
     public ApiData<String> updateUser(@RequestBody UserUpdateReq req){
         log.info("회원정보수정 req: {}", req.toString());
 
-        String encodedPwd = (req.password() != null) ? encoder.encode(req.password()) : null;
-        userUpdateUseCase.updateUser(UserUpdateCmd.of(req, encodedPwd));
+        userUpdateUseCase.updateUser(UserUpdateCmd.of(req));
 
         return ApiData.ok("회원정보수정에 성공하였습니다.");
     }
@@ -68,6 +65,13 @@ public class UserController {
                 .updatePassword(UserUpdatePasswordCmd.of(req.oldPassword(), encoder.encode(req.newPassword())));
 
         return ApiData.ok("비밀번호 변경에 성공하였습니다.");
+    }
+
+    @GetMapping("/{loginId}")
+    public ApiData<String> findLoginId(@PathVariable("loginId") String loginId){
+        log.info("아이디 중복검사 req: {}", loginId);
+        userFindLoginIdUseCase.findLoginId(loginId);
+        return ApiData.ok("사용가능한 아이디입니다.");
     }
 
 }

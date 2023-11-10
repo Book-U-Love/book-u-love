@@ -6,23 +6,22 @@ import org.bookulove.common.annotation.PersistenceAdapter;
 import org.bookulove.common.error.ErrorCode;
 import org.bookulove.user.adapter.out.persistence.entity.UserEntity;
 import org.bookulove.user.adapter.out.persistence.repository.UserRepository;
-import org.bookulove.user.application.port.out.UserUpdatePort;
-import org.bookulove.user.application.service.UserUpdateService;
+import org.bookulove.user.application.port.out.UserUpdateNicknamePort;
 import org.bookulove.user.exception.UserServiceException;
 
 @Slf4j
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class UserUpdateAdapter implements UserUpdatePort {
+public class UserUpdateNicknameAdapter implements UserUpdateNicknamePort {
 
     private final UserRepository userRepository;
 
     @Override
-    public void updateUser(Long userId, String password, String nickname) {
+    public void updateNickname(Long userId, String nickname) {
         UserEntity user = userRepository.findById(userId).orElseThrow(
                 () -> new UserServiceException(ErrorCode.USER_NOT_FOUND)
         );
 
-        user.updateUser(password, nickname);
+        user.updateNickname(nickname);
     }
 }
