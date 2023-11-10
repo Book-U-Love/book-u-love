@@ -43,10 +43,10 @@ fun Home(navController: NavHostController, mainViewModel: MainViewModel) {
 
 @Composable
 fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainViewModel: MainViewModel){
-    val authRepository: AuthViewModel = AuthViewModel()
+    val authViewModel: AuthViewModel = AuthViewModel()
     var id by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
-    val loginRes by authRepository.loginRes.collectAsState()
+    val loginRes by authViewModel.loginRes.collectAsState()
     val errorFind = remember{ mutableStateOf(false) }
     Row(
         modifier = Modifier.fillMaxHeight(),
@@ -77,7 +77,7 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainVi
                     name = "로그인",
                     onClick = {
                         val user:User = User(id, pw)
-                        authRepository.logIn(user)
+                        authViewModel.logIn(user)
                     }
                 )
             }
