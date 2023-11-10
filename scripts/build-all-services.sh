@@ -20,7 +20,7 @@ docker run --rm -it \
     gradle:8.3.0-jdk17-jammy-docker \
     sh -c "cd /workspace && gradle clean && gradle bootBuildImage -x test --parallel --build-cache -g .gradle.cache"
 
-if test "$?" -neq 0; then
+if ! test "$?" -eq 0; then
     fatal "failed to build any of services."
 fi
 
