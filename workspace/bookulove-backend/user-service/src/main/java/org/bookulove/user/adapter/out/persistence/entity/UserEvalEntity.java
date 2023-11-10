@@ -53,7 +53,7 @@ public class UserEvalEntity extends BaseTimeEntity {
                 .grade(grade)
                 .content(content)
                 .reviewer(reviewer)
-                .reviewer(reviewee)
+                .reviewee(reviewee)
                 .build();
     }
 }

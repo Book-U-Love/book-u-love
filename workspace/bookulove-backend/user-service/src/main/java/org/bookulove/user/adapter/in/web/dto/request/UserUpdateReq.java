@@ -4,7 +4,7 @@ public record UserUpdateReq(
 
         String nickname,
 
-        String password,
+        String libraryName,
 
         double lat,
 
