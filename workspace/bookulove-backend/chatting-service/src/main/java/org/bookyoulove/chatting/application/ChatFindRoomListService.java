@@ -26,6 +26,6 @@ public class ChatFindRoomListService implements ChatFindRoomListUseCase {
         Long userId = authUtil.getUserIdByHeader();
 
         List<ChattingRoomDomain> roomList = chatFindRoomListPort.findRoomList(userId);
-
+        return null;
     }
 }
