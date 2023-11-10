@@ -9,6 +9,7 @@ spec:
     metadata:
       labels: *labels
     spec:
+      serviceAccountName: {{ include "service.release.name" (list . $service.metadata.name) }}
       containers:
       - name: apigateway-service
         image: {{ include "service.image" $service }}
