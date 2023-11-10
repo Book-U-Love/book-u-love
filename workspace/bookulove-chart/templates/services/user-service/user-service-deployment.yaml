@@ -12,6 +12,9 @@ spec:
       containers:
       - name: {{ $service.metadata.name }}
         image: {{ include "service.image" $service }}
+        {{- if .global.imagePullPolicy }}
+        imagePullPolicy: {{ .global.imagePullPolicy }}
+        {{- end }}
         env:
         {{- $datasourceHost := $service.datasource.main.host | replace "$releaseName" .Release.Name }}
         {{- $datasourcePort := $service.datasource.main.port }}

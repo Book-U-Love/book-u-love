@@ -12,6 +12,9 @@ spec:
       containers:
       - name: {{ $service.metadata.name }}
         image: {{ include "service.image" $service }}
+        {{- if .global.imagePullPolicy }}
+        imagePullPolicy: {{ .global.imagePullPolicy }}
+        {{- end }}
         env:
         {{- include "service.secret.ref" (list . $service.metadata.name "USER-DB-PASSWORD" "datasource-main-password" ) | indent 8 }}
         {{- include "service.secret.ref" (list . $service.metadata.name "JWT-SECRET" "jwt-secret") | indent 8 }}

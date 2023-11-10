@@ -1,3 +1,6 @@
+global:
+  imagePullPolicy: Always
+
 user-db:
   persistence:
     storage:
