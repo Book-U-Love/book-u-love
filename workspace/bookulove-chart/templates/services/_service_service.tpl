@@ -6,7 +6,7 @@ kind: Service
 metadata:
   name: {{ include "service.release.name" (list $root $service.metadata.name) }}
   labels: &labels
-    {{ include "service.labels" (list $root $service.metadata.name) | indent 4 }}
+    {{- include "service.labels" (list $root $service.metadata.name) | indent 4 }}
 spec:
   selector: *labels
   {{- $type := "ClusterIP "}}

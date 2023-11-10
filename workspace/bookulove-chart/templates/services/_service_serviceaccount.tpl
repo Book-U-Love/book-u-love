@@ -6,7 +6,7 @@ kind: ServiceAccount
 metadata:
   name: {{ include "service.release.name" (list $root $service.metadata.name) }}
   labels:
-    {{ include "service.labels" (list $root $service.metadata.name) | indent 4 }}
+    {{- include "service.labels" (list $root $service.metadata.name) | indent 4 }}
 secrets:
 - name: {{ include "service.release.name" (list $root $service.metadata.name) }}
 {{- end }}
