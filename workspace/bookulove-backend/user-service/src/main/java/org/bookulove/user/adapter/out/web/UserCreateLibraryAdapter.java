@@ -16,7 +16,7 @@ public class UserCreateLibraryAdapter implements UserCreateLibraryPort {
     private final UserCreateLibraryFeign libraryCreateFeign;
 
     @Override
-    public ApiData<?> createLibrary(LibraryCreateReq req) {
+    public ApiData<String> createLibrary(LibraryCreateReq req) {
         return libraryCreateFeign.createLibrary(req);
     }
 }

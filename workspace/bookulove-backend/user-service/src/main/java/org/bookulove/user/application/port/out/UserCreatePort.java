@@ -1,8 +1,10 @@
 package org.bookulove.user.application.port.out;
 
 
+import org.bookulove.user.domain.UserCreateDomain;
+
 public interface UserCreatePort {
 
-    void createUser(String id, String password, String phoneNumber, String nickname);
+    UserCreateDomain createUser(String id, String password, String phoneNumber, String nickname);
 
 }
