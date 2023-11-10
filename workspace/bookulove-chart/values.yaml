@@ -7,7 +7,7 @@ global:
 
 redis:
   auth:
-    password: *globalAuthPassword
+    enabled: false
   master:
     persistence:
       enabled: false
