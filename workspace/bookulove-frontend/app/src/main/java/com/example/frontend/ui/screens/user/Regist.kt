@@ -18,12 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.frontend.data.model.Certification
+import com.example.frontend.data.model.PhoneNumber
 import com.example.frontend.data.model.UserRegistDto
 import com.example.frontend.ui.components.FuncBtn
 import com.example.frontend.ui.components.PageBtn
 import com.example.frontend.ui.components.InputField
 import com.example.frontend.ui.components.MapInfo
 import com.example.frontend.ui.components.Message
+import com.example.frontend.ui.components.NumberField
 import com.example.frontend.ui.vo.Routes
 import com.example.frontend.viewmodel.AuthViewModel
 import com.example.frontend.viewmodel.UserViewModel
@@ -91,27 +94,27 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
                     pwCheck.value = false
                     Text(text = "비밀번호가 일치하지 않습니다", color = MaterialTheme.colorScheme.error, modifier = Modifier.height(30.dp))
                 }
-                InputField(value = phNum, label = "전화번호", onValueChanged = {phNum = it}, enable = !certCheck.value)
+                NumberField(value = phNum, label = "전화번호", onValueChanged = {phNum = it}, enable = !certCheck.value)
                 FuncBtn(
                     name = "인증번호 받기",
-//                    onClick = { authRepository.sendCertification(PhoneNumber(phNum)) },
-                    onClick = {},
+                    onClick = { authViewModel.sendCertification(PhoneNumber(phNum)) },
+//                    onClick = {},
                     enable = !certCheck.value
                 )
 
-                if(certRes == "Success"){
+                if(certRes == "success"){
                     Text(text = "인증번호가 전송되었습니다.", color = Color.Green, modifier = Modifier.height(30.dp))
                 } else{
                     Spacer(modifier = Modifier.height(30.dp))
                 }
-                InputField(value = confirmNum, label = "인증번호", onValueChanged = {confirmNum = it}, enable = !certCheck.value)
+                NumberField(value = confirmNum, label = "인증번호", onValueChanged = {confirmNum = it}, enable = !certCheck.value)
                 FuncBtn(
                     name = "인증",
-//                    onClick = { authRepository.checkCertification(Certification(phNum, confirmNum))},
-                    onClick = {certCheck.value = true},
+                    onClick = { authViewModel.checkCertification(Certification(phNum, confirmNum))},
+//                    onClick = {certCheck.value = true},
                     enable = !certCheck.value
                 )
-                if(certChkRes == "Success"){
+                if(certChkRes == "success"){
                     certCheck.value = true
                     Text(text = "인증이 성공하였습니다", color = Color.Green, modifier = Modifier.height(30.dp))
                 } else{
@@ -148,10 +151,10 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
             }
         }
         if(errChk.value){
-            Message(title = "Success", dialogClose = { errChk.value = false }, content = errMsg.value)
+            Message(title = "Error", dialogClose = { errChk.value = false }, content = errMsg.value)
         }
         if(sucChk.value){
-            Message(title = "Error", dialogClose = {sucChk.value = false}, content = sucMsg.value, confirmButton = sucFun.value)
+            Message(title = "Success", dialogClose = {sucChk.value = false}, content = sucMsg.value, confirmButton = sucFun.value)
         }
     }
 }

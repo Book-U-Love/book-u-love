@@ -24,16 +24,17 @@ import com.example.frontend.ui.components.PageBtn
 import com.example.frontend.ui.vo.Library
 import com.example.frontend.ui.vo.Routes
 import com.example.frontend.viewmodel.AuthViewModel
+import com.example.frontend.viewmodel.MainViewModel
 import com.google.android.gms.maps.model.LatLng
 
 var userId: String = ""
 @Composable
-fun Home(navController: NavHostController) {
+fun Home(navController: NavHostController, mainViewModel: MainViewModel) {
     var isLogin by remember {
-        mutableStateOf(false)
+        mutableStateOf(mainViewModel.isLogin.value)
     }
     if(!isLogin){
-        BeforeLogin(navController = navController, changePage = {isLogin = true})
+        BeforeLogin(navController = navController, changePage = {isLogin = true}, mainViewModel = mainViewModel)
     } else{
         AfterLogin(navController = navController)
     }
@@ -41,7 +42,7 @@ fun Home(navController: NavHostController) {
 
 
 @Composable
-fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
+fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainViewModel: MainViewModel){
     val authRepository: AuthViewModel = AuthViewModel()
     var id by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
@@ -81,6 +82,7 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
                 )
             }
             if(loginRes == "success"){
+                mainViewModel.changeLoginState(true)
                 changePage()
             } else if(loginRes == "fail"){
                 errorFind.value = true
