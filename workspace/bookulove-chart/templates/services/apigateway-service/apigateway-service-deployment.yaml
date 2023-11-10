@@ -1,5 +1,6 @@
+{{- $root := .}}
 {{- $service := index .Values "apigateway-service" }}
-{{ include "service.deployment.head" (list . $service.metadata.name) }}
+{{- include "service.deployment.head" (list . $service.metadata.name) }}
 spec:
   replicas: {{ $service.replicas }}
   selector:
@@ -12,18 +13,16 @@ spec:
       - name: apigateway-service
         image: {{ include "service.image" $service }}
         env:
-        - name: JWT-SECRET
-          value: {{ $service.jwt.secret }}
+        {{- include "service.secret.ref" (list . $service.metadata.name "JWT-SECRET" "jwt-secret") | indent 8 }}
         - name: REDIS-HOST
           value: {{ $service.datasource.redis.host | replace "$releaseName" .Release.Name }}
         - name: REDIS-PORT
           value: {{ $service.datasource.redis.port | quote }}
-        - name: AUTH-SERVICE
-          value: http://{{ include "service.release.name" (list . "auth-service") }}:{{ index .Values "auth-service" "server" "port" }}
-        - name: USER-SERVICE
-          value: http://{{ include "service.release.name" (list . "user-service") }}:{{ index .Values "user-service" "server" "port" }}
-        - name: BOOK-SERVICE
-          value: http://abc-book-service
+        {{- range $_, $v := $service.services }}
+        {{- $s := index $root.Values $v }}
+        - name: {{ $s.metadata.name | upper | quote }}
+          value: http://{{ include "service.release.name" (list $root $v) }}:{{ $s.server.port }}
+        {{- end }}
         - name: CHATTING-SERVICE
           value: http://abc-chatting-service
         - name: ALARM-SERVICE
