@@ -1,0 +1,29 @@
+user-db:
+  persistence:
+    storageClass: local-path
+
+book-db:
+  persistence:
+    storageClass: local-path
+
+chatting-db:
+  persistence:
+    storageClass: local-path
+
+notification-db:
+  persistence:
+    storageClass: local-path
+
+universe-db:
+  persistence:
+    storageClass: local-path
+
+ingress:
+  tls:
+    enabled: true
+    secret:
+      name: bookulove-tls
+    issuer:
+      type: ClusterIssuer
+      name: letsencrypt-prod
+  host: k9c209.p.ssafy.io
