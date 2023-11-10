@@ -25,7 +25,7 @@ if ! test "$?" -eq 0; then
 fi
 
 for image in $(docker image ls --format="{{ .Repository }}:{{ .Tag }}+{{ .ID }}"); do
-    if [[ $image =~ ^\<none\>:\<none\>\+(.+) ]]; then
+    if [[ $image =~ ^\<none\>:\<none\>\+(.+) ]] || [[ $image =~ ^bookulove/.+-service:\<none\> ]]; then
         docker image rm "$(echo "$image" | rev | cut -d+ -f1 | rev)"
     fi
 done
