@@ -10,7 +10,3 @@ metadata:
 secrets:
 - name: {{ include "service.release.name" (list $root $service.metadata.name) }}
 {{- end }}
-
-{{- define "service.service" }}
-
-{{- end }}
