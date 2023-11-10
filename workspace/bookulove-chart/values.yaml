@@ -157,3 +157,7 @@ apigateway-service:
       port: "6379"
   jwt:
     secret:
+  services:
+  - user-service
+  - auth-service
+  - book-service
