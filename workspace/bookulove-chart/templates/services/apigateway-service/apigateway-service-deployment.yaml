@@ -13,8 +13,8 @@ spec:
       containers:
       - name: apigateway-service
         image: {{ include "service.image" $service }}
-        {{- if .global.imagePullPolicy }}
-        imagePullPolicy: {{ .global.imagePullPolicy }}
+        {{- if .Values.global.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         {{- end }}
         env:
         {{- include "service.secret.ref" (list . $service.metadata.name "JWT-SECRET" "jwt-secret") | indent 8 }}
