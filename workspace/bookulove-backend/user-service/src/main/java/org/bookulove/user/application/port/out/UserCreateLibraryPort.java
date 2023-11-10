@@ -5,5 +5,5 @@ import org.bookulove.common.feignclient.book.LibraryCreateReq;
 
 public interface UserCreateLibraryPort {
 
-    ApiData<?> createLibrary(LibraryCreateReq req);
+    ApiData<String> createLibrary(LibraryCreateReq req);
 }

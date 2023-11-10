@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bookulove.book.api.library.model.db.entity.Library;
+import org.bookulove.book.api.library.model.db.entity.LibraryEntity;
 import org.bookulove.book.api.book.model.Condition;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -29,7 +29,7 @@ public class BookLibraryRelation {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    private Library library;
+    private LibraryEntity library;
 
 //    @NotNull
     @Enumerated(EnumType.STRING)
@@ -51,7 +51,7 @@ public class BookLibraryRelation {
 
 //    @Builder(toBuilder = true)
     @Builder
-    public BookLibraryRelation(@NotNull Book book, @NotNull Library library, @NotNull Condition condition, boolean allowSale, boolean allowBorrow, boolean isBorrow, String details, boolean isRemoved) {
+    public BookLibraryRelation(@NotNull Book book, @NotNull LibraryEntity library, @NotNull Condition condition, boolean allowSale, boolean allowBorrow, boolean isBorrow, String details, boolean isRemoved) {
         this.book = book;
         this.library = library;
         this.condition = condition;
@@ -62,7 +62,7 @@ public class BookLibraryRelation {
         this.isRemoved = isRemoved;
     }
 
-    public void updateLibrary(Library library) {
+    public void updateLibrary(LibraryEntity library) {
         this.library = library;
     }
 

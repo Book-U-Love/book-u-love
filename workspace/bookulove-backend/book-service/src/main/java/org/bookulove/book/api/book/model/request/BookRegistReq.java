@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import org.bookulove.book.api.book.model.Condition;
 import org.bookulove.book.api.book.model.db.entity.Book;
 import org.bookulove.book.api.book.model.db.entity.BookLibraryRelation;
-import org.bookulove.book.api.library.model.db.entity.Library;
+import org.bookulove.book.api.library.model.db.entity.LibraryEntity;
 
 public record BookRegistReq(
 
@@ -27,7 +27,7 @@ public record BookRegistReq(
 
 ) {
 
-    public BookLibraryRelation to(Book book, Library library) {
+    public BookLibraryRelation to(Book book, LibraryEntity library) {
         return BookLibraryRelation.builder()
                 .book(book)
                 .library(library)

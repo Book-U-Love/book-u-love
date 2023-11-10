@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface UserCreateLibraryFeign {
 
     @PostMapping
-    ApiData<?> createLibrary(@RequestBody @Valid LibraryCreateReq libraryRegistReq);
+    ApiData<String> createLibrary(@RequestBody @Valid LibraryCreateReq libraryRegistReq);
 
 }

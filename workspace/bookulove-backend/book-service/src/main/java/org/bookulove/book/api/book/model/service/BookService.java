@@ -13,7 +13,7 @@ import org.bookulove.book.api.book.model.db.repository.BookLibraryRelationReposi
 import org.bookulove.book.api.book.model.db.repository.BookRepository;
 import org.bookulove.book.api.book.model.request.BookUpdateReq;
 import org.bookulove.book.api.book.model.response.BookInfo;
-import org.bookulove.book.api.library.model.db.entity.Library;
+import org.bookulove.book.api.library.model.db.entity.LibraryEntity;
 import org.bookulove.book.api.library.model.db.repository.LibraryRepository;
 import org.bookulove.book.exception.BookServiceException;
 import org.bookulove.book.api.book.model.feign.AladinFeignClient;
@@ -114,7 +114,7 @@ public class BookService {
             userId = 1l;
         }
 
-        Library library = libraryRepository.findById(userId)
+        LibraryEntity library = libraryRepository.findById(userId)
                 .orElseThrow( () -> new BookServiceException(ErrorCode.LIBRARY_NOT_FOUND) );
         Book book = bookRepository.findByIsbn(bookRegistReq.isbn())
                 .orElseThrow( () -> new BookServiceException(ErrorCode.BOOK_NOT_FOUND) );
@@ -136,7 +136,7 @@ public class BookService {
             userId = 1l;
         }
 
-        Library library = libraryRepository.findById(userId)
+        LibraryEntity library = libraryRepository.findById(userId)
                 .orElseThrow( () -> new BookServiceException(ErrorCode.LIBRARY_NOT_FOUND) );
 
         List<BookInfo> res = new ArrayList<>();

@@ -1,5 +1,6 @@
 package org.bookulove.book.api.library.model.db.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -14,11 +15,13 @@ import org.hibernate.annotations.DynamicInsert;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.ALL;
+
+@Entity
 @Getter
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity
-public class Library {
+public class LibraryEntity {
 
     @Id
     private Long userId;
@@ -26,31 +29,30 @@ public class Library {
     @NotNull
     private String name;
 
-    private String description;
-
     @NotNull
     private double lat;     // 위도
 
     @NotNull
     private double lng;     // 경도
 
-    @OneToMany(mappedBy = "buid")
+    @OneToMany(mappedBy = "buid", cascade = ALL, orphanRemoval = true)
     private List<BookLibraryRelation> bookLibraryRelation = new ArrayList<>();
 
     @Builder
-    public Library(Long userId, @NotNull String name, String description, @NotNull double lat, @NotNull double lng) {
+    public LibraryEntity(Long userId, String name, double lat, double lng, List<BookLibraryRelation> bookLibraryRelation) {
         this.userId = userId;
         this.name = name;
-        this.description = description;
         this.lat = lat;
         this.lng = lng;
+        this.bookLibraryRelation = bookLibraryRelation;
     }
 
-    @Builder
-    public Library(Long userId, @NotNull String name, @NotNull double lat, @NotNull double lng) {
-        this.userId = userId;
-        this.name = name;
-        this.lat = lat;
-        this.lng = lng;
+    public static LibraryEntity of(Long userId, String name, double lat, double lng){
+        return LibraryEntity.builder()
+                .userId(userId)
+                .name(name)
+                .lat(lat)
+                .lng(lng)
+                .build();
     }
 }
