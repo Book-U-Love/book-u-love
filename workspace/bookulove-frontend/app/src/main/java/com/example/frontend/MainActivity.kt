@@ -119,13 +119,14 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
 @Composable
-fun MainApp(viewModel: MainViewModel){
+fun MainApp(mainViewModel: MainViewModel){
     val navController = rememberNavController()
     Log.d("asdf", navController.toString())
 //    val pagerState = rememberPagerState(pageCount=2)
     Surface(modifier=Modifier.addFocusCleaner(LocalFocusManager.current)){
         Scaffold(topBar = {
-            CenterAlignedTopAppBar(
+            if(mainViewModel.isLogin.value)
+                CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color.White
                 ),
@@ -135,7 +136,7 @@ fun MainApp(viewModel: MainViewModel){
                     }
                 },
                 title = {
-                    Text(text = viewModel.navState.value)
+                    Text(text = mainViewModel.navState.value)
                 },
                 actions = {
                     // RowScope here, so these icons will be placed horizontally
@@ -151,7 +152,7 @@ fun MainApp(viewModel: MainViewModel){
             )
         },
             bottomBar ={
-                com.example.frontend.ui.components.BottomAppBar(navController = navController)
+                if(mainViewModel.isLogin.value)com.example.frontend.ui.components.BottomAppBar(navController = navController)
             },
 //            floatingActionButton = {
 //                FloatingActionButton(onClick = {  }) {
@@ -165,7 +166,7 @@ fun MainApp(viewModel: MainViewModel){
                 verticalArrangement = Arrangement.spacedBy(1.dp),
             ) {
                 Divider()
-                MainNavigation(navController = navController,viewModel)
+                MainNavigation(navController = navController,mainViewModel)
             }
 
         }
@@ -173,14 +174,13 @@ fun MainApp(viewModel: MainViewModel){
 }
 @Composable
 fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
-    NavHost(navController = navController, startDestination = Routes.BOOKTRANSACTIONREGIST) {
+    NavHost(navController = navController, startDestination = Routes.HOME) {
         composable(route = Routes.HOME) {
-            Home(navController = navController)
+            Home(navController = navController, viewModel)
             viewModel.changeState("홈")
         }
         composable(route = Routes.CHAT) {
             Chat(navController)
-            Log.d("check",navController.graph.id.toString())
             viewModel.changeState("채팅")
             Log.d("stack", navController.toString())
         }
@@ -202,7 +202,7 @@ fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
                     userId
                 )
             } else {
-                Home(navController = navController)
+                Home(navController = navController, viewModel)
             }
         }
         composable(route = Routes.BOOKSEARCH) {

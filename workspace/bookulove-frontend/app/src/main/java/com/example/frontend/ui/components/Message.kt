@@ -7,17 +7,19 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun Message(
+    title: String,
     dialogClose: () -> Unit,
+    confirmButton: () -> Unit = dialogClose,
     content: String
 ){
     AlertDialog(
         onDismissRequest = { dialogClose() },
         confirmButton = {
-            TextButton(onClick = { dialogClose() }) {
+            TextButton(onClick = { confirmButton() }) {
                 Text(text = "확인")
             }
         },
-        title = {Text("Error")},
+        title = {Text(title)},
         text = {Text(content)},
     )
 }

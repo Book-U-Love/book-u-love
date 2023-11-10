@@ -3,6 +3,7 @@ package com.example.frontend.ui.screens.main
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,16 +24,17 @@ import com.example.frontend.ui.components.PageBtn
 import com.example.frontend.ui.vo.Library
 import com.example.frontend.ui.vo.Routes
 import com.example.frontend.viewmodel.AuthViewModel
+import com.example.frontend.viewmodel.MainViewModel
 import com.google.android.gms.maps.model.LatLng
 
 var userId: String = ""
 @Composable
-fun Home(navController: NavHostController) {
+fun Home(navController: NavHostController, mainViewModel: MainViewModel) {
     var isLogin by remember {
-        mutableStateOf(false)
+        mutableStateOf(mainViewModel.isLogin.value)
     }
     if(!isLogin){
-        BeforeLogin(navController = navController, changePage = {isLogin = true})
+        BeforeLogin(navController = navController, changePage = {isLogin = true}, mainViewModel = mainViewModel)
     } else{
         AfterLogin(navController = navController)
     }
@@ -40,11 +42,11 @@ fun Home(navController: NavHostController) {
 
 
 @Composable
-fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
-    val authRepository: AuthViewModel = AuthViewModel()
+fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainViewModel: MainViewModel){
+    val authViewModel: AuthViewModel = AuthViewModel()
     var id by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
-    val response = remember{ mutableStateOf("") }
+    val loginRes by authViewModel.loginRes.collectAsState()
     val errorFind = remember{ mutableStateOf(false) }
     Row(
         modifier = Modifier.fillMaxHeight(),
@@ -75,20 +77,19 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit){
                     name = "로그인",
                     onClick = {
                         val user:User = User(id, pw)
-                        authRepository.logIn(user)
+                        authViewModel.logIn(user)
                     }
                 )
             }
-            if(response.value == "Success"){
-                response.value = ""
+            if(loginRes == "success"){
+                mainViewModel.changeLoginState(true)
                 changePage()
-            } else if(response.value == "Fail"){
-                response.value = ""
+            } else if(loginRes == "fail"){
                 errorFind.value = true
             }
             when{
                 errorFind.value -> {
-                    Message(dialogClose = { errorFind.value = false }, content = "로그인 정보가 일치하지 않습니다.")
+                    Message(title = "Error", dialogClose = { errorFind.value = false }, content = "로그인 정보가 일치하지 않습니다.")
                 }
             }
         }

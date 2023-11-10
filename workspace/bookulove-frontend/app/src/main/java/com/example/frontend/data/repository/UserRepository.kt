@@ -16,6 +16,7 @@ class UserRepository(
 ) {
     suspend fun signUp(userInfo:UserRegistDto):Flow<String> = flow{
         val response = api.signUp(userInfo)
+        Log.i("find", response.body()!!.toString())
         if(response.body()!!.status == 200){
             emit("success")
         } else{
