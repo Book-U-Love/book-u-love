@@ -98,6 +98,33 @@ user-service:
         user: root
         password: *globalAuthPassword
 
+auth-service:
+  metadata:
+    org: bookulove
+    name: auth-service
+    version: 1.0.0
+  replicas: 1
+  server:
+    port: 9002
+  datasource:
+    main:
+      host: "$releaseName-user-db"
+      port: 3306
+      auth:
+        user: root
+        password: *globalAuthPassword
+    redis:
+      host: "$releaseName-redis-master"
+      port: 6379
+  jwt:
+    secret:
+    accessExpirationTime: "3600000"
+    refreshExpirationTime: "43200000"
+  coolSMS:
+    sender:
+    apiKey:
+    apiSecretKey:
+
 apigateway-service:
   metadata:
     org: bookulove
@@ -110,3 +137,5 @@ apigateway-service:
     redis:
       host: "$releaseName-redis-master"
       port: "6379"
+  jwt:
+    secret:

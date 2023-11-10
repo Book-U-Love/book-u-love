@@ -13,13 +13,13 @@ spec:
         image: {{ include "service.image" $service }}
         env:
         - name: JWT-SECRET
-          value: bookulove01234567890123456789012345678901234567890123456789
+          value: {{ $service.jwt.secret }}
         - name: REDIS-HOST
           value: {{ $service.datasource.redis.host | replace "$releaseName" .Release.Name }}
         - name: REDIS-PORT
           value: {{ $service.datasource.redis.port | quote }}
         - name: AUTH-SERVICE
-          value: http://abc-auth-service
+          value: http://{{ include "service.release.name" (list . "auth-service") }}:{{ index .Values "auth-service" "server" "port" }}
         - name: USER-SERVICE
           value: http://{{ include "service.release.name" (list . "user-service") }}:{{ index .Values "user-service" "server" "port" }}
         - name: BOOK-SERVICE
