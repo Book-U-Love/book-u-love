@@ -54,6 +54,15 @@ spring:
           filters:
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
 
+        #중복 아이디 체크
+        - id: user-id-check
+          uri: ${USER-SERVICE}
+          predicates:
+            - Path=/api/user-service/users/{loginId}
+            - Method=GET
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
         #도서관 등록
         - id: library-create
           uri: ${BOOK-SERVICE}
@@ -137,7 +146,6 @@ spring:
   redis:
     host: ${REDIS-HOST}
     port: ${REDIS-PORT}
-    password: ${REDIS-PASSWORD}
 
 jwt:
   secret: ${JWT-SECRET}

@@ -13,11 +13,12 @@ import java.util.List;
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 @Table(name = "user")
 @Entity
 @Getter
-@NoArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class UserEntity extends BaseTimeEntity {
 
     @Id
@@ -75,12 +76,11 @@ public class UserEntity extends BaseTimeEntity {
         return UserFindRes.of(loginId, nickname, phoneNumber, allowNoti);
     }
 
-    public void updateUser(String password, String nickname) {
-        if (password != null) {
-            this.password = password;
-        }
-        if (nickname != null) {
-            this.nickname = nickname;
-        }
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

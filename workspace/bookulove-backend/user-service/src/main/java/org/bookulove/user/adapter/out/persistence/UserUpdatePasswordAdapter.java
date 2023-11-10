@@ -22,6 +22,6 @@ public class UserUpdatePasswordAdapter implements UserUpdatePasswordPort {
                 () -> new UserServiceException(ErrorCode.USER_NOT_FOUND)
         );
 
-        user.updateUser(newPassword, null);
+        user.updatePassword(newPassword);
     }
 }

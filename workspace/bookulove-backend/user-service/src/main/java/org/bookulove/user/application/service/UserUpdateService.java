@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bookulove.common.annotation.UseCase;
 import org.bookulove.common.util.AuthUtil;
-import org.bookulove.user.adapter.out.persistence.UserUpdateAdapter;
-import org.bookulove.user.adapter.out.persistence.entity.UserEntity;
 import org.bookulove.user.application.port.in.UserUpdateUseCase;
 import org.bookulove.user.application.port.in.dto.command.UserUpdateCmd;
+import org.bookulove.user.application.port.out.UserUpdateNicknamePort;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
@@ -17,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserUpdateService implements UserUpdateUseCase {
 
     private final AuthUtil authUtil;
-    private final UserUpdateAdapter userUpdateAdapter;
+    private final UserUpdateNicknamePort userUpdateNicknamePort;
 
     @Override
     public void updateUser(UserUpdateCmd cmd) {
@@ -26,6 +25,6 @@ public class UserUpdateService implements UserUpdateUseCase {
 
         // TODO: 2023-11-03 library feign client need
 
-        userUpdateAdapter.updateUser(userId, cmd.password(), cmd.nickname());
+        userUpdateNicknamePort.updateNickname(userId, cmd.nickname());
     }
 }
