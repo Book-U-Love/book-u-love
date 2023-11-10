@@ -125,6 +125,24 @@ auth-service:
     apiKey:
     apiSecretKey:
 
+book-service:
+  metadata:
+    org: bookulove
+    name: book-service
+    version: 1.0.0
+  replicas: 1
+  server:
+    port: 9004
+  datasource:
+    main:
+      host: "$releaseName-book-db"
+      port: 3306
+      auth:
+        user: root
+        password: *globalAuthPassword
+  aladin:
+    apiKey:
+
 apigateway-service:
   metadata:
     org: bookulove

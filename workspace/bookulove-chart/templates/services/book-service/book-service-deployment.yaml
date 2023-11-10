@@ -1,0 +1,33 @@
+{{ $service := index .Values "book-service" }}
+{{ include "service.deployment.head" (list . $service.metadata.name) }}
+spec:
+  replicas: {{ $service.replicas }}
+  selector:
+    matchLabels: *labels
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      serviceAccountName: {{ include "service.release.name" (list . $service.metadata.name) }}
+      containers:
+      - name: {{ $service.metadata.name }}
+        image: {{ include "service.image" $service }}
+        env:
+        {{ include "service.secret.ref" (list . $service.metadata.name "BOOK-DB-PASSWORD" "datasource-main-password") | indent 8 }}
+        {{ include "service.secret.ref" (list . $service.metadata.name "ALADIN-SECRET-KEY" "aladin-api-key") | indent 8 }}
+        {{- $datasourceHost := $service.datasource.main.host | replace "$releaseName" .Release.Name }}
+        {{- $datasourcePort := $service.datasource.main.port  }}
+        - name: BOOK-DB-URL
+          value: "jdbc:mysql://{{ $datasourceHost }}:{{ $datasourcePort }}/bookulove?characterEncoding=utf8"
+        - name: BOOK-DB-USERNAME
+          value: {{ $service.datasource.main.auth.user | quote }}
+        ports:
+        - containerPort: {{ $service.server.port }}
+        livenessProbe:
+          tcpSocket:
+            port: {{ $service.server.port }}
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          periodSeconds: 10
