@@ -3,7 +3,7 @@ global:
     password: &globalAuthPassword bookulove
   persistence:
     storage:
-      storageClass: &globalStorageClass standard
+      storageClass: standard
 
 redis:
   auth:
@@ -25,7 +25,7 @@ user-db:
       CREATE DATABASE IF NOT EXISTS `bookulove` DEFAULT CHARSET='utf8mb4' COLLATE='utf8mb4_unicode_ci';
   persistence:
     storage:
-      storageClass: *globalStorageClass
+      storageClass: standard
       size: 1Gi
 
 book-db:
@@ -35,7 +35,7 @@ book-db:
   initDBScripts: *mySQLInitDBScripts
   persistence:
     storage:
-      storageClass: *globalStorageClass
+      storageClass: standard
       size: 1Gi
 
 chatting-db:
@@ -45,7 +45,7 @@ chatting-db:
   initDBScripts: *mySQLInitDBScripts
   persistence:
     storage:
-      storageClass: *globalStorageClass
+      storageClass: standard
       size: 1Gi
 
 notification-db:
@@ -55,7 +55,7 @@ notification-db:
   initDBScripts: *mySQLInitDBScripts
   persistence:
     storage:
-      storageClass: *globalStorageClass
+      storageClass: standard
       size: 1Gi
 
 universe-db:
@@ -64,7 +64,7 @@ universe-db:
     password: *globalAuthPassword
   persistence:
     storage:
-      storageClass: *globalStorageClass
+      storageClass: standard
       size: 4Gi
   multiSourceReplication:
     sources:
