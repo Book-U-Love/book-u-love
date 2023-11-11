@@ -28,7 +28,7 @@ data class Certification(
     val authCode: String
 )
 
-data class Tmp(
+data class Token(
     val status: Number,
     val code: String,
     val data: Map<String, String>

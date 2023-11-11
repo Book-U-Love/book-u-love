@@ -1,5 +1,6 @@
 package com.example.frontend.ui.screens.main
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.frontend.R
 import com.example.frontend.data.model.User
+import com.example.frontend.data.repository.PrefsRepository
 import com.example.frontend.ui.components.FuncBtn
 import com.example.frontend.ui.components.InputField
 import com.example.frontend.ui.components.MapInfo
@@ -106,6 +108,7 @@ fun AfterLogin(navController: NavHostController){
         Library("ssafy3", LatLng(37.42267105057816,-122.07498723804952), "Test4", "Test1"),
         Library("ssafy4", LatLng(37.42267105057816,-122.05498723804952), "Test5", "Test1"),
     )
+    Log.d("accessTokne", PrefsRepository().getValue("accessToken"))
     Column(modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
