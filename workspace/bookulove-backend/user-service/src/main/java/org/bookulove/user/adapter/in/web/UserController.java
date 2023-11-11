@@ -4,7 +4,7 @@ package org.bookulove.user.adapter.in.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bookulove.common.feignclient.user.UserFindRes;
+import org.bookulove.common.feignclient.user.UserFindInfoRes;
 import org.bookulove.user.adapter.in.web.dto.request.UserCreateReq;
 import org.bookulove.user.adapter.in.web.dto.request.UserUpdatePasswordReq;
 import org.bookulove.user.adapter.in.web.dto.request.UserUpdateReq;
@@ -12,10 +12,8 @@ import org.bookulove.user.application.port.in.*;
 import org.bookulove.user.application.port.in.dto.command.UserCreateCmd;
 import org.bookulove.user.application.port.in.dto.command.UserUpdateCmd;
 import org.bookulove.user.application.port.in.dto.command.UserUpdatePasswordCmd;
-import org.bookulove.user.exception.UserServiceException;
 import org.bookulove.common.annotation.WebAdapter;
 import org.bookulove.common.api.response.ApiData;
-import org.bookulove.common.error.ErrorCode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,9 +41,29 @@ public class UserController {
     }
 
     @GetMapping
-    public ApiData<UserFindRes> findUser(){
-        log.info("회원조회");
+    public ApiData<UserFindInfoRes> findUser(){
+        log.info("회원조회 req");
         return ApiData.ok(userFindUseCase.findUser());
+    }
+
+    @GetMapping("/{userId}")
+    public ApiData<?> findUserByUserId(@PathVariable Long userId){
+
+        log.info("회원조회 req");
+        return null;
+    }
+
+    @GetMapping("/info")
+    public ApiData<?> findUserInfo(){
+        log.info("마이페이지 req");
+
+        return null;
+    }
+
+    @GetMapping("/info/{userId}")
+    public ApiData<?> findUserInfoByUserId(){
+        log.info("마이페이지 req");
+        return null;
     }
 
     @PatchMapping

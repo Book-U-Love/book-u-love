@@ -10,7 +10,7 @@ import org.bookulove.user.application.port.in.dto.command.UserCreateCmd;
 import org.bookulove.user.application.port.out.UserCreateLibraryPort;
 import org.bookulove.user.application.port.out.UserCreatePort;
 import org.bookulove.common.annotation.UseCase;
-import org.bookulove.user.domain.UserCreateDomain;
+import org.bookulove.user.domain.UserDomain;
 import org.bookulove.user.exception.UserServiceException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,13 +27,13 @@ public class UserCreateService implements UserCreateUseCase {
     public void createUser(UserCreateCmd cmd) {
         log.info("회원가입 cmd: {}", cmd);
 
-        UserCreateDomain userCreateDomain =
+        UserDomain userDomain =
                 userCreatePort.createUser(cmd.Id(),
                         cmd.password(),
                         cmd.phoneNumber(),
                         cmd.nickname());
 
-        ApiData<String> td = libraryCreatePort.createLibrary(LibraryCreateReq.of(userCreateDomain.id(), cmd.libraryName(), cmd.lat(), cmd.lng()));
+        ApiData<String> td = libraryCreatePort.createLibrary(LibraryCreateReq.of(userDomain.id(), cmd.libraryName(), cmd.lat(), cmd.lng()));
         log.info("Feign result: {}", td);
 
         if (td.status() != 200) {

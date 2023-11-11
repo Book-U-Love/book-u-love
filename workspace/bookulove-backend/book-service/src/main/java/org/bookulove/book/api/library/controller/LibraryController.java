@@ -7,10 +7,8 @@ import org.bookulove.book.api.library.model.request.LibraryCreateCmd;
 import org.bookulove.common.feignclient.book.LibraryCreateReq;
 import org.bookulove.book.api.library.model.service.LibraryService;
 import org.bookulove.common.api.response.ApiData;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.bookulove.common.feignclient.book.LibraryFindRes;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -25,6 +23,12 @@ public class LibraryController {
         log.info("도서관생성 req: {}", req);
         libraryService.createLibrary(LibraryCreateCmd.of(req));
         return ApiData.ok("도서관 생성이 완료되었습니다.");
+    }
+
+    @GetMapping
+    ApiData<LibraryFindRes> findLibrary(){
+        log.info("도서관 조회");
+        return ApiData.ok(libraryService.findLibrary());
     }
 
 

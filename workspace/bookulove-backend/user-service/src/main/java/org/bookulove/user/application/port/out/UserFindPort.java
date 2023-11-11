@@ -1,8 +1,9 @@
 package org.bookulove.user.application.port.out;
 
-import org.bookulove.common.feignclient.user.UserFindRes;
+import org.bookulove.common.feignclient.user.UserFindInfoRes;
+import org.bookulove.user.domain.UserDomain;
 
 public interface UserFindPort {
 
-    UserFindRes findUser(Long userId);
+    UserDomain findUser(Long userId);
 }

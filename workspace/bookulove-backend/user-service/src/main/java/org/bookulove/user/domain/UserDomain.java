@@ -2,7 +2,7 @@ package org.bookulove.user.domain;
 
 import org.bookulove.user.adapter.out.persistence.entity.UserEntity;
 
-public record UserCreateDomain(
+public record UserDomain(
 
         Long id,
 
@@ -18,8 +18,8 @@ public record UserCreateDomain(
 
 ) {
 
-    public static UserCreateDomain of(UserEntity user){
-        return new UserCreateDomain(user.getId(),
+    public static UserDomain of(UserEntity user){
+        return new UserDomain(user.getId(),
                 user.getLoginId(),
                 user.getPassword(),
                 user.getPhoneNumber(),

@@ -24,4 +24,14 @@ public class AuthUtil {
             throw new InvalidValueException(ErrorCode.UNAUTHORIZATION_ERROR);
         }
     }
+
+    public String getTokenByHeader(){
+        ServletRequestAttributes attributes =
+                (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+
+        String token = attributes.getRequest().getHeader("Authorization");
+        log.info("보유중인 토큰: {}", token);
+
+        return token;
+    }
 }
