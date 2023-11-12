@@ -7,6 +7,7 @@ import org.bookulove.book.api.library.model.request.LibraryCreateCmd;
 import org.bookulove.common.feignclient.book.LibraryCreateReq;
 import org.bookulove.book.api.library.model.service.LibraryService;
 import org.bookulove.common.api.response.ApiData;
+import org.bookulove.common.feignclient.book.LibraryFindListRes;
 import org.bookulove.common.feignclient.book.LibraryFindRes;
 import org.bookulove.common.feignclient.book.LibraryUpdateReq;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,12 @@ public class LibraryController {
         log.info("도서관변경 req: {}", req);
         libraryService.updateLibrary(req);
         return ApiData.ok("도서관 변경이 완료되었습니다.");
+    }
+
+    @GetMapping("/list")
+    ApiData<LibraryFindListRes> findLibraryList(){
+        log.info("도서관 목록 req");
+        return ApiData.ok(libraryService.findLibraryList());
     }
 
 
