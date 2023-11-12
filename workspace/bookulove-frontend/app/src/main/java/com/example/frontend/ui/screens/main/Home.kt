@@ -1,5 +1,6 @@
 package com.example.frontend.ui.screens.main
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -25,24 +26,25 @@ import com.example.frontend.ui.vo.Library
 import com.example.frontend.ui.vo.Routes
 import com.example.frontend.viewmodel.AuthViewModel
 import com.example.frontend.viewmodel.MainViewModel
+import com.example.frontend.viewmodel.UserViewModel
 import com.google.android.gms.maps.model.LatLng
 
 var userId: String = ""
 @Composable
-fun Home(navController: NavHostController, mainViewModel: MainViewModel, authViewModel: AuthViewModel) {
+fun Home(navController: NavHostController, mainViewModel: MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel) {
     var isLogin by remember {
         mutableStateOf(mainViewModel.isLogin.value)
     }
     if(!isLogin){
-        BeforeLogin(navController = navController, changePage = {isLogin = true}, mainViewModel, authViewModel)
+        BeforeLogin(navController = navController, changePage = {isLogin = true}, mainViewModel, userViewModel,  authViewModel)
     } else{
-        AfterLogin(navController = navController)
+        AfterLogin(navController = navController, userViewModel, authViewModel)
     }
 }
 
 
 @Composable
-fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainViewModel: MainViewModel, authViewModel: AuthViewModel){
+fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainViewModel: MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel){
     var id by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
     val loginRes by authViewModel.loginRes.collectAsState()
@@ -95,18 +97,13 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainVi
 }
 
 @Composable
-fun AfterLogin(navController: NavHostController){
+fun AfterLogin(navController: NavHostController, userViewModel: UserViewModel, authViewModel: AuthViewModel){
     val pos = remember { mutableStateOf(LatLng(0.0, 0.0)) }
-    var libList: List<Library> = listOf(
-        Library("ssafy", LatLng(37.42267105057816,-122.08498723804952), "Test1", "Test1"),
-        Library("ssafy1", LatLng(37.41267105057816,-122.08498723804952), "Test2", "Test1"),
-        Library("ssafy2", LatLng(37.40267105057816,-122.08498723804952), "Test3", "Test1"),
-        Library("ssafy3", LatLng(37.42267105057816,-122.07498723804952), "Test4", "Test1"),
-        Library("ssafy4", LatLng(37.42267105057816,-122.05498723804952), "Test5", "Test1"),
-    )
+    userViewModel.getLibraryList(authViewModel.accessToken.value)
+    val list = userViewModel.libraryList
     Column(modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
-        MapInfo(pos = pos, libList = libList, height = 800, navController = navController)
+        MapInfo(pos = pos, libList = list.value, height = 800, navController = navController)
     }
 }

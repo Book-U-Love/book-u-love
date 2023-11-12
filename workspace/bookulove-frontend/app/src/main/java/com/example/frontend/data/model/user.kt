@@ -45,3 +45,9 @@ data class MapData(
     val code: String,
     val data: Map<String, Object>
 )
+
+data class LibraryList(
+    val status: Int,
+    val code: String,
+    val data: Map<String, List<UserRegistDto>>
+)

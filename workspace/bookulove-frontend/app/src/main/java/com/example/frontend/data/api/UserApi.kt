@@ -1,6 +1,7 @@
 package com.example.frontend.data.api
 
 import com.example.frontend.data.model.Default
+import com.example.frontend.data.model.LibraryList
 import com.example.frontend.data.model.MapData
 import com.example.frontend.data.model.ModifyPw
 import com.example.frontend.data.model.ModifyUser
@@ -27,4 +28,7 @@ interface UserApi {
 
     @PATCH("user-service/users/password")
     suspend fun modifyPassword(@Header("Authorization") token: String, @Body modifyPw: ModifyPw): Response<Default>
+
+    @GET("user-service/users/list")
+    suspend fun getLibraryList(@Header("Authorization") token: String): Response<LibraryList>
 }

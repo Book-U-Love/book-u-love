@@ -76,35 +76,35 @@ fun MyPage(navController : NavHostController, isMine: Boolean = false, userId: S
                     }
                }
           }
-          item{
-               Text(
-                    "유저평점",
-                    fontSize = 25.sp,
-                    modifier = Modifier.padding(30.dp),
-                    fontWeight = FontWeight.Bold
-               )
-               Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-               ){
-                    for (i : Int in 1..3){
-                         Image(
-                              painter = painterResource(id = R.drawable.ic_star_yellow),
-                              contentDescription = null,
-                              contentScale = ContentScale.Fit,
-                              modifier = Modifier.size(30.dp)
-                         )
-                    }
-                    for (i : Int in 4..5) {
-                         Image(
-                              painter = painterResource(id = R.drawable.ic_star),
-                              contentDescription = null,
-                              contentScale = ContentScale.Fit,
-                              modifier = Modifier.size(30.dp)
-                         )
-                    }
-               }
-          }
+//          item{
+//               Text(
+//                    "유저평점",
+//                    fontSize = 25.sp,
+//                    modifier = Modifier.padding(30.dp),
+//                    fontWeight = FontWeight.Bold
+//               )
+//               Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.SpaceEvenly
+//               ){
+//                    for (i : Int in 1..3){
+//                         Image(
+//                              painter = painterResource(id = R.drawable.ic_star_yellow),
+//                              contentDescription = null,
+//                              contentScale = ContentScale.Fit,
+//                              modifier = Modifier.size(30.dp)
+//                         )
+//                    }
+//                    for (i : Int in 4..5) {
+//                         Image(
+//                              painter = painterResource(id = R.drawable.ic_star),
+//                              contentDescription = null,
+//                              contentScale = ContentScale.Fit,
+//                              modifier = Modifier.size(30.dp)
+//                         )
+//                    }
+//               }
+//          }
           item{
                Text(
                     "도서 관리",

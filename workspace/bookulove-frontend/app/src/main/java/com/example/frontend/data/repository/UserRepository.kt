@@ -57,4 +57,14 @@ class UserRepository(
             emit("fail")
         }
     }
+
+    suspend fun getLibraryList(token: String):Flow<List<UserRegistDto>> = flow{
+        val response = api.getLibraryList(token)
+        val list: List<UserRegistDto>? = response.body()!!.data.get("userFindInfoResList")
+        if(response.body()!!.status == 200){
+            if(list != null){
+                emit(list)
+            }
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.example.frontend.viewmodel
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,6 +32,7 @@ class UserViewModel: ViewModel(){
     private val _userInfo: MutableState<Map<String, String>> = mutableStateOf(mapOf())
     private val _modifyRes: MutableStateFlow<String> = MutableStateFlow("init")
     private val _modifyPwRes: MutableStateFlow<String> = MutableStateFlow("init")
+    private val _libraryList: MutableState<List<UserRegistDto>> = mutableStateOf(listOf())
     val signupRes : StateFlow<String>
         get() = _signupRes
     val userInfo : State<Map<String, String>> = _userInfo
@@ -38,6 +40,7 @@ class UserViewModel: ViewModel(){
         get() = _modifyRes
     val modiyfPwRes: StateFlow<String>
         get() = _modifyPwRes
+    val libraryList: State<List<UserRegistDto>> = _libraryList
     fun resetState(){
         _modifyRes.value = "init'"
     }
@@ -88,6 +91,18 @@ class UserViewModel: ViewModel(){
                     _modifyPwRes.value = res
                 }
             } catch (e:Exception){
+            }
+        }
+    }
+
+    fun getLibraryList(token: String){
+        GlobalScope.async {
+            try{
+                userRepository.getLibraryList(token).collect(){
+                    res ->
+                    _libraryList.value = res
+                }
+            } catch (e: Exception){
             }
         }
     }
