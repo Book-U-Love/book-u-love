@@ -9,6 +9,7 @@ import org.bookulove.book.api.library.model.request.LibraryCreateCmd;
 import org.bookulove.book.exception.BookServiceException;
 import org.bookulove.common.error.ErrorCode;
 import org.bookulove.common.feignclient.book.LibraryFindRes;
+import org.bookulove.common.feignclient.book.LibraryUpdateReq;
 import org.bookulove.common.util.AuthUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,15 @@ public class LibraryService {
 
         log.info("도서관 정보: {}", libraryFindRes);
         return libraryFindRes;
+    }
+
+    public void updateLibrary(LibraryUpdateReq req) {
+        Long userId = authUtil.getUserIdByHeader();
+        LibraryEntity libraryEntity =  libraryRepository.findById(userId).orElseThrow(
+                () -> new BookServiceException(ErrorCode.LIBRARY_NOT_FOUND)
+        );
+
+        libraryEntity.update(req.name(), req.lat(), req.lng());
     }
 
 

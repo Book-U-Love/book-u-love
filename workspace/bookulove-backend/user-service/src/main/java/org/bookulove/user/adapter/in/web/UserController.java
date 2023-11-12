@@ -48,7 +48,6 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ApiData<?> findUserByUserId(@PathVariable Long userId){
-
         log.info("회원조회 req");
         return null;
     }
