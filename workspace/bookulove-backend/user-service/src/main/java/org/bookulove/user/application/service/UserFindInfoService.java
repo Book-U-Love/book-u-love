@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @UseCase
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class UserFindService implements UserFindUseCase {
+public class UserFindInfoService implements UserFindUseCase {
 
     private final AuthUtil authUtil;
     private final UserFindPort userFindPort;
@@ -29,6 +29,27 @@ public class UserFindService implements UserFindUseCase {
     public UserFindInfoRes findUser() {
         Long userId = authUtil.getUserIdByHeader();
 
+        UserDomain userDomain = userFindPort.findUser(userId);
+
+        String token = authUtil.getTokenByHeader();
+
+        ApiData<LibraryFindRes> libraryFindRes = userFindLibraryPort.findLibrary(token);
+        if(libraryFindRes.status() != 200){
+            throw new UserServiceException(ErrorCode.LIBRARY_NOT_FOUND);
+        }
+
+        return UserFindInfoRes.of(userDomain.id(),
+                userDomain.loginId(),
+                userDomain.nickname(),
+                userDomain.phoneNumber(),
+                userDomain.allowNoti(),
+                libraryFindRes.data().libraryName(),
+                libraryFindRes.data().lat(),
+                libraryFindRes.data().lng());
+    }
+
+    @Override
+    public UserFindInfoRes findUser(Long userId) {
         UserDomain userDomain = userFindPort.findUser(userId);
 
         String token = authUtil.getTokenByHeader();
