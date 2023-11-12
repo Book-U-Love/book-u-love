@@ -29,12 +29,12 @@ import com.google.android.gms.maps.model.LatLng
 
 var userId: String = ""
 @Composable
-fun Home(navController: NavHostController, mainViewModel: MainViewModel) {
+fun Home(navController: NavHostController, mainViewModel: MainViewModel, authViewModel: AuthViewModel) {
     var isLogin by remember {
         mutableStateOf(mainViewModel.isLogin.value)
     }
     if(!isLogin){
-        BeforeLogin(navController = navController, changePage = {isLogin = true}, mainViewModel = mainViewModel)
+        BeforeLogin(navController = navController, changePage = {isLogin = true}, mainViewModel, authViewModel)
     } else{
         AfterLogin(navController = navController)
     }
@@ -42,8 +42,7 @@ fun Home(navController: NavHostController, mainViewModel: MainViewModel) {
 
 
 @Composable
-fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainViewModel: MainViewModel){
-    val authViewModel: AuthViewModel = AuthViewModel()
+fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainViewModel: MainViewModel, authViewModel: AuthViewModel){
     var id by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
     val loginRes by authViewModel.loginRes.collectAsState()
@@ -86,11 +85,10 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainVi
                 changePage()
             } else if(loginRes == "fail"){
                 errorFind.value = true
+                authViewModel.resetState()
             }
-            when{
-                errorFind.value -> {
-                    Message(title = "Error", dialogClose = { errorFind.value = false }, content = "로그인 정보가 일치하지 않습니다.")
-                }
+            if(errorFind.value){
+                Message(title = "Error", dialogClose = { errorFind.value = false }, content = "로그인 정보가 일치하지 않습니다.")
             }
         }
     }

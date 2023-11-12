@@ -28,8 +28,20 @@ data class Certification(
     val authCode: String
 )
 
-data class Tmp(
-    val status: Number,
+data class ModifyUser(
+    var nickname: String,
+    var libraryName: String,
+    var lat: Double,
+    var lng: Double
+)
+
+data class ModifyPw(
+    var oldPassword: String,
+    var newPassword: String
+)
+
+data class MapData(
+    val status: Int,
     val code: String,
-    val data: Map<String, String>
+    val data: Map<String, Object>
 )
