@@ -35,6 +35,9 @@ public enum ErrorCode {
     LIBRARY_CREATE_ERROR(400, "L001", "Library create error!"),
     LIBRARY_NOT_FOUND(400, "L002", "Library not found error!"),
 
+    // Review
+    REVIEW_NOT_FOUND(400, "R001", "Review not found error!"),
+
     // User
     USER_NOT_FOUND(400, "U001", "User not found error!"),
     PASSWORD_NOT_MATCH(400, "U002", "Password not matched error!"),

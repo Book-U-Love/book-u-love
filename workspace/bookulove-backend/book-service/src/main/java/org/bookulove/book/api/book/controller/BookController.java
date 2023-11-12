@@ -36,19 +36,29 @@ class BookController {
     @PostMapping
     ApiData<String> regist(@RequestBody final BookRegistReq bookRegistReq) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
-
+        log.info("책 등록 req: {}", bookRegistReq);
         bookService.regist(bookRegistReq);
 
         log.info(logCurrent(getClassName(), getMethodName(), END));
         return ApiData.ok("도서 등록이 완료되었습니다.");
     }
 
-    @GetMapping
-    ApiData<List<BookInfo>> getBookList() {
+    @GetMapping("/list")
+    ApiData<List<BookInfo>> getBookList(@RequestParam boolean sale,
+                                        @RequestParam boolean borrow) {
         log.info(logCurrent(getClassName(), getMethodName(), VIA));
-        return ApiData.ok(bookService.getBookList());
+        return ApiData.ok(bookService.getBookList(sale, borrow));
     }
 
+    @GetMapping("/list/{userId}")
+    ApiData<List<BookInfo>> getBookListById(@PathVariable Long userId,
+                                            @RequestParam boolean sale,
+                                            @RequestParam boolean borrow) {
+        log.info(logCurrent(getClassName(), getMethodName(), VIA));
+        return ApiData.ok(bookService.getBookList(userId,sale, borrow));
+    }
+
+    // TODO: 2023-11-12
     @PatchMapping
     ApiData<String> update(@RequestBody final BookUpdateReq bookUpdateReq) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
@@ -57,6 +67,13 @@ class BookController {
 
         log.info(logCurrent(getClassName(), getMethodName(), END));
         return ApiData.ok("도서 수정이 완료되었습니다.");
+    }
+
+    // TODO: 2023-11-12
+    @GetMapping
+    ApiData<?> findBook(){
+
+        return null;
     }
 
 }

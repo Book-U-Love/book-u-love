@@ -42,3 +42,6 @@ custom:
     type: ISBN13
     output: js
     version: 20131101
+
+domain:
+  url: ${DOMAIN-URL}

@@ -35,7 +35,7 @@ public class LibraryEntity {
     @NotNull
     private double lng;     // 경도
 
-    @OneToMany(mappedBy = "buid", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "library", cascade = ALL, orphanRemoval = true)
     private List<BookLibraryRelation> bookLibraryRelation = new ArrayList<>();
 
     @Builder
