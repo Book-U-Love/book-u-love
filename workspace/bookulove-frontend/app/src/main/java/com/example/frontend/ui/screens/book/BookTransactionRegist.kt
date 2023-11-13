@@ -43,7 +43,7 @@ fun BookTransactionRegist(){
             Box(){
                 Column {
                     Text("책 선택하기", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                    DropDown()
+                    DropDown(listOf("책1","책2","책3"))
                 }
             }
             Box(modifier = Modifier.padding(top=15.dp)){

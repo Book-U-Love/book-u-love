@@ -1,14 +1,10 @@
 package com.example.frontend.viewmodel
 
-import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.example.frontend.data.model.Certification
 import com.example.frontend.data.model.PhoneNumber
 import com.example.frontend.data.model.User
@@ -18,8 +14,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+
 
 class AuthViewModel(): ViewModel(){
     private val authRepository: AuthRepository = AuthRepository()
@@ -50,10 +45,8 @@ class AuthViewModel(): ViewModel(){
             try{
                 authRepository.logIn(user).collect(){
                     res ->
-                    _loginRes.value = res.get("msg").toString()
-                    setAccessToken(res.get("accessToken").toString())
+                    _loginRes.value = res;
                 }
-                Log.d("test","성공은 함")
                 Log.d("res",PrefsRepository().getValue("accessToken"))
             } catch (e:Exception){
                 _loginRes.value = "fail"

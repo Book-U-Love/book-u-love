@@ -11,3 +11,11 @@ data class Book(
     val category: String,
     val price: Number,
 )
+
+data class BookRegistReq(
+    val isbn:String,
+    val condition:Int,
+    val allowSale:Boolean,
+    val allowBorrow:Boolean,
+    val details:String,
+)
