@@ -53,8 +53,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.frontend.data.local.addFocusCleaner
 import com.example.frontend.ui.components.BookReportDetail
+import com.example.frontend.ui.components.BookReportRegist
 import com.example.frontend.ui.screens.book.BookList
-import com.example.frontend.ui.screens.book.BookRegist
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
 import com.example.frontend.ui.screens.book.BookTransactionRegist
@@ -186,7 +186,7 @@ fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authView
 }
 @Composable
 fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel,bookViewModel: BookViewModel){
-    NavHost(navController = navController, startDestination = Routes.BOOKREGIST) {
+    NavHost(navController = navController, startDestination = Routes.BOOKTOTAL) {
         composable(route = Routes.HOME) {
             Home(navController = navController, mainViewModel, userViewModel, authViewModel)
             mainViewModel.changeState("홈")
@@ -194,12 +194,10 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
         composable(route = Routes.CHAT) {
             Chat(navController)
             mainViewModel.changeState("채팅")
-            Log.d("stack", navController.toString())
         }
         composable(route = Routes.MYPAGE) {
             MyPage(navController,true,"asdf", authViewModel, userViewModel)
             mainViewModel.changeState("마이페이지")
-            Log.d("stack", navController.toString())
         }
         composable(route = Routes.MYPAGE + "/{userId}",
                 arguments = listOf(navArgument("userId"){
@@ -222,12 +220,10 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
         composable(route = Routes.BOOKSEARCH) {
             BookSearch(navController)
             mainViewModel.changeState("검색")
-            Log.d("stack", navController.toString())
         }
         composable(route = Routes.BOOKTOTAL) {
             BookTotal(navController,bookViewModel)
             mainViewModel.changeState("내 도서관")
-            Log.d("stack", navController.toString())
         }
         composable(route = Routes.CHATROOM) {
             ChatRoom()
@@ -255,10 +251,10 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             BookTransactionRegist()
         }
         composable(route = Routes.MODIFYINFO){
-            Modify(navController = navController, authViewModel, userViewModel)
+            Modify(navController, authViewModel, userViewModel)
         }
-        composable(route = Routes.BOOKREGIST){
-            BookRegist(navController)
+        composable(route = Routes.BOOKREPORTREGIST){
+            BookReportRegist(navController)
         }
     }
 

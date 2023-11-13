@@ -1,9 +1,11 @@
 package com.example.frontend.ui.screens.book
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -36,10 +38,15 @@ fun BookTransactionRegist(){
     var descValue = remember{
         mutableStateOf("")
     }
+    var placeValue = remember{
+        mutableStateOf("")
+    }
     var scrollState = rememberScrollState();
 
     Surface(modifier=Modifier.padding(15.dp)){
-        Column(){
+        Column(modifier= Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)){
             Box(){
                 Column {
                     Text("책 선택하기", fontWeight = FontWeight.Bold, fontSize = 18.sp)
@@ -53,8 +60,7 @@ fun BookTransactionRegist(){
                         onValueChange ={titleValue.value=it},
                         maxLines=5,
                         modifier= Modifier
-                            .fillMaxWidth()
-                            .verticalScroll(scrollState),
+                            .fillMaxWidth(),
                         placeholder = {Text("제목")})
                 }
 
@@ -84,7 +90,7 @@ fun BookTransactionRegist(){
                         modifier= Modifier
                             .fillMaxWidth()
                             .fillMaxHeight(0.5f)
-                            .verticalScroll(scrollState),
+                            .animateContentSize(),
                         placeholder = {Text("책과 관련된 사항을 모두 작성해주세요. ")})
                 }
 
@@ -92,21 +98,21 @@ fun BookTransactionRegist(){
             Box(modifier = Modifier.padding(top=15.dp)){
                 Column {
                     Text("거래 장소", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                    OutlinedTextField(value = descValue.value,
-                        onValueChange ={descValue.value=it},
+                    OutlinedTextField(value = placeValue.value,
+                        onValueChange ={placeValue.value=it},
+                        singleLine=false,
                         maxLines=5,
                         modifier= Modifier
                             .fillMaxWidth()
-                            .fillMaxHeight(0.5f)
-                            .verticalScroll(scrollState),
-                        placeholder = {Text("거래 장소를 선택해주세요.")})
+                            .animateContentSize(),
+                        placeholder = {Text("거래 장소를 입력해주세요.")})
                 }
 
             }
             Box(modifier = Modifier.padding(top=15.dp)){
                 Column {
                    Button(onClick = { /*TODO*/ }, modifier=Modifier.fillMaxWidth()) {
-                       Text("asdf")
+                       Text("등록하기")
                    }
                 }
 

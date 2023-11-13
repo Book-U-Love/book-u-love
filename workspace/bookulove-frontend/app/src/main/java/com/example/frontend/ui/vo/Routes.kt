@@ -13,4 +13,5 @@ object Routes{
     const val BOOKLIST = "booklist"
     const val BOOKTRANSACTIONREGIST = "booktransactionregist"
     const val BOOKREGIST = "bookregist"
+    const val BOOKREPORTREGIST = "bookreportregist"
 }

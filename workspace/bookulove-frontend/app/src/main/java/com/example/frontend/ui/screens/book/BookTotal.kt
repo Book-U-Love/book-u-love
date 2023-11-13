@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,8 +25,9 @@ import com.example.frontend.viewmodel.BookViewModel
 
 @Composable
 fun BookTotal(navController: NavController, bookViewModel: BookViewModel){
+    var scrollState = rememberScrollState()
     Box(modifier=Modifier.fillMaxHeight()){
-        Column {
+        Column(modifier = Modifier.verticalScroll(scrollState)){
             Box(modifier=Modifier.fillMaxWidth()){
                 Text("보유 도서 목록",modifier=Modifier.padding(15.dp), fontSize = 18.sp)
             }
@@ -37,9 +40,9 @@ fun BookTotal(navController: NavController, bookViewModel: BookViewModel){
             }
             Divider()
             Box {
-                LazyColumn(){
-                    itemsIndexed(bookList) { index, item->
-                        BookReportInfo(navController, index);
+                Column(){
+                    for(i in 0..(bookList.size)-1) {
+                        BookReportInfo(navController, i);
                     }
                 }
             }
@@ -52,9 +55,7 @@ fun BookTotal(navController: NavController, bookViewModel: BookViewModel){
 //            Icon(painter = painterResource(id = R.drawable.baseline_add_24), contentDescription = "add book report")
 //        }
 
-        CustomFAB(modifier= Modifier
-            .align(Alignment.BottomEnd)
-            .padding(bottom = 40.dp, end = 20.dp), navController)
+        CustomFAB(navController)
     }
 
 }
