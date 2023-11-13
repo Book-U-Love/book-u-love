@@ -23,4 +23,10 @@ public class BookLibraryController {
         log.info("도서관 등록 책 정보: {}", buId);
         return ApiData.ok(bookLibraryService.findBookLibraryInfo(buId));
     }
+
+    @GetMapping("/count/{userId}")
+    public ApiData<Integer> findBookCount(@PathVariable Long userId){
+        log.info("도서관 등록 책 개수 req");
+        return ApiData.ok(bookLibraryService.findCount(userId));
+    }
 }

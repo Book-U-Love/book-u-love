@@ -10,6 +10,8 @@ import org.bookulove.book.api.book.model.feign.UserFeignClient;
 import org.bookulove.book.api.book.model.response.BookDetailRes;
 import org.bookulove.book.api.book.model.response.RelationDetailRes;
 import org.bookulove.book.api.book.model.response.ReviewInfoRes;
+import org.bookulove.book.api.library.model.db.entity.LibraryEntity;
+import org.bookulove.book.api.library.model.db.repository.LibraryRepository;
 import org.bookulove.book.exception.BookServiceException;
 import org.bookulove.common.api.response.ApiData;
 import org.bookulove.common.error.ErrorCode;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.management.relation.Relation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,6 +33,7 @@ public class BookLibraryService {
 
     private final AuthUtil authUtil;
     private final UserFeignClient userFeignClient;
+    private final LibraryRepository libraryRepository;
     private final BookLibraryRelationRepository bookLibraryRelationRepository;
 
     public RelationDetailRes findBookLibraryInfo(Long buId){
@@ -73,5 +77,15 @@ public class BookLibraryService {
         log.info("책 상세정보 domain: {}", relationDetailRes);
 
         return relationDetailRes;
+    }
+
+    public Integer findCount(Long userId){
+         LibraryEntity libraryEntity =  libraryRepository.findById(userId).orElseThrow(
+                 () -> new BookServiceException(ErrorCode.LIBRARY_NOT_FOUND)
+         );
+
+        List<BookLibraryRelation> bookLibraryRelationList = bookLibraryRelationRepository.findAllByLibrary(libraryEntity);
+
+        return bookLibraryRelationList.size();
     }
 }

@@ -14,6 +14,7 @@ import org.bookulove.user.application.port.in.dto.command.UserUpdateCmd;
 import org.bookulove.user.application.port.in.dto.command.UserUpdatePasswordCmd;
 import org.bookulove.common.annotation.WebAdapter;
 import org.bookulove.common.api.response.ApiData;
+import org.bookulove.user.domain.UserFindDetailDomain;
 import org.bookulove.user.domain.UserFindInfoListDomain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ public class UserController {
     private final UserCreateUseCase userCreateUseCase;
     private final UserUpdateUseCase userUpdateUseCase;
     private final UserFindListUseCase userFindListUseCase;
+    private final UserFindDetailUseCase userFindDetailUseCase;
     private final UserFindLoginIdUseCase userFindLoginIdUseCase;
     private final UserUpdatePasswordUseCase userUpdatePasswordUseCase;
 
@@ -55,16 +57,15 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public ApiData<?> findUserInfo(){
+    public ApiData<UserFindDetailDomain> findUserInfo(){
         log.info("마이페이지 req");
-
-        return null;
+        return ApiData.ok(userFindDetailUseCase.findDetail());
     }
 
     @GetMapping("/info/{userId}")
-    public ApiData<?> findUserInfoByUserId(){
-        log.info("마이페이지 req");
-        return null;
+    public ApiData<UserFindDetailDomain> findUserInfoByUserId(@PathVariable Long userId){
+        log.info("마이페이지 req: {}", userId);
+        return ApiData.ok(userFindDetailUseCase.findDetail(userId));
     }
 
     @PatchMapping
