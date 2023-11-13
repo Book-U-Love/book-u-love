@@ -58,7 +58,6 @@ class BookController {
         return ApiData.ok(bookService.getBookList(userId,sale, borrow));
     }
 
-    // TODO: 2023-11-12
     @PatchMapping
     ApiData<String> update(@RequestBody final BookUpdateReq bookUpdateReq) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
@@ -75,5 +74,7 @@ class BookController {
 
         return null;
     }
+
+
 
 }
