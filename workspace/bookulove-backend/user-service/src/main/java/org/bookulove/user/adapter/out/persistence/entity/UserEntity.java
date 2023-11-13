@@ -6,13 +6,12 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bookulove.common.feignclient.user.UserFindRes;
+import org.bookulove.common.feignclient.user.UserFindInfoRes;
 
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.GenerationType.IDENTITY;
-import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Table(name = "user")
@@ -70,10 +69,6 @@ public class UserEntity extends BaseTimeEntity {
                 .nickname(nickname)
                 .allowNoti(true)
                 .build();
-    }
-
-    public UserFindRes toUserFindRes(){
-        return UserFindRes.of(loginId, nickname, phoneNumber, allowNoti);
     }
 
     public void updatePassword(String password) {

@@ -42,14 +42,14 @@ public class BookLibraryRelation {
     private boolean allowBorrow;
 
     @ColumnDefault("false")
+    private boolean isRemoved;
+
+    @ColumnDefault("false")
     private boolean isBorrow;
 
     private String details;
 
-    @ColumnDefault("false")
-    private boolean isRemoved;
 
-//    @Builder(toBuilder = true)
     @Builder
     public BookLibraryRelation(@NotNull Book book, @NotNull LibraryEntity library, @NotNull Condition condition, boolean allowSale, boolean allowBorrow, boolean isBorrow, String details, boolean isRemoved) {
         this.book = book;
@@ -60,10 +60,6 @@ public class BookLibraryRelation {
         this.isBorrow = isBorrow;
         this.details = details;
         this.isRemoved = isRemoved;
-    }
-
-    public void updateLibrary(LibraryEntity library) {
-        this.library = library;
     }
 
     public void updateCondition(int index) {

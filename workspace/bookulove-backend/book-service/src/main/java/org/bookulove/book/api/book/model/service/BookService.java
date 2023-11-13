@@ -11,10 +11,12 @@ import org.bookulove.book.api.book.model.db.entity.Book;
 import org.bookulove.book.api.book.model.db.entity.BookLibraryRelation;
 import org.bookulove.book.api.book.model.db.repository.BookLibraryRelationRepository;
 import org.bookulove.book.api.book.model.db.repository.BookRepository;
+import org.bookulove.book.api.book.model.db.repository.query.BookLibraryRelationQueryRepository;
 import org.bookulove.book.api.book.model.request.BookUpdateReq;
 import org.bookulove.book.api.book.model.response.BookInfo;
 import org.bookulove.book.api.library.model.db.entity.LibraryEntity;
 import org.bookulove.book.api.library.model.db.repository.LibraryRepository;
+import org.bookulove.book.api.library.model.db.repository.query.LibraryQueryRepository;
 import org.bookulove.book.exception.BookServiceException;
 import org.bookulove.book.api.book.model.feign.AladinFeignClient;
 import org.bookulove.book.api.book.model.feign.AladinSearch;
@@ -43,8 +45,10 @@ public class BookService {
     private final AuthUtil authUtil;
     private final BookRepository bookRepository;
     private final LibraryRepository libraryRepository;
-    private final BookLibraryRelationRepository bookLibraryRelationRepository;
     private final AladinFeignClient aladinFeignClient;
+    private final LibraryQueryRepository libraryQueryRepository;
+    private final BookLibraryRelationRepository bookLibraryRelationRepository;
+    private final BookLibraryRelationQueryRepository bookLibraryRelationQueryRepository;
 
     @Value("${custom.aladin.key}")
     private String KEY;
@@ -107,12 +111,7 @@ public class BookService {
     public void regist(BookRegistReq bookRegistReq) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
 
-        Long userId = null;
-        try {
-            userId = authUtil.getUserIdByHeader();
-        } catch (Exception e) {
-            userId = 1l;
-        }
+        Long userId = authUtil.getUserIdByHeader();
 
         LibraryEntity library = libraryRepository.findById(userId)
                 .orElseThrow( () -> new BookServiceException(ErrorCode.LIBRARY_NOT_FOUND) );
@@ -126,24 +125,35 @@ public class BookService {
         log.info(logCurrent(getClassName(), getMethodName(), END));
     }
 
-    public List<BookInfo> getBookList() {
+    public List<BookInfo> getBookList(boolean sale, boolean borrow) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
 
-        Long userId = null;
-        try {
-            userId = authUtil.getUserIdByHeader();
-        } catch (Exception e) {
-            userId = 1l;
-        }
+        Long userId = authUtil.getUserIdByHeader();
 
-        LibraryEntity library = libraryRepository.findById(userId)
-                .orElseThrow( () -> new BookServiceException(ErrorCode.LIBRARY_NOT_FOUND) );
+        List<BookLibraryRelation> libraryRelationByParam = bookLibraryRelationQueryRepository.findLibraryRelationByParam(userId, sale, borrow);
 
         List<BookInfo> res = new ArrayList<>();
-        List<BookLibraryRelation> list = bookLibraryRelationRepository.findAllByLibrary(library);
-        for (BookLibraryRelation relation : list) {
+        for (BookLibraryRelation relation : libraryRelationByParam) {
             res.add(new BookInfo(relation));
         }
+
+        log.info("내 도서관 책 리스트 domain: {}", res);
+
+        log.info(logCurrent(getClassName(), getMethodName(), END));
+        return res;
+    }
+
+    public List<BookInfo> getBookList(Long userId, boolean sale, boolean borrow) {
+        log.info(logCurrent(getClassName(), getMethodName(), START));
+
+        List<BookLibraryRelation> libraryRelationByParam = bookLibraryRelationQueryRepository.findLibraryRelationByParam(userId, sale, borrow);
+
+        List<BookInfo> res = new ArrayList<>();
+        for (BookLibraryRelation relation : libraryRelationByParam) {
+            res.add(new BookInfo(relation));
+        }
+
+        log.info("내 도서관 책 리스트 domain: {}", res);
 
         log.info(logCurrent(getClassName(), getMethodName(), END));
         return res;
@@ -152,12 +162,7 @@ public class BookService {
     public void update(BookUpdateReq bookUpdateReq) {
         log.info(logCurrent(getClassName(), getMethodName(), START));
 
-        Long userId = null;
-        try {
-            userId = authUtil.getUserIdByHeader();
-        } catch (Exception e) {
-            userId = 1l;
-        }
+        Long userId = authUtil.getUserIdByHeader();
 
         BookLibraryRelation relation = bookLibraryRelationRepository.findById(bookUpdateReq.buid()) // 존재하지 않는 도서-유저 관계인 경우
                 .orElseThrow( () -> new BookServiceException(ErrorCode.RELATION_NOT_FOUND) );

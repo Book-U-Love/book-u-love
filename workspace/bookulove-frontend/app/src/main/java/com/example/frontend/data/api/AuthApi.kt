@@ -2,6 +2,7 @@ package com.example.frontend.data.api
 
 import com.example.frontend.data.model.Certification
 import com.example.frontend.data.model.Default
+import com.example.frontend.data.model.MapData
 import com.example.frontend.data.model.PhoneNumber
 import com.example.frontend.data.model.Token
 import com.example.frontend.data.model.User

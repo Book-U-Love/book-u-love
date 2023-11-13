@@ -3,6 +3,7 @@ package com.example.frontend.viewmodel
 import android.app.Application
 import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
@@ -22,21 +23,35 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel(): ViewModel(){
     private val authRepository: AuthRepository = AuthRepository()
+    private val _accessToken = mutableStateOf("")
     private val _loginRes: MutableStateFlow<String> = MutableStateFlow("init")
     private val _certChkRes: MutableStateFlow<String> = MutableStateFlow("init")
     private val _certSendRes: MutableStateFlow<String> = MutableStateFlow("init")
+
+    val accessToken: State<String> = _accessToken
+
+    fun setAccessToken(state: String){
+        _accessToken.value = state
+    }
+
     val loginRes : StateFlow<String>
         get() = _loginRes
     val certChkRes : StateFlow<String>
         get() = _certChkRes
     val certSendRes : StateFlow<String>
         get() = _certSendRes
+
+    fun resetState(){
+        _loginRes.value = "init"
+    }
+
     fun logIn(user: User){
         GlobalScope.async{
             try{
                 authRepository.logIn(user).collect(){
                     res ->
-                    _loginRes.value = res
+                    _loginRes.value = res.get("msg").toString()
+                    setAccessToken(res.get("accessToken").toString())
                 }
                 Log.d("test","성공은 함")
                 Log.d("res",PrefsRepository().getValue("accessToken"))

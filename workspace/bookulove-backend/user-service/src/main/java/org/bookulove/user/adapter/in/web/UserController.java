@@ -4,7 +4,7 @@ package org.bookulove.user.adapter.in.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bookulove.common.feignclient.user.UserFindRes;
+import org.bookulove.common.feignclient.user.UserFindInfoRes;
 import org.bookulove.user.adapter.in.web.dto.request.UserCreateReq;
 import org.bookulove.user.adapter.in.web.dto.request.UserUpdatePasswordReq;
 import org.bookulove.user.adapter.in.web.dto.request.UserUpdateReq;
@@ -12,10 +12,9 @@ import org.bookulove.user.application.port.in.*;
 import org.bookulove.user.application.port.in.dto.command.UserCreateCmd;
 import org.bookulove.user.application.port.in.dto.command.UserUpdateCmd;
 import org.bookulove.user.application.port.in.dto.command.UserUpdatePasswordCmd;
-import org.bookulove.user.exception.UserServiceException;
 import org.bookulove.common.annotation.WebAdapter;
 import org.bookulove.common.api.response.ApiData;
-import org.bookulove.common.error.ErrorCode;
+import org.bookulove.user.domain.UserFindInfoListDomain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +30,7 @@ public class UserController {
     private final UserFindUseCase userFindUseCase;
     private final UserCreateUseCase userCreateUseCase;
     private final UserUpdateUseCase userUpdateUseCase;
+    private final UserFindListUseCase userFindListUseCase;
     private final UserFindLoginIdUseCase userFindLoginIdUseCase;
     private final UserUpdatePasswordUseCase userUpdatePasswordUseCase;
 
@@ -43,9 +43,28 @@ public class UserController {
     }
 
     @GetMapping
-    public ApiData<UserFindRes> findUser(){
-        log.info("회원조회");
+    public ApiData<UserFindInfoRes> findUser(){
+        log.info("회원조회 req");
         return ApiData.ok(userFindUseCase.findUser());
+    }
+
+    @GetMapping("/{userId}")
+    public ApiData<UserFindInfoRes> findUserByUserId(@PathVariable Long userId){
+        log.info("회원조회 req");
+        return ApiData.ok(userFindUseCase.findUser(userId));
+    }
+
+    @GetMapping("/info")
+    public ApiData<?> findUserInfo(){
+        log.info("마이페이지 req");
+
+        return null;
+    }
+
+    @GetMapping("/info/{userId}")
+    public ApiData<?> findUserInfoByUserId(){
+        log.info("마이페이지 req");
+        return null;
     }
 
     @PatchMapping
@@ -67,11 +86,17 @@ public class UserController {
         return ApiData.ok("비밀번호 변경에 성공하였습니다.");
     }
 
-    @GetMapping("/{loginId}")
+    @GetMapping("/check/{loginId}")
     public ApiData<String> findLoginId(@PathVariable("loginId") String loginId){
         log.info("아이디 중복검사 req: {}", loginId);
         userFindLoginIdUseCase.findLoginId(loginId);
         return ApiData.ok("사용가능한 아이디입니다.");
+    }
+
+    @GetMapping("/list")
+    public ApiData<UserFindInfoListDomain> findUserList(){
+        log.info("유저들 조회 req");
+        return ApiData.ok( userFindListUseCase.findInfoList());
     }
 
 }

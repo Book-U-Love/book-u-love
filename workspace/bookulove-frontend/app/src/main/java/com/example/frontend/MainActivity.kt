@@ -67,6 +67,7 @@ import com.example.frontend.ui.screens.main.Home
 import com.example.frontend.ui.screens.info.MyPage
 import com.example.frontend.ui.screens.user.Chat
 import com.example.frontend.ui.screens.user.ChatRoom
+import com.example.frontend.ui.screens.user.Modify
 import com.example.frontend.ui.screens.user.Register
 import com.example.frontend.ui.theme.FrontEndTheme
 import com.example.frontend.ui.vo.Routes
@@ -75,6 +76,8 @@ import com.example.frontend.viewmodel.AuthViewModel
 import com.example.frontend.viewmodel.AuthViewModelFactory
 import com.example.frontend.viewmodel.MainViewModel
 import com.example.frontend.viewmodel.MainViewModelFactory
+import com.example.frontend.viewmodel.UserViewModel
+import com.example.frontend.viewmodel.UserViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -113,10 +116,16 @@ class MainActivity : ComponentActivity() {
             val mainViewModel = ViewModelProvider(
                 this,MainViewModelFactory()
             )[MainViewModel::class.java]
+            val userViewModel = ViewModelProvider(
+                this,UserViewModelFactory()
+            )[UserViewModel::class.java]
+            val authViewModel = ViewModelProvider(
+                this,AuthViewModelFactory()
+            )[AuthViewModel::class.java]
             FrontEndTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    MainApp(mainViewModel)
+                    MainApp(mainViewModel, userViewModel, authViewModel)
                 }
             }
         }
@@ -126,7 +135,7 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
 @Composable
-fun MainApp(mainViewModel: MainViewModel){
+fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel){
     val navController = rememberNavController()
 //    prefsRepository.setValue("accessToken","")
 //    Log.d("token", prefsRepository.getValue("accessToken"))
@@ -175,27 +184,27 @@ fun MainApp(mainViewModel: MainViewModel){
                 verticalArrangement = Arrangement.spacedBy(1.dp),
             ) {
                 Divider()
-                MainNavigation(navController = navController,mainViewModel)
+                MainNavigation(navController = navController,mainViewModel, userViewModel, authViewModel)
             }
 
         }
     }
 }
 @Composable
-fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
+fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel){
     NavHost(navController = navController, startDestination = Routes.HOME) {
         composable(route = Routes.HOME) {
-            Home(navController = navController, viewModel)
-            viewModel.changeState("홈")
+            Home(navController = navController, mainViewModel, userViewModel, authViewModel)
+            mainViewModel.changeState("홈")
         }
         composable(route = Routes.CHAT) {
             Chat(navController)
-            viewModel.changeState("채팅")
+            mainViewModel.changeState("채팅")
             Log.d("stack", navController.toString())
         }
         composable(route = Routes.MYPAGE) {
-            MyPage(navController,true,"asdf")
-            viewModel.changeState("마이페이지")
+            MyPage(navController,true,"asdf", authViewModel, userViewModel)
+            mainViewModel.changeState("마이페이지")
             Log.d("stack", navController.toString())
         }
         composable(route = Routes.MYPAGE + "/{userId}",
@@ -208,29 +217,31 @@ fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
                 MyPage(
                     navController,
                     userId == "ssafy",
-                    userId
+                    userId,
+                    authViewModel,
+                    userViewModel
                 )
             } else {
-                Home(navController = navController, viewModel)
+                Home(navController = navController, mainViewModel, userViewModel, authViewModel)
             }
         }
         composable(route = Routes.BOOKSEARCH) {
             BookSearch(navController)
-            viewModel.changeState("검색")
+            mainViewModel.changeState("검색")
             Log.d("stack", navController.toString())
         }
         composable(route = Routes.BOOKTOTAL) {
             BookTotal(navController)
-            viewModel.changeState("독후감")
+            mainViewModel.changeState("독후감")
             Log.d("stack", navController.toString())
         }
         composable(route = Routes.CHATROOM) {
             ChatRoom()
-            viewModel.changeState("김싸피")
+            mainViewModel.changeState("김싸피")
         }
         composable(route = Routes.REGISTER) {
             Register(navController = navController)
-            viewModel.changeState("회원가입")
+            mainViewModel.changeState("회원가입")
         }
         composable(route = Routes.REPORTDETAIL+"/{index}",
             arguments = listOf(navArgument("index"){
@@ -248,6 +259,9 @@ fun MainNavigation(navController: NavHostController, viewModel:MainViewModel){
         }
         composable(route = Routes.BOOKTRANSACTIONREGIST){
             BookTransactionRegist()
+        }
+        composable(route = Routes.MODIFYINFO){
+            Modify(navController = navController, authViewModel, userViewModel)
         }
     }
 

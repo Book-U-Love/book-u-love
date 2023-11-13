@@ -17,7 +17,7 @@ public class SmsRepository {
     private final StringRedisTemplate smsRedisTemplate;
 
     public SmsRepository(StringRedisTemplate redisTemplate){
-        this.expireTime = Duration.ofMinutes(30);
+        this.expireTime = Duration.ofMinutes(3);
         this.smsRedisTemplate = redisTemplate;
     }
 

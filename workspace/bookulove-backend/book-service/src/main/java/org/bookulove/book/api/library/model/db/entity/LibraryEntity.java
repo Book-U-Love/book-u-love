@@ -35,7 +35,7 @@ public class LibraryEntity {
     @NotNull
     private double lng;     // 경도
 
-    @OneToMany(mappedBy = "buid", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "library", cascade = ALL, orphanRemoval = true)
     private List<BookLibraryRelation> bookLibraryRelation = new ArrayList<>();
 
     @Builder
@@ -54,5 +54,11 @@ public class LibraryEntity {
                 .lat(lat)
                 .lng(lng)
                 .build();
+    }
+
+    public void update(String name, double lat, double lng){
+        if(name != null) this.name = name;
+        if(lat != 0.0) this.lat = lat;
+        if(lng != 0.0) this.lng = lng;
     }
 }

@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.frontend.data.model.UserRegistDto
 import com.example.frontend.ui.vo.Library
 import com.example.frontend.ui.vo.Routes
 import com.google.android.gms.location.LocationServices
@@ -64,7 +65,7 @@ fun MapInfo(
         pos: MutableState<LatLng>,
         title: String = "",
         detail: String = "",
-        libList: List<Library> = listOf(),
+        libList: List<UserRegistDto> = listOf(),
         navController: NavHostController = rememberNavController()
     ){
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(LocalContext.current)
@@ -118,16 +119,16 @@ fun MapInfo(
             } else{
                 for(lib in libList){
                     MarkerInfoWindowContent (
-                        state = MarkerState(position = lib.libPos),
+                        state = MarkerState(position = LatLng(lib.lat, lib.lng)),
                         onInfoWindowClick = {
                             GlobalScope.launch(Dispatchers.Main){
-                                navController.navigate(Routes.MYPAGE+"/${lib.userId}")
+                                navController.navigate(Routes.MYPAGE+"/${lib.nickname}")
                             }
                         }
                     ){
                         Column {
-                            Text(text = lib.detail)
-                            FuncBtn(name = lib.title, onClick = {})
+                            Text(text = lib.nickname)
+                            FuncBtn(name = lib.nickname, onClick = {})
                         }
                     }
                 }

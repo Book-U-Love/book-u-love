@@ -28,8 +28,30 @@ data class Certification(
     val authCode: String
 )
 
+data class ModifyUser(
+    var nickname: String,
+    var libraryName: String,
+    var lat: Double,
+    var lng: Double
+)
+
+data class ModifyPw(
+    var oldPassword: String,
+    var newPassword: String
+)
+
+data class MapData(
+    val status: Int,
+    val code: String,
+    val data: Map<String, Object>
+)
 data class Token(
     val status: Number,
     val code: String,
     val data: Map<String, String>
+)
+data class LibraryList(
+    val status: Int,
+    val code: String,
+    val data: Map<String, List<UserRegistDto>>
 )

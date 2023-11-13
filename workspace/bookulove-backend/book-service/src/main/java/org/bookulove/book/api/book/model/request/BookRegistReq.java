@@ -32,7 +32,7 @@ public record BookRegistReq(
                 .book(book)
                 .library(library)
                 .condition(Condition.getInstance(condition))
-                .allowBorrow(allowSale)
+                .allowSale(allowSale)
                 .allowBorrow(allowBorrow)
                 .details(details)
                 .build();

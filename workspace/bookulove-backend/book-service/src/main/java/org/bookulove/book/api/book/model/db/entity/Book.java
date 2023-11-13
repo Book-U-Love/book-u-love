@@ -45,7 +45,7 @@ public class Book {
     @NotNull
     private String publisher;
 
-    @OneToMany(mappedBy = "buid")
+    @OneToMany(mappedBy = "book")
     private List<BookLibraryRelation> bookLibraryRelation = new ArrayList<>();
 
     @Builder

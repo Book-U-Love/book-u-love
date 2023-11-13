@@ -28,7 +28,7 @@ public class SmsCreateService implements SmsCreateUseCase {
         log.info("인증번호: {}", authCode);
 
         smsCreatePort.createSms(cmd.phoneNumber(), authCode);
-//        smsSendPort.sendSms(cmd.phoneNumber(), authCode);
+        smsSendPort.sendSms(cmd.phoneNumber(), authCode);
     }
 
     private String createAuthCode() {

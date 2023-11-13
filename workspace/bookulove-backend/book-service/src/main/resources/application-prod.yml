@@ -28,9 +28,6 @@ spring:
         auto_quote_keyword: true
         globally_quoted_identifiers: true
 
-  main:
-    web-application-type: reactive
-
 logging:
   level:
     org:
@@ -45,3 +42,6 @@ custom:
     type: ISBN13
     output: js
     version: 20131101
+
+domain:
+  url: ${DOMAIN-URL}
