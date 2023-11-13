@@ -12,10 +12,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@DynamicInsert
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book {
 
     @Id
@@ -46,10 +45,14 @@ public class Book {
     private String publisher;
 
     @OneToMany(mappedBy = "book")
-    private List<BookLibraryRelation> bookLibraryRelation = new ArrayList<>();
+    private List<BookLibraryRelation> bookLibraryRelation;
+
+    @OneToMany(mappedBy = "book")
+    private List<ReviewEntity> reviewEntityList;
 
     @Builder
-    public Book(String title, String author, LocalDate pubDate, String description, String isbn, int price, String category, String publisher) {
+    public Book(Long bookId, String title, String author, LocalDate pubDate, String description, String isbn, int price, String category, String publisher, List<BookLibraryRelation> bookLibraryRelation, List<ReviewEntity> reviewEntityList) {
+        this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.pubDate = pubDate;
@@ -58,6 +61,7 @@ public class Book {
         this.price = price;
         this.category = category;
         this.publisher = publisher;
+        this.bookLibraryRelation = bookLibraryRelation;
+        this.reviewEntityList = reviewEntityList;
     }
-
 }

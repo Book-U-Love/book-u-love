@@ -34,11 +34,11 @@ public class BookLibraryRelationQueryRepository {
                 .fetch();
     }
 
-    BooleanExpression isSale(boolean sale){
+    private BooleanExpression isSale(boolean sale){
         return !sale ? null : bookLibraryRelation.allowSale.eq(true);
     }
 
-    BooleanExpression isBorrow(boolean borrow){
+    private BooleanExpression isBorrow(boolean borrow){
         return !borrow ? null : bookLibraryRelation.isBorrow.eq(true);
     }
 

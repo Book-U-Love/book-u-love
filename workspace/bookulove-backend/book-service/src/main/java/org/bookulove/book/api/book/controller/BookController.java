@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bookulove.book.api.book.model.request.BookRegistReq;
 import org.bookulove.book.api.book.model.request.BookUpdateReq;
+import org.bookulove.book.api.book.model.response.BookDetailRes;
 import org.bookulove.book.api.book.model.response.BookInfo;
 import org.bookulove.book.api.book.model.response.BookSearchRes;
 import org.bookulove.book.api.book.model.service.BookService;
@@ -68,11 +69,10 @@ class BookController {
         return ApiData.ok("도서 수정이 완료되었습니다.");
     }
 
-    // TODO: 2023-11-12
-    @GetMapping
-    ApiData<?> findBook(){
-
-        return null;
+    @GetMapping("/{bookId}")
+    ApiData<BookDetailRes> findBookInfo(@PathVariable Long bookId){
+        log.info("책 정보 req: {}", bookId);
+        return ApiData.ok(bookService.findBookInfo(bookId));
     }
 
 
