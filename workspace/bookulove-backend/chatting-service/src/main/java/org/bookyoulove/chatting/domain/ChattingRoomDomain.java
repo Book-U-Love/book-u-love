@@ -16,7 +16,7 @@ public record ChattingRoomDomain(
     public static ChattingRoomDomain of(ChattingRoomEntity entity) {
         return new ChattingRoomDomain(entity.getId(),
                 entity.getBuId(),
-                entity.getSellorId(),
+                entity.getSellerId(),
                 entity.getBuyerId());
     }
 }
