@@ -26,7 +26,7 @@ public class ChattingRoomEntity extends BaseTimeEntity {
     private Long buId;
 
     @NotNull(message = "판매자는 필수값입니다.")
-    private Long sellorId;
+    private Long sellerId;
 
     @NotNull(message = "구매자는 필수값입니다.")
     private Long buyerId;
@@ -35,18 +35,18 @@ public class ChattingRoomEntity extends BaseTimeEntity {
     private List<ChattingEntity> chatting;
 
     @Builder
-    public ChattingRoomEntity(Long id, Long buId, Long sellorId, Long buyerId, List<ChattingEntity> chatting) {
+    public ChattingRoomEntity(Long id, Long buId, Long sellerId, Long buyerId, List<ChattingEntity> chatting) {
         this.id = id;
         this.buId = buId;
-        this.sellorId = sellorId;
+        this.sellerId = sellerId;
         this.buyerId = buyerId;
         this.chatting = chatting;
     }
 
-    public static ChattingRoomEntity of(Long buId, Long sellorId, Long buyerId){
+    public static ChattingRoomEntity of(Long buId, Long sellerId, Long buyerId){
         return ChattingRoomEntity.builder()
                 .buId(buId)
-                .sellorId(sellorId)
+                .sellerId(sellerId)
                 .buyerId(buyerId)
                 .build();
     }

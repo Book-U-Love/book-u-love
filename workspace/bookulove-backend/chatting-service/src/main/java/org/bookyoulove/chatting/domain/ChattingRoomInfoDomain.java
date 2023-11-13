@@ -6,6 +6,8 @@ public record ChattingRoomInfoDomain(
 
         Long roomId,
 
+        Long buId,
+
         String bookName,
 
         Long targetId,
@@ -20,12 +22,13 @@ public record ChattingRoomInfoDomain(
 ) {
 
     public static ChattingRoomInfoDomain of(Long roomId,
+                                            Long buId,
                                             String bookName,
                                             Long targetId,
                                             String targetNickname,
                                             String lastContent,
                                             LocalDateTime lastTime,
                                             Long unReadCount){
-        return new ChattingRoomInfoDomain(roomId, bookName, targetId, targetNickname, lastContent, lastTime, unReadCount);
+        return new ChattingRoomInfoDomain(roomId, buId, bookName, targetId, targetNickname, lastContent, lastTime, unReadCount);
     }
 }
