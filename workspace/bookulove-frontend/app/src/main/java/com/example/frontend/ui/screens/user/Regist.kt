@@ -131,12 +131,17 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
                     )
                     Spacer(modifier = Modifier.width(80.dp))
                     FuncBtn(name = "회원가입", onClick = {
-                        userDto.id = id
-                        userDto.password = pw
-                        userDto.phoneNumber = phNum
-                        userDto.nickname = nickname
-                        userDto.libraryName = libName
-                        userViewModel.signUp(userDto)
+//                        if(id == "" || pw == "" || !certCheck.value || !pwCheck.value || libName == "" || nickname == ""){
+//                            errChk.value = true
+//                            errMsg.value = "회원가입에 실패했습니다"
+//                        } else{
+                            userDto.id = id
+                            userDto.password = pw
+                            userDto.phoneNumber = phNum
+                            userDto.nickname = nickname
+                            userDto.libraryName = libName
+                            userViewModel.signUp(userDto)
+//                        }
                     })
                 }
 

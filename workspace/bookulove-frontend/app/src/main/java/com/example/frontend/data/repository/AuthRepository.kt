@@ -14,12 +14,12 @@ class AuthRepository(
     private val api: AuthApi = API.getInstance().create(AuthApi::class.java)
 ) {
 
-    suspend fun logIn(user: User): Flow<String> = flow{
+    suspend fun logIn(user: User): Flow<Map<String, String>> = flow{
         val response = api.logIn(user)
         if(response.body()!!.code == "OK"){
-            emit("success")
+            emit(mapOf("msg" to "success", "accessToken" to response.body()!!.data.get("accessToken").toString()))
         } else{
-            emit("fail")
+            emit(mapOf("msg" to "fail"))
         }
     }
 
