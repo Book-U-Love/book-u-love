@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.frontend.R
 import com.example.frontend.data.model.User
+import com.example.frontend.data.repository.PrefsRepository
 import com.example.frontend.ui.components.FuncBtn
 import com.example.frontend.ui.components.InputField
 import com.example.frontend.ui.components.MapInfo

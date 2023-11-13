@@ -4,6 +4,7 @@ package com.example.frontend
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.location.Location
@@ -52,7 +53,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.frontend.data.api.API
 import com.example.frontend.data.api.UserApi
+import com.example.frontend.data.local.ApplicationPrefs
+import com.example.frontend.data.local.PreferenceUtil
 import com.example.frontend.data.local.addFocusCleaner
+import com.example.frontend.data.repository.PrefsRepository
 import com.example.frontend.ui.components.BookReportDetail
 import com.example.frontend.ui.components.ReportDetailViewModel
 import com.example.frontend.ui.screens.book.BookList
@@ -84,8 +88,10 @@ import retrofit2.http.GET
 @SuppressLint("MissingPermission")
 class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val curLocation = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ){
@@ -105,6 +111,7 @@ class MainActivity : ComponentActivity() {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION)
         )
+
         setContent {
             val mainViewModel = ViewModelProvider(
                 this,MainViewModelFactory()
@@ -130,7 +137,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel){
     val navController = rememberNavController()
-    Log.d("asdf", navController.toString())
+//    prefsRepository.setValue("accessToken","")
+//    Log.d("token", prefsRepository.getValue("accessToken"))
+
 //    val pagerState = rememberPagerState(pageCount=2)
     Surface(modifier=Modifier.addFocusCleaner(LocalFocusManager.current)){
         Scaffold(topBar = {

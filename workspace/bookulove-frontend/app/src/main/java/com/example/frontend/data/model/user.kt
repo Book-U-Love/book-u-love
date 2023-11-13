@@ -45,7 +45,11 @@ data class MapData(
     val code: String,
     val data: Map<String, Object>
 )
-
+data class Token(
+    val status: Number,
+    val code: String,
+    val data: Map<String, String>
+)
 data class LibraryList(
     val status: Int,
     val code: String,
