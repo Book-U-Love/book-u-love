@@ -9,5 +9,5 @@ import java.util.List;
 public interface BookLibraryRelationRepository extends JpaRepository<BookLibraryRelation, Long> {
 
     List<BookLibraryRelation> findAllByLibrary(LibraryEntity library);
-
+    List<BookLibraryRelation> findAllByLibrary(Long userId);
 }
