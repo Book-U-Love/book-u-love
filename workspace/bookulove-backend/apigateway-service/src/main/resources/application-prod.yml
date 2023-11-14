@@ -58,7 +58,7 @@ spring:
         - id: user-id-check
           uri: ${USER-SERVICE}
           predicates:
-            - Path=/api/user-service/users/{loginId}
+            - Path=/api/user-service/users/check/{loginId}
             - Method=GET
           filters:
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
@@ -127,13 +127,13 @@ spring:
             - RewritePath=/book-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
 
-        - id: chatting-service
-          uri: ${CHATTING-SERVICE}
-          predicates:
-            - Path=/api/chatting-service/**
-          filters:
-            - RewritePath=/chatting-service/(?<segment>.*), /$\{segment}
-            - AuthorizationHeaderFilter
+#        - id: chatting-service
+#          uri: ${CHATTING-SERVICE}
+#          predicates:
+#            - Path=/api/chatting-service/**
+#          filters:
+#            - RewritePath=/chatting-service/(?<segment>.*), /$\{segment}
+#            - AuthorizationHeaderFilter
 
         - id: alarm-service
           uri: ${ALARM-SERVICE}

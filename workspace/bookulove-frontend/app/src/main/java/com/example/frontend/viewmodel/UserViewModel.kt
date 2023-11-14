@@ -1,51 +1,51 @@
 package com.example.frontend.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.example.frontend.data.model.ModifyPw
 import com.example.frontend.data.model.ModifyUser
 import com.example.frontend.data.model.UserRegistDto
 import com.example.frontend.data.repository.UserRepository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 import java.lang.Exception
-import java.util.concurrent.Flow
 
 class UserViewModel: ViewModel(){
     private val userRepository: UserRepository = UserRepository()
 
     private val _signupRes: MutableStateFlow<String> = MutableStateFlow("init")
-    private val _userInfo: MutableState<Map<String, String>> = mutableStateOf(mapOf())
+    private val _userMyInfo: MutableState<Map<String, String>> = mutableStateOf(mapOf())
+    private val _userMyPage: MutableState<Map<String, String>> = mutableStateOf(mapOf())
+    private val _userReviewList: MutableState<List<Map<String, Object>>> = mutableStateOf(listOf())
     private val _modifyRes: MutableStateFlow<String> = MutableStateFlow("init")
     private val _modifyPwRes: MutableStateFlow<String> = MutableStateFlow("init")
     private val _libraryList: MutableState<List<UserRegistDto>> = mutableStateOf(listOf())
+    private val _checkId: MutableStateFlow<String> = MutableStateFlow("init")
     val signupRes : StateFlow<String>
         get() = _signupRes
-    val userInfo : State<Map<String, String>> = _userInfo
+    val userMyInfo : State<Map<String, String>> = _userMyInfo
+    val userMyPage : State<Map<String, String>> = _userMyPage
     val modifyRes: StateFlow<String>
         get() = _modifyRes
     val modiyfPwRes: StateFlow<String>
         get() = _modifyPwRes
     val libraryList: State<List<UserRegistDto>> = _libraryList
+    val checkId: StateFlow<String>
+        get() = _checkId
+    val userReviewList : State<List<Map<String, Object>>> = _userReviewList
     fun resetState(){
         _modifyRes.value = "init'"
     }
     fun resetPwState(){
         _modifyPwRes.value = "init"
+    }
+    fun resetCheckId(){
+        _checkId.value = "init"
     }
     fun signUp(userInfo: UserRegistDto){
         GlobalScope.async{
@@ -59,22 +59,34 @@ class UserViewModel: ViewModel(){
         }
     }
 
-    fun getInfo(token: String){
+    fun getMyInfo(){
         GlobalScope.async{
             try{
-                userRepository.getInfo(token).collect(){
+                userRepository.getMyInfo().collect(){
                     res->
-                    _userInfo.value = res
+                    _userMyInfo.value = res
                 }
             }catch (e:Exception){
             }
         }
     }
 
-    fun modifyUserInfo(token: String, modifyUser: ModifyUser){
+    fun getMyPage(){
         GlobalScope.async {
             try{
-                userRepository.modifyUser(token, modifyUser).collect(){
+                userRepository.getMyPage().collect(){
+                    res ->
+                    _userMyPage.value = res
+                }
+            }catch (e:Exception){
+            }
+        }
+    }
+
+    fun modifyUserInfo(modifyUser: ModifyUser){
+        GlobalScope.async {
+            try{
+                userRepository.modifyUser(modifyUser).collect(){
                     res ->
                     _modifyRes.value = res
                 }
@@ -83,10 +95,10 @@ class UserViewModel: ViewModel(){
         }
     }
 
-    fun modifyUserPw(token: String, modifyPw: ModifyPw){
+    fun modifyUserPw(modifyPw: ModifyPw){
         GlobalScope.async {
             try{
-                userRepository.modifyPassword(token, modifyPw).collect(){
+                userRepository.modifyPassword(modifyPw).collect(){
                     res ->
                     _modifyPwRes.value = res
                 }
@@ -95,14 +107,38 @@ class UserViewModel: ViewModel(){
         }
     }
 
-    fun getLibraryList(token: String){
+    fun getLibraryList(){
         GlobalScope.async {
             try{
-                userRepository.getLibraryList(token).collect(){
+                userRepository.getLibraryList().collect(){
                     res ->
                     _libraryList.value = res
                 }
             } catch (e: Exception){
+            }
+        }
+    }
+
+    fun checkId(userId: String){
+        GlobalScope.async {
+            try{
+                userRepository.checkId(userId).collect(){
+                    res ->
+                    _checkId.value = res
+                }
+            }catch (e: Exception){
+            }
+        }
+    }
+
+    fun getReviewList(){
+        GlobalScope.async {
+            try{
+                userRepository.getReviewList().collect(){
+                    res ->
+                    _userReviewList.value = res
+                }
+            }catch (e: Exception){
             }
         }
     }

@@ -4,6 +4,7 @@ package com.example.frontend
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.location.Location
@@ -50,11 +51,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.frontend.data.api.API
-import com.example.frontend.data.api.UserApi
 import com.example.frontend.data.local.addFocusCleaner
 import com.example.frontend.ui.components.BookReportDetail
-import com.example.frontend.ui.components.ReportDetailViewModel
+import com.example.frontend.ui.components.BookReportRegist
 import com.example.frontend.ui.screens.book.BookList
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
@@ -67,25 +66,22 @@ import com.example.frontend.ui.screens.user.Modify
 import com.example.frontend.ui.screens.user.Register
 import com.example.frontend.ui.theme.FrontEndTheme
 import com.example.frontend.ui.vo.Routes
-import com.example.frontend.ui.vo.bookList
 import com.example.frontend.viewmodel.AuthViewModel
 import com.example.frontend.viewmodel.AuthViewModelFactory
+import com.example.frontend.viewmodel.BookViewModel
+import com.example.frontend.viewmodel.BookViewModelFactory
 import com.example.frontend.viewmodel.MainViewModel
 import com.example.frontend.viewmodel.MainViewModelFactory
 import com.example.frontend.viewmodel.UserViewModel
 import com.example.frontend.viewmodel.UserViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-
 @SuppressLint("MissingPermission")
 class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val curLocation = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ){
@@ -105,6 +101,7 @@ class MainActivity : ComponentActivity() {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION)
         )
+
         setContent {
             val mainViewModel = ViewModelProvider(
                 this,MainViewModelFactory()
@@ -115,10 +112,13 @@ class MainActivity : ComponentActivity() {
             val authViewModel = ViewModelProvider(
                 this,AuthViewModelFactory()
             )[AuthViewModel::class.java]
+            val bookViewModel = ViewModelProvider(
+                this,BookViewModelFactory()
+            )[BookViewModel::class.java]
             FrontEndTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    MainApp(mainViewModel, userViewModel, authViewModel)
+                    MainApp(mainViewModel, userViewModel, authViewModel,bookViewModel)
                 }
             }
         }
@@ -128,13 +128,15 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
 @Composable
-fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel){
+fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel,bookViewModel: BookViewModel){
     val navController = rememberNavController()
-    Log.d("asdf", navController.toString())
+//    prefsRepository.setValue("accessToken","")
+//    Log.d("token", prefsRepository.getValue("accessToken"))
+
 //    val pagerState = rememberPagerState(pageCount=2)
     Surface(modifier=Modifier.addFocusCleaner(LocalFocusManager.current)){
         Scaffold(topBar = {
-            if(mainViewModel.isLogin.value)
+//            if(mainViewModel.isLogin.value)
                 CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color.White
@@ -161,7 +163,8 @@ fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authView
             )
         },
             bottomBar ={
-                if(mainViewModel.isLogin.value)com.example.frontend.ui.components.BottomAppBar(navController = navController)
+//                if(mainViewModel.isLogin.value)
+                    com.example.frontend.ui.components.BottomAppBar(navController = navController)
             },
 //            floatingActionButton = {
 //                FloatingActionButton(onClick = {  }) {
@@ -175,15 +178,15 @@ fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authView
                 verticalArrangement = Arrangement.spacedBy(1.dp),
             ) {
                 Divider()
-                MainNavigation(navController = navController,mainViewModel, userViewModel, authViewModel)
+                MainNavigation(navController = navController,mainViewModel, userViewModel, authViewModel, bookViewModel)
             }
 
         }
     }
 }
 @Composable
-fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel){
-    NavHost(navController = navController, startDestination = Routes.HOME) {
+fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel,bookViewModel: BookViewModel){
+    NavHost(navController = navController, startDestination = Routes.BOOKTOTAL) {
         composable(route = Routes.HOME) {
             Home(navController = navController, mainViewModel, userViewModel, authViewModel)
             mainViewModel.changeState("홈")
@@ -191,12 +194,10 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
         composable(route = Routes.CHAT) {
             Chat(navController)
             mainViewModel.changeState("채팅")
-            Log.d("stack", navController.toString())
         }
         composable(route = Routes.MYPAGE) {
             MyPage(navController,true,"asdf", authViewModel, userViewModel)
             mainViewModel.changeState("마이페이지")
-            Log.d("stack", navController.toString())
         }
         composable(route = Routes.MYPAGE + "/{userId}",
                 arguments = listOf(navArgument("userId"){
@@ -219,12 +220,10 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
         composable(route = Routes.BOOKSEARCH) {
             BookSearch(navController)
             mainViewModel.changeState("검색")
-            Log.d("stack", navController.toString())
         }
         composable(route = Routes.BOOKTOTAL) {
-            BookTotal(navController)
-            mainViewModel.changeState("독후감")
-            Log.d("stack", navController.toString())
+            BookTotal(navController,bookViewModel)
+            mainViewModel.changeState("내 도서관")
         }
         composable(route = Routes.CHATROOM) {
             ChatRoom()
@@ -252,7 +251,10 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             BookTransactionRegist()
         }
         composable(route = Routes.MODIFYINFO){
-            Modify(navController = navController, authViewModel, userViewModel)
+            Modify(navController, authViewModel, userViewModel)
+        }
+        composable(route = Routes.BOOKREPORTREGIST){
+            BookReportRegist(navController)
         }
     }
 

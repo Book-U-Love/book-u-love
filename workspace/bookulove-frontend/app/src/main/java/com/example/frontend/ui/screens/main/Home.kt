@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.frontend.R
 import com.example.frontend.data.model.User
+import com.example.frontend.data.repository.PrefsRepository
 import com.example.frontend.ui.components.FuncBtn
 import com.example.frontend.ui.components.InputField
 import com.example.frontend.ui.components.MapInfo
@@ -99,7 +100,8 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainVi
 @Composable
 fun AfterLogin(navController: NavHostController, userViewModel: UserViewModel, authViewModel: AuthViewModel){
     val pos = remember { mutableStateOf(LatLng(0.0, 0.0)) }
-    userViewModel.getLibraryList(authViewModel.accessToken.value)
+    userViewModel.getLibraryList()
+//    userViewModel.getMyPage()
     val list = userViewModel.libraryList
     Column(modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -30,6 +30,7 @@ public class StompHandler implements ChannelInterceptor {
         switch (accessor.getCommand()) {
             case CONNECT -> {
                 Long userId = jwtUtil.extractId(getAccessToken(accessor));
+                log.info("접속중인 회원 id: {}", userId);
             }
             case SUBSCRIBE-> {
                 String simpDestination = message.getHeaders().get("simpDestination").toString();
@@ -39,11 +40,17 @@ public class StompHandler implements ChannelInterceptor {
                 log.info("roomId: {}", roomId);
 
                 // TODO: 2023-11-08 kotlin에서 jwt 잘 넘어오는지 확인후 검증작업 추가
+                String token = getAccessToken(accessor);
+                log.info("subscribe token: {}", token);
 
-                stompCreateConnPort.createConn(1L, roomId);
+                stompCreateConnPort.createConn(2L, roomId);
             }
             case SEND -> {
                 log.info("sendhandling");
+                Long userId = jwtUtil.extractId(getAccessToken(accessor));
+                log.info("접속중인 회원 id: {}", userId);
+
+
             }
         }
         return message;

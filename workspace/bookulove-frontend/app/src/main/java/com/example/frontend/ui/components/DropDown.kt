@@ -30,14 +30,15 @@ import androidx.compose.ui.unit.dp
 import com.example.frontend.R
 
 @Composable
-fun DropDown(){
+fun DropDown(
+    itemList:List<String>
+){
     var dropState = remember{
         mutableStateOf(false)
     }
-    var bookIndex = remember{
-        mutableStateOf(0)
+    var index = remember{
+        mutableStateOf(-1)
     }
-    var itemList = listOf<String>("선택","책1", "책2", "책3", "책4")
     Box(modifier = Modifier
         .fillMaxWidth()
         .border(
@@ -47,7 +48,7 @@ fun DropDown(){
         .clickable { dropState.value = !dropState.value }
         .padding(15.dp)){
         Row(modifier=Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween){
-            Text(when(bookIndex.value>0){true-> itemList.get(bookIndex.value);false->"선택"})
+            Text(when(index.value>=0){true-> itemList.get(index.value);false->"선택"})
             Icon(painter = painterResource(id =
             when(dropState.value){true -> R.drawable.baseline_arrow_drop_up_24; false->R.drawable.baseline_arrow_drop_down_24}), contentDescription = "arrow")
         }
@@ -58,10 +59,10 @@ fun DropDown(){
             .fillMaxWidth()
             .background(Color.White),expanded = dropState.value, onDismissRequest = { dropState.value=false }) {
                 itemList.forEachIndexed{
-                    index, item -> DropdownMenuItem(
+                    i, item -> DropdownMenuItem(
                                         text = { Text(item) },
                                         onClick = { dropState.value = !dropState.value;
-                                                    bookIndex.value = index;
+                                                    index.value = i;
                     })
 
                 }

@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -36,7 +38,26 @@ public class ChattingEntity extends BaseTimeEntity {
     @JoinColumn(name = "chatting_room_id")
     private ChattingRoomEntity chattingRoom;
 
+    @Builder
+    public ChattingEntity(Long id, String content, Long writerId, Long readCount, ChattingRoomEntity chattingRoom) {
+        this.id = id;
+        this.content = content;
+        this.writerId = writerId;
+        this.readCount = readCount;
+        this.chattingRoom = chattingRoom;
+    }
 
+    public static ChattingEntity of(String content, Long writerId, Long readCount, ChattingRoomEntity chattingRoomEntity) {
+        return ChattingEntity.builder()
+                .content(content)
+                .writerId(writerId)
+                .readCount(readCount)
+                .chattingRoom(chattingRoomEntity)
+                .build();
+    }
 
-
+    public void updateReadCount(Long userId) {
+        if (!Objects.equals(userId, writerId))
+            this.readCount = 0L;
+    }
 }
