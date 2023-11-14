@@ -25,8 +25,13 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -40,9 +45,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.frontend.R
+import com.example.frontend.data.model.BookSearchRes
 import com.example.frontend.ui.components.BookInfoCard
+import com.example.frontend.ui.components.QuestionCard
 import com.example.frontend.ui.vo.categoryList
 import com.example.frontend.viewmodel.BookViewModel
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -50,7 +58,6 @@ import com.example.frontend.viewmodel.BookViewModel
 @ExperimentalMaterial3Api
 fun BookSearch(navController:NavController){
     val categoryState = rememberLazyListState();
-
     Box(modifier=Modifier.fillMaxSize()){
        Column(){
            Box(){
@@ -90,14 +97,6 @@ fun BookSearch(navController:NavController){
 
            Divider()
        }
-        // 책 추가 버튼
-//        Box(modifier= Modifier
-//            .align(Alignment.BottomEnd)
-//            .padding(bottom=50.dp,end = 20.dp)){
-//            FloatingActionButton(onClick = { /*TODO*/ }) {
-//                Icon(painter = painterResource(R.drawable.baseline_add_24), contentDescription ="addBook" )
-//            }
-//        }
         FloatingActionButton(onClick = {navController.navigate("booktransactionregist")}, modifier= Modifier
             .align(Alignment.BottomEnd)
             .padding(bottom = 40.dp, end = 20.dp)) {
@@ -107,11 +106,12 @@ fun BookSearch(navController:NavController){
 }
 @ExperimentalMaterial3Api
 @Composable
-fun BookIsbnSearch(){
+fun BookIsbnSearch(bookViewModel: BookViewModel,navController: NavController){
     var isbn = remember{
-        mutableStateOf(TextFieldValue("9791192300818"))
+        mutableStateOf(TextFieldValue("9791197559648"))
     }
-    val bookViewModel:BookViewModel = BookViewModel()
+    val searchResult by bookViewModel.bookSearchRes.collectAsState()
+    val resultIsEmpty = searchResult?.isEmpty() ?: true
     Box(modifier=Modifier.padding(20.dp)){
         Column {
             Box(){
@@ -146,13 +146,17 @@ fun BookIsbnSearch(){
                     }
                 }
             }
-            Box(modifier=Modifier.padding(top=30.dp, start=15.dp, end=15.dp)){
+            if(!resultIsEmpty)Box(modifier=Modifier.padding(top=30.dp, start=15.dp, end=15.dp)){
                 Column {
                     Box(){
                         Text("검색 결과 출력")
                     }
                     Box {
-                        BookInfoCard()
+                        when(searchResult!!.getValue("title")==""){
+                            true -> QuestionCard()
+                            false -> BookInfoCard(searchResult,navController)
+                        }
+
                     }
                 }
             }

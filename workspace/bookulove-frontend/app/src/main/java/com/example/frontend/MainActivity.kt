@@ -117,6 +117,7 @@ class MainActivity : ComponentActivity() {
             val bookViewModel = ViewModelProvider(
                 this,BookViewModelFactory()
             )[BookViewModel::class.java]
+
             FrontEndTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -253,10 +254,10 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             Modify(navController, authViewModel, userViewModel)
         }
         composable(route = Routes.BOOKREPORTREGIST){
-            BookReportRegist(navController)
+            BookReportRegist(bookViewModel,navController)
         }
         composable(route = Routes.BOOKISBNSEARCH){
-            BookIsbnSearch()
+            BookIsbnSearch(bookViewModel,navController)
         }
     }
 
