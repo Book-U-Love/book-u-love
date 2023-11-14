@@ -46,14 +46,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // TODO: 2023-11-13 redis blacklist
 
-        Authentication authentication = getAuthentication(userId);
+        Authentication authentication = getAuthentication(userId, token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
     }
 
-    private Authentication getAuthentication(Long userId){
-        return new UsernamePasswordAuthenticationToken(userId, "",
+    private Authentication getAuthentication(Long userId, String token){
+        SecurityDto securityDto = SecurityDto.of(userId, token);
+        log.info("securityDto: {}", securityDto);
+
+        return new UsernamePasswordAuthenticationToken(securityDto, "",
                 List.of(new SimpleGrantedAuthority("member")));
     }
 }

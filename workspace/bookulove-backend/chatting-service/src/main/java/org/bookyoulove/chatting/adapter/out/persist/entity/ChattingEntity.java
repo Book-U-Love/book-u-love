@@ -36,7 +36,21 @@ public class ChattingEntity extends BaseTimeEntity {
     @JoinColumn(name = "chatting_room_id")
     private ChattingRoomEntity chattingRoom;
 
+    @Builder
+    public ChattingEntity(Long id, String content, Long writerId, Long readCount, ChattingRoomEntity chattingRoom) {
+        this.id = id;
+        this.content = content;
+        this.writerId = writerId;
+        this.readCount = readCount;
+        this.chattingRoom = chattingRoom;
+    }
 
-
-
+    public static ChattingEntity of(String content, Long writerId, Long readCount, ChattingRoomEntity chattingRoomEntity){
+        return ChattingEntity.builder()
+                .content(content)
+                .writerId(writerId)
+                .readCount(readCount)
+                .chattingRoom(chattingRoomEntity)
+                .build();
+    }
 }

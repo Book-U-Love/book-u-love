@@ -1,23 +1,20 @@
 package com.example.frontend.data.api
 
-import com.example.frontend.data.repository.AuthRepository
 import com.example.frontend.data.repository.PrefsRepository
 import com.example.frontend.viewmodel.AuthViewModel
-import com.google.android.gms.auth.api.Auth
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Exception
-import java.util.concurrent.TimeUnit
 
 interface API{
     companion object{
-        private const val BASE_URL = "http://10.0.2.2:9001/api/"
+//        private const val BASE_URL = "http://10.0.2.2:9001/api/"
         private const val REFRESH_URL = "http://10.0.2.2:9001/api/auth-service/auths/refresh"
         private const val TIMEOUT_LIMIT = 60L
-        private const val SFY_URL = "https://k9c209.p.ssafy.io/api/"
+        private const val BASE_URL = "https://k9c209.p.ssafy.io/api/"
         fun getInstance(): Retrofit{
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
