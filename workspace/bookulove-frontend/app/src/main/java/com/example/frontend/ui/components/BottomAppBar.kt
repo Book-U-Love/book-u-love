@@ -42,7 +42,7 @@ fun BottomAppBar(navController: NavHostController){
                     contentDescription = "chat"
                 )
             }
-            IconButton(onClick = { navPopUpTo(navController, Routes.BOOKTOTAL)}){
+            IconButton(onClick = { navPopUpTo(navController, Routes.MYLIBRARY)}){
                 Icon(painter = painterResource(id=R.drawable.baseline_menu_book_24),
                     contentDescription = "bookTotal"
                 )

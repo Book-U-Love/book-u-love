@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -35,6 +36,7 @@ import com.example.frontend.ui.vo.bookList
 import com.example.frontend.viewmodel.BookViewModel
 import java.util.Date
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BookReportRegist(navController: NavController){
     var isbn = remember{
@@ -74,21 +76,22 @@ fun BookReportRegist(navController: NavController){
                 textStyle = TextStyle(fontSize = 18.sp),
             )
         }
-    }
-
-    Box(modifier= Modifier
-        .fillMaxHeight()
-        .fillMaxWidth()){
-        TextButton(onClick = { Log.d("등록","등록")},
-            modifier= Modifier
-                .align(Alignment.BottomCenter)
-                .width(350.dp)
-                .height(60.dp)
-                .background(SkyBlue, RoundedCornerShape(15.dp))
-        ) {
-            Text(text = "독후감 등록", color = Color.White
-                , fontWeight = FontWeight.Bold, fontSize = 18.sp)
+        Box(modifier= Modifier
+            .fillMaxHeight()
+            .fillMaxWidth()){
+            TextButton(onClick = { Log.d("등록","등록")},
+                modifier= Modifier
+                    .align(Alignment.BottomCenter)
+                    .width(350.dp)
+                    .height(60.dp)
+                    .background(SkyBlue, RoundedCornerShape(15.dp))
+            ) {
+                Text(text = "독후감 등록", color = Color.White
+                    , fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            }
         }
     }
+
+
 
 }
