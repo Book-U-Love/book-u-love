@@ -7,10 +7,12 @@ public record ChatCreateRoomCmd(
 
         Long buId,
 
-        Long sellerId
+        Long sellerId,
+
+        Long buyerId
 
 ) {
-    public static ChatCreateRoomCmd of(ChatCreateRoomReq req) {
-        return new ChatCreateRoomCmd(req.buId(), req.sellerId());
+    public static ChatCreateRoomCmd of(Long userId, ChatCreateRoomReq req) {
+        return new ChatCreateRoomCmd(req.buId(), req.sellerId(), userId);
     }
 }

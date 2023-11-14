@@ -18,16 +18,9 @@ import kotlinx.coroutines.flow.StateFlow
 
 class AuthViewModel(): ViewModel(){
     private val authRepository: AuthRepository = AuthRepository()
-    private val _accessToken = mutableStateOf("")
     private val _loginRes: MutableStateFlow<String> = MutableStateFlow("init")
     private val _certChkRes: MutableStateFlow<String> = MutableStateFlow("init")
     private val _certSendRes: MutableStateFlow<String> = MutableStateFlow("init")
-
-    val accessToken: State<String> = _accessToken
-
-    fun setAccessToken(state: String){
-        _accessToken.value = state
-    }
 
     val loginRes : StateFlow<String>
         get() = _loginRes
@@ -45,9 +38,8 @@ class AuthViewModel(): ViewModel(){
             try{
                 authRepository.logIn(user).collect(){
                     res ->
-                    _loginRes.value = res;
+                    _loginRes.value = res
                 }
-                Log.d("res",PrefsRepository().getValue("accessToken"))
             } catch (e:Exception){
                 _loginRes.value = "fail"
             }

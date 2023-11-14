@@ -9,11 +9,16 @@ import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.bookulove.book.api.book.model.db.entity.Book;
 import org.bookulove.book.api.book.model.db.entity.BookLibraryRelation;
+import org.bookulove.book.api.book.model.db.entity.ReviewEntity;
 import org.bookulove.book.api.book.model.db.repository.BookLibraryRelationRepository;
 import org.bookulove.book.api.book.model.db.repository.BookRepository;
+import org.bookulove.book.api.book.model.db.repository.ReviewRepository;
 import org.bookulove.book.api.book.model.db.repository.query.BookLibraryRelationQueryRepository;
+import org.bookulove.book.api.book.model.feign.UserFeignClient;
 import org.bookulove.book.api.book.model.request.BookUpdateReq;
+import org.bookulove.book.api.book.model.response.BookDetailRes;
 import org.bookulove.book.api.book.model.response.BookInfo;
+import org.bookulove.book.api.book.model.response.ReviewInfoRes;
 import org.bookulove.book.api.library.model.db.entity.LibraryEntity;
 import org.bookulove.book.api.library.model.db.repository.LibraryRepository;
 import org.bookulove.book.api.library.model.db.repository.query.LibraryQueryRepository;
@@ -22,7 +27,9 @@ import org.bookulove.book.api.book.model.feign.AladinFeignClient;
 import org.bookulove.book.api.book.model.feign.AladinSearch;
 import org.bookulove.book.api.book.model.request.BookRegistReq;
 import org.bookulove.book.api.book.model.response.BookSearchRes;
+import org.bookulove.common.api.response.ApiData;
 import org.bookulove.common.error.ErrorCode;
+import org.bookulove.common.feignclient.user.UserFindInfoRes;
 import org.bookulove.common.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -44,6 +51,8 @@ public class BookService {
 
     private final AuthUtil authUtil;
     private final BookRepository bookRepository;
+    private final UserFeignClient userFeignClient;
+    private final ReviewRepository reviewRepository;
     private final LibraryRepository libraryRepository;
     private final AladinFeignClient aladinFeignClient;
     private final LibraryQueryRepository libraryQueryRepository;
@@ -177,6 +186,44 @@ public class BookService {
         bookUpdateReq.details().ifPresent(relation::updateDetails);
 
         log.info(logCurrent(getClassName(), getMethodName(), END));
+    }
+
+    public BookDetailRes findBookInfo(Long bookId){
+        String token = authUtil.getTokenByHeader();
+
+        Book bookEntity = bookRepository.findById(bookId).orElseThrow(
+                () -> new BookServiceException(ErrorCode.BOOK_NOT_FOUND)
+        );
+
+        List<ReviewInfoRes> reviewInfoResList = new ArrayList<>();
+        List<ReviewEntity> reviewEntityList = bookEntity.getReviewEntityList();
+        for(ReviewEntity reviewEntity : reviewEntityList){
+            ApiData<UserFindInfoRes> userByUserId = userFeignClient.findUserByUserId(token, reviewEntity.getUserId());
+            if(userByUserId.status() != 200){
+                throw new BookServiceException(ErrorCode.USER_NOT_FOUND);
+            }
+
+            ReviewInfoRes reviewInfoRes =
+                    ReviewInfoRes.of(reviewEntity.getReviewId(),
+                            reviewEntity.getTitle(),
+                            reviewEntity.getTitle(),
+                            reviewEntity.getUserId(),
+                            userByUserId.data().nickname());
+
+            reviewInfoResList.add(reviewInfoRes);
+        }
+
+        BookDetailRes bookDetailRes = BookDetailRes.of(bookEntity.getBookId(),
+                bookEntity.getTitle(),
+                bookEntity.getAuthor(),
+                bookEntity.getPublisher(),
+                bookEntity.getPrice(),
+                bookEntity.getPubDate(),
+                reviewInfoResList);
+
+        log.info("책 상세정보 domain: {}", bookDetailRes);
+
+        return bookDetailRes;
     }
 
 }

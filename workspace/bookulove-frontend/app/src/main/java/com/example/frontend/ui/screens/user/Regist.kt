@@ -61,12 +61,14 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
     val pwCheck = remember{ mutableStateOf(false) }
     val certRes by authViewModel.certSendRes.collectAsState()
     val certCheck = remember{ mutableStateOf(false) }
-    val certChkRes by authViewModel.certChkRes.collectAsState()
     val errChk = remember{ mutableStateOf(false) }
     val errMsg = remember{ mutableStateOf("") }
     val sucChk = remember{ mutableStateOf(false) }
     val sucMsg = remember{ mutableStateOf("") }
     val sucFun = remember{ mutableStateOf({}) }
+    val idCheck = remember{ mutableStateOf(false) }
+    val checkId by userViewModel.checkId.collectAsState()
+    val certChkRes by authViewModel.certChkRes.collectAsState()
     val regChk by userViewModel.signupRes.collectAsState()
     Row(
         modifier = Modifier.fillMaxHeight(),
@@ -81,7 +83,19 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
                 Spacer(modifier = Modifier.height(30.dp))
                 FuncBtn(name = "위치 등록", onClick = { changePage() })
                 Spacer(modifier = Modifier.height(30.dp))
-                InputField(value = id, label = "아이디", onValueChanged = {id = it})
+                InputField(value = id, label = "아이디", onValueChanged = {id = it}, enable = !idCheck.value)
+                FuncBtn(name = "아이디 중복확인", onClick = {
+                    userViewModel.checkId(id)
+                },
+                    enable = !idCheck.value)
+                if(checkId == "success"){
+                    Text(text = "사용 가능한 아이디입니다", color = Color.Green, modifier = Modifier.height(30.dp))
+                    idCheck.value = true
+                } else if(checkId == "fail"){
+                    Text(text = "중복된 아이디입니다", color = Color.Red, modifier = Modifier.height(30.dp))
+                } else{
+                    Spacer(modifier = Modifier.height(30.dp))
+                }
                 InputField(value = pw, label = "비밀번호", isPassword = true, onValueChanged = {pw = it})
                 InputField(value = confirmPw, label = "비밀번호 확인", isPassword = true, needSpacer = false, onValueChanged = {confirmPw = it})
                 if(pw == "" || confirmPw == ""){
@@ -144,7 +158,6 @@ fun FirstRegister(navController: NavHostController, changePage: () -> Unit){
 //                        }
                     })
                 }
-
             }
             if(regChk == "success"){
                 sucChk.value = true

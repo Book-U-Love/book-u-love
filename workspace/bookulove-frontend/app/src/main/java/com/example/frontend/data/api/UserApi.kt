@@ -5,6 +5,7 @@ import com.example.frontend.data.model.LibraryList
 import com.example.frontend.data.model.MapData
 import com.example.frontend.data.model.ModifyPw
 import com.example.frontend.data.model.ModifyUser
+import com.example.frontend.data.model.ReviewList
 import com.example.frontend.data.model.User
 import com.example.frontend.data.model.UserRegistDto
 import okhttp3.ResponseBody
@@ -14,6 +15,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 
 interface UserApi {
@@ -21,14 +23,23 @@ interface UserApi {
     suspend fun signUp(@Body userInfo:UserRegistDto):Response<Default>
 
     @GET("user-service/users")
-    suspend fun getInfo(@Header("Authorization") token: String):Response<MapData>
+    suspend fun getMyInfo():Response<MapData>
+
+    @GET("user-service/users/info")
+    suspend fun getMyPage():Response<MapData>
 
     @PATCH("user-service/users")
-    suspend fun modifyUser(@Header("Authorization") token: String, @Body modifyUser: ModifyUser):Response<Default>
+    suspend fun modifyUser(@Body modifyUser: ModifyUser):Response<Default>
 
     @PATCH("user-service/users/password")
-    suspend fun modifyPassword(@Header("Authorization") token: String, @Body modifyPw: ModifyPw): Response<Default>
+    suspend fun modifyPassword(@Body modifyPw: ModifyPw): Response<Default>
 
     @GET("user-service/users/list")
-    suspend fun getLibraryList(@Header("Authorization") token: String): Response<LibraryList>
+    suspend fun getLibraryList(): Response<LibraryList>
+
+    @GET("user-service/users/check/{userId}")
+    suspend fun checkId(@Path("userId") userId: String): Response<Default>
+
+    @GET("user-service/evals/reviewee")
+    suspend fun getReviewList(): Response<ReviewList>
 }

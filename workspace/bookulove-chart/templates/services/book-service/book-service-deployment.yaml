@@ -24,6 +24,8 @@ spec:
           value: "jdbc:mysql://{{ $datasourceHost }}:{{ $datasourcePort }}/bookulove?characterEncoding=utf8"
         - name: BOOK-DB-USERNAME
           value: {{ $service.datasource.main.auth.user | quote }}
+        - name: DOMAIN-URL
+          value: "{{ include "service.release.name" (list . "apigateway-service") }}:{{ index .Values "apigateway-service" "server" "port" }}"
         ports:
         - containerPort: {{ $service.server.port }}
         livenessProbe:

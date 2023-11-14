@@ -16,15 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ChatCreateRoomService implements ChatCreateRoomUseCase {
 
-    private final AuthUtil authUtil;
     private final ChatCreateRoomPort chatCreateRoomPort;
 
     @Override
     public ChattingRoomDomain createRoom(ChatCreateRoomCmd cmd) {
         log.info("채팅방 생성 cmd: {}", cmd);
 
-        Long userId = authUtil.getUserIdByHeader();
-
-        return chatCreateRoomPort.createRoom(cmd.buId(), userId, cmd.sellerId());
+        return chatCreateRoomPort.createRoom(cmd.buId(), cmd.sellerId(), cmd.buyerId());
     }
 }
