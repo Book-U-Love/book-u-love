@@ -1,6 +1,5 @@
 package com.example.frontend.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,9 +14,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults.indicatorLine
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,10 +25,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.frontend.ui.theme.SkyBlue
 import com.example.frontend.ui.vo.bookList
+import com.example.frontend.viewmodel.BookViewModel
 
 @ExperimentalMaterial3Api
 @Composable
@@ -40,7 +36,7 @@ fun BookReportDetail(index:Int){
         mutableStateOf(bookList.get(index))
     }
 
-    val viewModel = viewModel<ReportDetailViewModel>();
+    val viewModel = BookViewModel();
     Column {
         Box(modifier=Modifier.padding(15.dp)){
             Text(text = report.bookReporter)
@@ -90,11 +86,3 @@ fun BookReportDetail(index:Int){
 
 }
 
-class ReportDetailViewModel: ViewModel(){
-    private val _reportState = mutableStateOf(true)
-    val reportState: State<Boolean> = _reportState
-
-    fun changeState(){
-        _reportState.value = !_reportState.value
-    }
-}
