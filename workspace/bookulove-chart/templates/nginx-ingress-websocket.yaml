@@ -16,7 +16,6 @@ metadata:
     nginx.org/websocket-services: "{{ include "service.release.name" (list . "chatting-service") }}"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   {{- if $ingress.tls.enabled  }}
@@ -28,7 +27,7 @@ spec:
   - http:
       paths:
       - pathType: Prefix
-        path: /api/ws(.*)
+        path: /api/chatting-service/stomps
         {{- $chattingService := index .Values "chatting-service" }}
         backend:
           service:

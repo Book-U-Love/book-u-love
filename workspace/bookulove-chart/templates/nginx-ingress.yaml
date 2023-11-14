@@ -23,7 +23,7 @@ spec:
   - http:
       paths:
       - pathType: Prefix
-        path: /api(?!/ws)
+        path: /api(?!/chatting-service/stomps)
         backend:
           {{- $apigateway := index .Values "apigateway-service" }}
           service:
