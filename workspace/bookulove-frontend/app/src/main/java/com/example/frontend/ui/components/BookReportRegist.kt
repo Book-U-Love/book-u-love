@@ -53,7 +53,7 @@ fun BookReportRegist(navController: NavController){
     val viewModel = BookViewModel();
     Column {
         Box(modifier=Modifier.padding(15.dp)){
-            Text(text = "책 제목")
+            CustomSearchFAB()
         }
         Divider()
         Box(modifier=Modifier.padding(15.dp)){

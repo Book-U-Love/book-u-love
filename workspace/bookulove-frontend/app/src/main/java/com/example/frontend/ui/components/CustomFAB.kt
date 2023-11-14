@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,10 +25,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -111,6 +114,32 @@ fun CustomFAB(
     }
 
 }
+@Composable
+@ExperimentalComposeUiApi
+fun CustomSearchFAB(){
+    var isExpanded by remember{
+        mutableStateOf(false)
+    }
+    var expandedState by remember{
+        mutableStateOf(0.1f)
+    }
 
+//    val keyboardController = LocalSoftwareKeyboardController.current
+//    val expandedWidth by animateDpAsState(
+//        targetValue = expandedState,
+//        animationSpec = spring(dampingRatio=3f),
+//        label="expandedWidth"
+//    )
+//    val expandedHeight by animateDpAsState(
+//        targetValue = if(isExpanded) 64.dp else expandedState,
+//        animationSpec = spring(dampingRatio = 3f),
+//        label="expandedHeight"
+//    )
+//    FloatingActionButton(onClick = { isExpanded = !isExpanded},
+//        modifier=Modifier.width(expandedWidth).height(expandedHeight)
+//        ) {
+//
+//    }
+}
 
 
