@@ -43,7 +43,7 @@ data class ModifyPw(
 data class MapData(
     val status: Int,
     val code: String,
-    val data: Map<String, Object>
+    val data: Map<String, String>
 )
 data class Token(
     val status: Number,
@@ -54,4 +54,10 @@ data class LibraryList(
     val status: Int,
     val code: String,
     val data: Map<String, List<UserRegistDto>>
+)
+
+data class ReviewList(
+    val status: Int,
+    val code: String,
+    val data: Map<String, List<Map<String, Object>>>
 )

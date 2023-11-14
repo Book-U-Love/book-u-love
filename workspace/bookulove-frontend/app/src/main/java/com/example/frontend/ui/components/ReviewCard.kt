@@ -10,9 +10,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-@Preview(showBackground = true)
 @Composable
-fun ReviewCard(){
+fun ReviewCard(
+    content: String
+){
     Box(
         modifier = Modifier
             .fillMaxWidth(0.8f)
@@ -20,7 +21,7 @@ fun ReviewCard(){
             .border(width = 1.dp, color = Color.Black),
         ){
             Text(
-                text = "리뷰창",
+                text = content,
                 modifier = Modifier.padding(start = 5.dp, top = 5.dp)
             )
     }

@@ -50,7 +50,7 @@ private val modifyDto: ModifyUser = ModifyUser("", "", 0.0, 0.0)
 @ExperimentalMaterial3Api
 @Composable
 fun Modify(navController: NavHostController, authViewModel: AuthViewModel, userViewModel: UserViewModel){
-    val userInfo: Map<String, String> = userViewModel.userInfo.value
+    val userInfo: Map<String, String> = userViewModel.userMyInfo.value
     var isFirst by remember {
         mutableStateOf(true)
     }
@@ -115,7 +115,7 @@ fun FirstModify(navController: NavHostController, changePage: () -> Unit, authVi
                         onClick = {
                             modifyDto.nickname = nickname
                             modifyDto.libraryName = libName
-                            userViewModel.modifyUserInfo(authViewModel.accessToken.value, modifyDto)
+                            userViewModel.modifyUserInfo(modifyDto)
                           },
                         name = "수정하기"
                     )
@@ -211,7 +211,7 @@ fun PwModify(
                         if(pw == confirmPw){
                             modifyPw.oldPassword = oldPw
                             modifyPw.newPassword = pw
-                            userViewModel.modifyUserPw(authViewModel.accessToken.value, modifyPw)
+                            userViewModel.modifyUserPw(modifyPw)
                         }
                     })
                     if(modPwRes == "success"){
