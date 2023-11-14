@@ -1,5 +1,5 @@
-{{ $service := index .Values "auth-service" }}
-{{ include "service.deployment.head" (list . $service.metadata.name) }}
+{{- $service := index .Values "auth-service" }}
+{{- include "service.deployment.head" (list . $service.metadata.name) }}
 spec:
   replicas: {{ $service.replicas }}
   selector:

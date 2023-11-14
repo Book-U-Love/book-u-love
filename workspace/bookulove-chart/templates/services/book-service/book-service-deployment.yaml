@@ -1,5 +1,5 @@
-{{ $service := index .Values "book-service" }}
-{{ include "service.deployment.head" (list . $service.metadata.name) }}
+{{- $service := index .Values "book-service" }}
+{{- include "service.deployment.head" (list . $service.metadata.name) }}
 spec:
   replicas: {{ $service.replicas }}
   selector:
