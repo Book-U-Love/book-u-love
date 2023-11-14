@@ -27,9 +27,7 @@ spec:
         - name: {{ $s.metadata.name | upper | quote }}
           value: http://{{ include "service.release.name" (list $root $v) }}:{{ $s.server.port }}
         {{- end }}
-        - name: CHATTING-SERVICE
-          value: http://abc-chatting-service
         - name: ALARM-SERVICE
-          value: http://abc-alarm-service
+          value: http://dummy-alarm-service
         ports:
         - containerPort: {{ $service.server.port }}
