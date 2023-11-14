@@ -34,7 +34,7 @@ public class ChatQueryRepository {
                 ))
                 .from(chattingEntity)
                 .join(chattingEntity.chattingRoom, chattingRoomEntity)
-                .on(chattingEntity.id.eq(roomId))
+                .on(chattingRoomEntity.id.eq(roomId))
                 .orderBy(chattingEntity.createdTime.desc())
                 .fetchFirst();
 

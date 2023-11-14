@@ -14,8 +14,10 @@ import org.bookyoulove.chatting.domain.ChattingRoomInfoDomain;
 import org.bookyoulove.chatting.domain.ChattingRoomListDomain;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -52,22 +54,39 @@ public class ChatFindRoomListService implements ChatFindRoomListUseCase {
                 .collect(Collectors.toList());
 
         List<UserFindInfoRes> userFindInfoResList = chattingDomainList.stream()
-                .map(p -> stompFindUserPort.findUser(token, p.writerId()).data())
+                .map(p -> {
+                    if(p == null){
+                        return null;
+                    }
+                    return stompFindUserPort.findUser(token, p.writerId()).data();
+                })
                 .collect(Collectors.toList());
 
         log.info("유저정보 리스트 domain: {}", userFindInfoResList);
 
         List<ChattingRoomInfoDomain> chattingRoomInfoDomainList = new ArrayList<>();
         for(int i=0; i<roomDomainList.size(); ++i){
+
+            Long writerId = null;
+            String content = null;
+            LocalDateTime lastTime = null;
+            String nickname = null;
+            if (chattingDomainList.get(i) != null) {
+                writerId = chattingDomainList.get(i).writerId();
+                content = chattingDomainList.get(i).content();
+                lastTime = chattingDomainList.get(i).lastTime();
+                nickname = userFindInfoResList.get(i).nickname();
+            }
+
             ChattingRoomInfoDomain chattingRoomInfoDomain =
                     ChattingRoomInfoDomain.of(
                             roomDomainList.get(i).roomId(),
                             roomDomainList.get(i).buId(),
                             bookResList.get(i).title(),
-                            chattingDomainList.get(i).writerId(),
-                            userFindInfoResList.get(i).nickname(),
-                            chattingDomainList.get(i).content(),
-                            chattingDomainList.get(i).lastTime(),
+                            writerId,
+                            nickname,
+                            content,
+                            lastTime,
                             unreadCountList.get(i)
                     );
             chattingRoomInfoDomainList.add(chattingRoomInfoDomain);
@@ -75,8 +94,6 @@ public class ChatFindRoomListService implements ChatFindRoomListUseCase {
 
         log.info("채팅 목록 domain: {}", chattingRoomInfoDomainList);
 
-        ChattingRoomListDomain chattingRoomListDomain = ChattingRoomListDomain.of(chattingRoomInfoDomainList);
-
-        return chattingRoomListDomain;
+        return ChattingRoomListDomain.of(chattingRoomInfoDomainList);
     }
 }
