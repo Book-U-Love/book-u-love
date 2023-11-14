@@ -18,15 +18,14 @@ class UserRepository(
 ) {
     suspend fun signUp(userInfo:UserRegistDto):Flow<String> = flow{
         val response = api.signUp(userInfo)
-        Log.d("find", response.body()!!.toString())
         if(response.body()!!.status == 200){
             emit("success")
         } else{
             emit("fail")
         }
     }
-    suspend fun getInfo(token: String):Flow<Map<String, String>> = flow{
-        val response = api.getInfo(token)
+    suspend fun getMyInfo():Flow<Map<String, String>> = flow{
+        val response = api.getMyInfo()
         Log.d("find", response.toString())
         if(response.body()!!.status == 200){
             val res = response.body()!!.data
@@ -39,9 +38,16 @@ class UserRepository(
         }
     }
 
-    suspend fun modifyUser(token: String, modifyUser: ModifyUser):Flow<String> = flow{
-        val response = api.modifyUser(token, modifyUser)
-        Log.d("find", response.body()!!.toString())
+    suspend fun getMyPage():Flow<Map<String, String>> = flow{
+        val response = api.getMyPage()
+        Log.d("find repo", response.body()!!.status.toString())
+        if(response.body()!!.status == 200){
+            emit(response.body()!!.data)
+        }
+    }
+
+    suspend fun modifyUser(modifyUser: ModifyUser):Flow<String> = flow{
+        val response = api.modifyUser( modifyUser)
         if(response.body()!!.status == 200){
             emit("success")
         } else{
@@ -49,8 +55,8 @@ class UserRepository(
         }
     }
 
-    suspend fun modifyPassword(token: String, modifyPw: ModifyPw):Flow<String> = flow{
-        val response = api.modifyPassword(token, modifyPw)
+    suspend fun modifyPassword(modifyPw: ModifyPw):Flow<String> = flow{
+        val response = api.modifyPassword(modifyPw)
         if(response.body()!!.status == 200){
             emit("success")
         } else{
@@ -58,13 +64,33 @@ class UserRepository(
         }
     }
 
-    suspend fun getLibraryList(token: String):Flow<List<UserRegistDto>> = flow{
-        val response = api.getLibraryList(token)
+    suspend fun getLibraryList():Flow<List<UserRegistDto>> = flow{
+        val response = api.getLibraryList()
         val list: List<UserRegistDto>? = response.body()!!.data.get("userFindInfoResList")
         if(response.body()!!.status == 200){
             if(list != null){
                 emit(list)
             }
+        }
+    }
+
+    suspend fun checkId(userId: String): Flow<String> = flow{
+        val response = api.checkId(userId)
+        if(response.body()!!.status == 200){
+            emit("success")
+        } else{
+            emit("fail")
+        }
+    }
+
+    suspend fun getReviewList(): Flow<List<Map<String, Object>>> = flow{
+        val response = api.getReviewList()
+        if(response.body()!!.status == 200){
+            val list: List<Map<String, Object>>? = response.body()!!.data.get("revieweeDomainList")
+            if(list != null){
+                emit(list)
+            }
+        } else{
         }
     }
 }

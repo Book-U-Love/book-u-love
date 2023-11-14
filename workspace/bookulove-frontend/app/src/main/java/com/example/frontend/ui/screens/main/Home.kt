@@ -100,7 +100,8 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainVi
 @Composable
 fun AfterLogin(navController: NavHostController, userViewModel: UserViewModel, authViewModel: AuthViewModel){
     val pos = remember { mutableStateOf(LatLng(0.0, 0.0)) }
-    userViewModel.getLibraryList(authViewModel.accessToken.value)
+    userViewModel.getLibraryList()
+//    userViewModel.getMyPage()
     val list = userViewModel.libraryList
     Column(modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
