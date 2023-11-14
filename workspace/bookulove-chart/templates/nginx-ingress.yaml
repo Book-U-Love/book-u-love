@@ -12,6 +12,7 @@ metadata:
     {{- end }}
     cert-manager.io/{{ $issuerType }}: {{ $ingress.tls.issuer.name }}
     {{- end }}
+    nginx.ingress.kubernetes.io/rewrite-target: /api$2
 spec:
   ingressClassName: nginx
   {{- if $ingress.tls.enabled  }}
@@ -23,7 +24,7 @@ spec:
   - http:
       paths:
       - pathType: Prefix
-        path: /api(?!/chatting-service/stomps)
+        path: /api(?!/chatting-service/stomps($|/.+))(.*)
         backend:
           {{- $apigateway := index .Values "apigateway-service" }}
           service:
