@@ -19,4 +19,9 @@ public class StompFindUserAdapter implements StompFindUserPort {
     public ApiData<UserFindInfoRes> findUser(String authHeader) {
         return stompFindUserFeign.findUser(authHeader);
     }
+
+    @Override
+    public ApiData<UserFindInfoRes> findUser(String authHeader, Long userId) {
+        return stompFindUserFeign.findUser(authHeader, userId);
+    }
 }

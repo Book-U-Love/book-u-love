@@ -29,8 +29,8 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/api/chatting-service/stomps")
                 .setAllowedOrigins("*")
-                .setHandshakeHandler(new MyHandshakeHandler());
-//                .withSockJS(); // SocketJS 를 연결한다는 설정
+                .setHandshakeHandler(new MyHandshakeHandler())
+                .withSockJS(); // SocketJS 를 연결한다는 설정
     }
 
     // STOMP에서 사용하는 메시지 브로커 설정
