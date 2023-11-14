@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -45,12 +47,17 @@ public class ChattingEntity extends BaseTimeEntity {
         this.chattingRoom = chattingRoom;
     }
 
-    public static ChattingEntity of(String content, Long writerId, Long readCount, ChattingRoomEntity chattingRoomEntity){
+    public static ChattingEntity of(String content, Long writerId, Long readCount, ChattingRoomEntity chattingRoomEntity) {
         return ChattingEntity.builder()
                 .content(content)
                 .writerId(writerId)
                 .readCount(readCount)
                 .chattingRoom(chattingRoomEntity)
                 .build();
+    }
+
+    public void updateReadCount(Long userId) {
+        if (!Objects.equals(userId, writerId))
+            this.readCount = 0L;
     }
 }

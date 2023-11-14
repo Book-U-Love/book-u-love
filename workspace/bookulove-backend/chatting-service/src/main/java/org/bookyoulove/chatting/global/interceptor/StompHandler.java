@@ -43,7 +43,7 @@ public class StompHandler implements ChannelInterceptor {
                 String token = getAccessToken(accessor);
                 log.info("subscribe token: {}", token);
 
-                stompCreateConnPort.createConn(1L, roomId);
+                stompCreateConnPort.createConn(2L, roomId);
             }
             case SEND -> {
                 log.info("sendhandling");
