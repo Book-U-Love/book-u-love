@@ -4,7 +4,7 @@ import org.bookyoulove.chatting.domain.ChattingRoomListDomain;
 
 public interface ChatFindRoomListUseCase {
 
-    ChattingRoomListDomain findRoomList(Long userId);
+    ChattingRoomListDomain findRoomList(Long userId, String token);
 }
 
 

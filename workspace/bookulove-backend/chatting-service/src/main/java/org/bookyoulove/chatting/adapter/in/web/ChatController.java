@@ -11,6 +11,7 @@ import org.bookyoulove.chatting.application.port.in.ChatFindRoomListUseCase;
 import org.bookyoulove.chatting.application.port.in.dto.request.ChatCreateRoomCmd;
 import org.bookyoulove.chatting.domain.ChattingRoomDomain;
 import org.bookyoulove.chatting.domain.ChattingRoomListDomain;
+import org.bookyoulove.chatting.global.filter.SecurityDto;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,16 +25,17 @@ public class ChatController {
     private final ChatFindRoomListUseCase chatFindRoomListUseCase;
 
     @GetMapping
-    public ApiData<ChattingRoomListDomain> findRoomList(@AuthenticationPrincipal Long userId){
-        log.info("회원 아이디: {} \n 채팅방 목록 req", userId);
-        return ApiData.ok(chatFindRoomListUseCase.findRoomList(userId));
+    public ApiData<ChattingRoomListDomain> findRoomList(@AuthenticationPrincipal SecurityDto securityDto){
+        log.info("접속 회원 정보: {} \n 채팅방 목록 req", securityDto);
+        return ApiData.ok(chatFindRoomListUseCase.findRoomList(securityDto.getUserId(), securityDto.getToken()));
     }
 
     @PostMapping
-    public ApiData<ChattingRoomDomain> createRoom(@AuthenticationPrincipal Long userId, @RequestBody @Valid ChatCreateRoomReq req) {
-        log.info("회원 아이디: {} \n 채팅방 생성 req: {}", userId, req);
-        return ApiData.ok(chatCreateRoomUseCase.createRoom(ChatCreateRoomCmd.of(userId, req)));
+    public ApiData<ChattingRoomDomain> createRoom(@AuthenticationPrincipal SecurityDto securityDto, @RequestBody @Valid ChatCreateRoomReq req) {
+        log.info("접속 회원 정보: {} \n 채팅방 생성 req: {}", securityDto, req);
+        return ApiData.ok(chatCreateRoomUseCase.createRoom(ChatCreateRoomCmd.of(securityDto.getUserId(), req)));
     }
+
 
 
 

@@ -39,7 +39,15 @@ public class ChatQueryRepository {
                 .fetchFirst();
 
         return Optional.ofNullable(chattingDomain);
+    }
 
+    public Long findUnreadCount(Long userId, Long roomId) {
+        return queryFactory
+                .select(chattingEntity.readCount.sum())
+                .from(chattingEntity)
+                .where(chattingEntity.writerId.ne(userId),
+                        chattingEntity.chattingRoom.id.eq(roomId))
+                .fetchOne();
     }
 
 }
