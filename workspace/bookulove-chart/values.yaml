@@ -143,6 +143,27 @@ book-service:
   aladin:
     apiKey:
 
+chatting-service:
+  metadata:
+    org: bookulove
+    name: chatting-service
+    version: 1.0.0
+  replicas: 1
+  server:
+    port: 9005
+  datasource:
+    main:
+      host: "$releaseName-chatting-db"
+      port: "3306"
+      auth:
+        user: root
+        password: *globalAuthPassword
+    redis:
+      host: "$releaseName-redis-master"
+      port: "6379"
+  jwt:
+    secret:
+
 apigateway-service:
   metadata:
     org: bookulove
@@ -161,6 +182,7 @@ apigateway-service:
   - user-service
   - auth-service
   - book-service
+  - chatting-service
 
 ingress:
   tls:
