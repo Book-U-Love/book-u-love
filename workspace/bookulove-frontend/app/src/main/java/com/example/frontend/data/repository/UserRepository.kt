@@ -26,7 +26,7 @@ class UserRepository(
     }
     suspend fun getMyInfo():Flow<Map<String, String>> = flow{
         val response = api.getMyInfo()
-        Log.d("find", response.toString())
+        Log.d("find r", response.body()!!.toString())
         if(response.body()!!.status == 200){
             val res = response.body()!!.data
             emit(mapOf("msg" to "success", "loginId" to res.get("loginId").toString(),
@@ -40,7 +40,6 @@ class UserRepository(
 
     suspend fun getMyPage():Flow<Map<String, String>> = flow{
         val response = api.getMyPage()
-        Log.d("find repo", response.body()!!.status.toString())
         if(response.body()!!.status == 200){
             emit(response.body()!!.data)
         }

@@ -1,9 +1,12 @@
 package com.example.frontend.ui.screens.main
 
 import android.util.Log
+import android.view.View.OnCreateContextMenuListener
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.frontend.R
 import com.example.frontend.data.model.User
+import com.example.frontend.data.model.UserRegistDto
 import com.example.frontend.data.repository.PrefsRepository
 import com.example.frontend.ui.components.FuncBtn
 import com.example.frontend.ui.components.InputField
@@ -29,6 +33,7 @@ import com.example.frontend.viewmodel.AuthViewModel
 import com.example.frontend.viewmodel.MainViewModel
 import com.example.frontend.viewmodel.UserViewModel
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.delay
 
 var userId: String = ""
 @Composable
@@ -99,13 +104,15 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainVi
 
 @Composable
 fun AfterLogin(navController: NavHostController, userViewModel: UserViewModel, authViewModel: AuthViewModel){
+    LaunchedEffect(key1 = Unit){
+        userViewModel.getLibraryList()
+    }
     val pos = remember { mutableStateOf(LatLng(0.0, 0.0)) }
-    userViewModel.getLibraryList()
-//    userViewModel.getMyPage()
     val list = userViewModel.libraryList
     Column(modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
         MapInfo(pos = pos, libList = list.value, height = 800, navController = navController)
     }
+
 }
