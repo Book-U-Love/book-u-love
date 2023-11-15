@@ -32,6 +32,8 @@ public record BookInfo(
 
 		String details,
 
+		String cover,
+
 		String createdTime
 
 ) {
@@ -50,6 +52,7 @@ public record BookInfo(
 				relation.isAllowBorrow(),
 				relation.isBorrow(),
 				relation.getDetails(),
+				relation.getBook().getCover(),
 				convertTime(relation.getCreatedTime())
 		);
 	}

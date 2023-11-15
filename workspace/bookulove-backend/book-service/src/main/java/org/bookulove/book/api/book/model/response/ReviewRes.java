@@ -8,6 +8,8 @@ public record ReviewRes(
 
         Long bookId,
 
+        String bookIsbn,
+
         String bookTitle,
 
         Long reviewId,
@@ -17,8 +19,8 @@ public record ReviewRes(
         String reviewContent
 
 ) {
-    public static ReviewRes of(Long userId, String userName, Long bookId, String bookTitle, Long reviewId, String reviewTitle, String reviewContent){
-        return new ReviewRes(userId, userName, bookId, bookTitle, reviewId, reviewTitle, reviewContent);
+    public static ReviewRes of(Long userId, String userName, Long bookId, String bookIsbn, String bookTitle, Long reviewId, String reviewTitle, String reviewContent){
+        return new ReviewRes(userId, userName, bookId, bookIsbn, bookTitle, reviewId, reviewTitle, reviewContent);
     }
 
 }
