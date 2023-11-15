@@ -5,7 +5,7 @@ object Routes{
     const val BOOKSEARCH = "booksearch"
     const val MYPAGE = "mypage"
     const val CHAT = "chat"
-    const val BOOKTOTAL = "booktotal"
+    const val MYLIBRARY = "mylibrary"
     const val CHATROOM = "chatroom"
     const val REGISTER = "register"
     const val REPORTDETAIL = "reportdetail"
@@ -15,4 +15,5 @@ object Routes{
     const val BOOKREGIST = "bookregist"
     const val BOOKREPORTREGIST = "bookreportregist"
     const val REVIEWLIST = "reviewlist"
+    const val BOOKISBNSEARCH = "bookisbnsearch"
 }
