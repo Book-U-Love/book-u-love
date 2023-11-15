@@ -56,11 +56,13 @@ import com.example.frontend.data.repository.PrefsRepository
 import com.example.frontend.ui.components.BookReportDetail
 import com.example.frontend.ui.components.BookReportRegist
 import com.example.frontend.ui.screens.book.BookIsbnSearch
+import com.example.frontend.ui.screens.book.BookList
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
 import com.example.frontend.ui.screens.book.BookTransactionRegist
 import com.example.frontend.ui.screens.main.Home
 import com.example.frontend.ui.screens.info.MyPage
+import com.example.frontend.ui.screens.info.ReviewList
 import com.example.frontend.ui.screens.user.Chat
 import com.example.frontend.ui.screens.user.ChatRoom
 import com.example.frontend.ui.screens.user.Modify
@@ -195,7 +197,7 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             mainViewModel.changeState("채팅")
         }
         composable(route = Routes.MYPAGE) {
-            MyPage(navController,true,"asdf", authViewModel, userViewModel)
+            MyPage(navController,true, authViewModel = authViewModel, userViewModel = userViewModel)
             mainViewModel.changeState("마이페이지")
         }
         composable(route = Routes.MYPAGE + "/{userId}",
@@ -207,10 +209,9 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             if (userId != null) {
                 MyPage(
                     navController,
-                    userId == "ssafy",
-                    userId,
-                    authViewModel,
-                    userViewModel
+                    userId = userId,
+                    authViewModel = authViewModel,
+                    userViewModel = userViewModel
                 )
             } else {
                 Home(navController = navController, mainViewModel, userViewModel, authViewModel)
@@ -243,9 +244,9 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
 
            }
         }
-//        composable(route = Routes.BOOKLIST){
-//            BookList()
-//        }
+        composable(route = Routes.BOOKLIST){
+            BookList(bookViewModel)
+        }
         composable(route = Routes.BOOKTRANSACTIONREGIST){
             BookTransactionRegist(bookViewModel, navController)
         }
@@ -257,6 +258,9 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
         }
         composable(route = Routes.BOOKISBNSEARCH+"/{route}"){
             BookIsbnSearch(bookViewModel,navController, it.arguments?.getString("route"))
+        }
+        composable(route = Routes.REVIEWLIST){
+            ReviewList(navController, userViewModel, authViewModel)
         }
     }
 

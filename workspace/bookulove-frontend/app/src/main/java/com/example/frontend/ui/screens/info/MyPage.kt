@@ -40,11 +40,17 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun MyPage(navController : NavHostController, isMine: Boolean = false, userId: String = "",authViewModel: AuthViewModel, userViewModel: UserViewModel){
-     LaunchedEffect(key1 = Unit){
-          userViewModel.getMyPage()
+     LaunchedEffect(key1 = Unit, key2 = userId){
+          if(isMine){
+               userViewModel.getMyPage()
+          } else{
+               userViewModel.getUserPage(userId)
+               Log.d("find userid", userId.toString())
+          }
      }
      // userId 기반으로 이름, 도서 수, 리뷰 수 받아오기
-     val userInfo = userViewModel.userMyPage
+     val userInfo = userViewModel.userPage
+     Log.d("find userInfo", userInfo.value.toString())
      if(!userInfo.value.isEmpty()){
 
           LazyColumn(modifier = Modifier.fillMaxHeight()){

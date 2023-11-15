@@ -57,4 +57,11 @@ class BookRepository(
             Log.d("res", "Res 실패")
         }
     }
+
+    suspend fun getBookList(sale: Boolean, borrow: Boolean) = flow<List<Map<String, String>>>{
+        val response = api.getBookList(sale, borrow)
+        if(response.body()!!.status == 200){
+            emit(response.body()!!.data)
+        }
+    }
 }

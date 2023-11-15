@@ -2,6 +2,7 @@ package com.example.frontend.data.api
 
 import com.example.frontend.data.model.BookRegistReq
 import com.example.frontend.data.model.BookRegistRes
+import com.example.frontend.data.model.BookList
 import com.example.frontend.data.model.BookReportReq
 import com.example.frontend.data.model.BookReportRes
 import com.example.frontend.data.model.BookSearchRes
@@ -18,6 +19,9 @@ interface BookApi{
 
     @POST("book-service/reviews")
     suspend fun reportRegist(@Body reportInfo:BookReportReq):Response<BookReportRes>
+
+    @GET("book-service/books/list")
+    suspend fun getBookList(@Query("sale") sale:Boolean, @Query("borrow") borrow: Boolean): Response<BookList>
 
     @POST("book-service/books")
     suspend fun bookRegist(@Body bookInfo:BookRegistReq):Response<BookRegistRes>

@@ -36,3 +36,9 @@ data class MyBookListRes(
     val code:String,
     val data: List<Map<String,String>>
 )
+
+data class BookList(
+    val status: Int,
+    val code: String,
+    val data: List<Map<String, String>>
+)

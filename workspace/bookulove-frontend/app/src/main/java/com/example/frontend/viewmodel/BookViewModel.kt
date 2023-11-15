@@ -2,6 +2,10 @@ package com.example.frontend.viewmodel
 
 import android.util.ArrayMap
 import android.util.Log
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -38,6 +42,9 @@ class BookViewModel: ViewModel() {
     // 내 보유 책 리스트
     private val _myBookList = MutableStateFlow<List<Map<String,String>>>(emptyList())
     val myBookList = _myBookList
+    // 등록한 도서 조회
+    private val _bookList: MutableState<List<Map<String, String>>> = mutableStateOf(listOf())
+    val bookList: State<List<Map<String, String>>> = _bookList
     fun changeState(){
         _reportState.value = !_reportState.value
     }
@@ -96,6 +103,18 @@ class BookViewModel: ViewModel() {
                 Log.d("my book list", "my book list load success")
             }catch(e:Exception){
                 Log.d("my book list"," my book list load fail")
+            }
+        }
+    }
+
+    fun getBookList(sale: Boolean, borrow: Boolean){
+        GlobalScope.async {
+            try{
+                bookRepository.getBookList(sale, borrow).collect(){
+                        res ->
+                    _bookList.value = res
+                }
+            } catch(e: Exception){
             }
         }
     }
