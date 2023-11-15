@@ -184,6 +184,7 @@ public class BookService {
         bookUpdateReq.allowBorrow().ifPresent(relation::updateAllowBorrow);
         bookUpdateReq.isBorrow().ifPresent(relation::updateIsBorrow);
         bookUpdateReq.details().ifPresent(relation::updateDetails);
+        bookUpdateReq.isRemoved().ifPresent(relation::deleteRelation);
 
         log.info(logCurrent(getClassName(), getMethodName(), END));
     }
@@ -219,6 +220,7 @@ public class BookService {
                 bookEntity.getPublisher(),
                 bookEntity.getPrice(),
                 bookEntity.getPubDate(),
+                bookEntity.getCover(),
                 reviewInfoResList);
 
         log.info("책 상세정보 domain: {}", bookDetailRes);
