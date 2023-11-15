@@ -31,7 +31,9 @@ import com.example.frontend.R
 
 @Composable
 fun DropDown(
-    itemList:List<String>
+    itemList:List<String>,
+    conditionValue: String,
+    onValueChanged:(String)->Unit
 ){
     var dropState = remember{
         mutableStateOf(false)
@@ -62,7 +64,9 @@ fun DropDown(
                     i, item -> DropdownMenuItem(
                                         text = { Text(item) },
                                         onClick = { dropState.value = !dropState.value;
-                                                    index.value = i;
+                                                    onValueChanged(item)
+                                                    index.value=i
+
                     })
 
                 }

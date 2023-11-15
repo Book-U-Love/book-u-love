@@ -85,15 +85,15 @@ fun CustomFAB(
                                     .background(Color.White, RoundedCornerShape(5.dp))
                                     .width(expandedWidth)
                                     .height(expandedHeight)
-                                    .clickable { navController.navigate(Routes.BOOKTRANSACTIONREGIST) }){
+                                    .clickable { navController.navigate(Routes.BOOKISBNSEARCH+"/book") }){
 //                                    Icon(painter = painterResource(id = R.drawable.baseline_sell_24), contentDescription = "sell",modifier=Modifier.align(Alignment.Center))
-                                    Text("판매도서 등록",modifier=Modifier.align(Alignment.Center))
+                                    Text("도서 등록",modifier=Modifier.align(Alignment.Center))
                                 }
                                 Box(modifier = Modifier
                                     .background(Color.White, RoundedCornerShape(5.dp))
                                     .width(expandedWidth)
                                     .height(expandedHeight)
-                                    .clickable { navController.navigate(Routes.BOOKISBNSEARCH) }){
+                                    .clickable { navController.navigate(Routes.BOOKISBNSEARCH+"/report") }){
 //                                    Icon(painter = painterResource(id = R.drawable.baseline_book_24), contentDescription = "report", modifier=Modifier.align( Alignment.Center))
                                     Text("독후감 등록",modifier=Modifier.align(Alignment.Center))
                                 }

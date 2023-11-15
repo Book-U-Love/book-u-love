@@ -58,7 +58,6 @@ fun BookReportRegist(bookViewModel: BookViewModel,navController: NavController){
     val searchResult by bookViewModel.bookSearchRes.collectAsState()
     val registResult by bookViewModel.reportRegistRes.collectAsState()
     if(registResult == true){
-        Log.d("성공했는데","왜 안뜸?")
         CustomDialog(
             onConfirmation = { Log.d("success", "독후감 등록 완료") },
             dialogTitle = "독후감 등록 완료!",
@@ -66,7 +65,6 @@ fun BookReportRegist(bookViewModel: BookViewModel,navController: NavController){
             dialogColor = Color.Blue.copy(alpha = 0.5f),
         )
     }else if(registResult == false){
-        Log.d("실패함","ㅋㅋㅁㄴㅇ")
         CustomDialog(
             onConfirmation = { Log.d("fail", "독후감 등록 실패") },
             dialogTitle = "독후감 등록 실패",

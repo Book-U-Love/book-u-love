@@ -45,7 +45,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.frontend.R
-import com.example.frontend.data.model.BookSearchRes
 import com.example.frontend.ui.components.BookInfoCard
 import com.example.frontend.ui.components.QuestionCard
 import com.example.frontend.ui.vo.categoryList
@@ -106,9 +105,12 @@ fun BookSearch(navController:NavController){
 }
 @ExperimentalMaterial3Api
 @Composable
-fun BookIsbnSearch(bookViewModel: BookViewModel,navController: NavController){
+fun BookIsbnSearch(bookViewModel: BookViewModel,navController: NavController, route:String?){
     var isbn = remember{
         mutableStateOf(TextFieldValue("9791197559648"))
+    }
+    if (route != null) {
+        Log.d("route", route)
     }
     val searchResult by bookViewModel.bookSearchRes.collectAsState()
     val resultIsEmpty = searchResult?.isEmpty() ?: true
@@ -154,7 +156,7 @@ fun BookIsbnSearch(bookViewModel: BookViewModel,navController: NavController){
                     Box {
                         when(searchResult!!.getValue("title")==""){
                             true -> QuestionCard()
-                            false -> BookInfoCard(searchResult,navController)
+                            false -> BookInfoCard(searchResult,navController,route)
                         }
 
                     }
