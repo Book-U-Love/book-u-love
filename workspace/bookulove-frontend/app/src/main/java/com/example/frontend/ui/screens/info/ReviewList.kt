@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -26,7 +27,8 @@ fun ReviewList(navHostController: NavHostController, userViewModel: UserViewMode
     LaunchedEffect(key1 = Unit){
         userViewModel.getReviewList()
     }
-    if(userViewModel.userReviewList.value.isNotEmpty()){
+    val reviewList = userViewModel.userReviewList
+    if(reviewList.value.isNotEmpty()){
         LazyColumn(modifier = Modifier.fillMaxHeight()){
             item{
                 Text(
@@ -41,7 +43,7 @@ fun ReviewList(navHostController: NavHostController, userViewModel: UserViewMode
                 ){
                     Column(
                     ){
-                        for(review in userViewModel.userReviewList.value){
+                        for(review in reviewList.value){
                             ReviewCard(review.get("content").toString())
                         }
                     }

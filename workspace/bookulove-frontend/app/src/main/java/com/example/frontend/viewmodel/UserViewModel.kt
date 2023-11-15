@@ -21,24 +21,24 @@ class UserViewModel: ViewModel(){
 
     private val _signupRes: MutableStateFlow<String> = MutableStateFlow("init")
     private val _userMyInfo: MutableState<Map<String, String>> = mutableStateOf(mapOf())
-    private val _userMyPage: MutableState<Map<String, String>> = mutableStateOf(mapOf())
-    private val _userReviewList: MutableState<List<Map<String, Object>>> = mutableStateOf(listOf())
+    private val _userPage: MutableState<Map<String, String>> = mutableStateOf(mapOf())
+    private val _userReviewList: MutableState<List<Map<String, String>>> = mutableStateOf(listOf())
     private val _modifyRes: MutableStateFlow<String> = MutableStateFlow("init")
     private val _modifyPwRes: MutableStateFlow<String> = MutableStateFlow("init")
-    private val _libraryList: MutableState<List<UserRegistDto>> = mutableStateOf(listOf())
+    private val _libraryList: MutableState<List<Map<String, String>>> = mutableStateOf(listOf())
     private val _checkId: MutableStateFlow<String> = MutableStateFlow("init")
     val signupRes : StateFlow<String>
         get() = _signupRes
     val userMyInfo : State<Map<String, String>> = _userMyInfo
-    val userMyPage : State<Map<String, String>> = _userMyPage
+    val userPage : State<Map<String, String>> = _userPage
     val modifyRes: StateFlow<String>
         get() = _modifyRes
     val modiyfPwRes: StateFlow<String>
         get() = _modifyPwRes
-    val libraryList: State<List<UserRegistDto>> = _libraryList
+    val libraryList: State<List<Map<String, String>>> = _libraryList
     val checkId: StateFlow<String>
         get() = _checkId
-    val userReviewList : State<List<Map<String, Object>>> = _userReviewList
+    val userReviewList : State<List<Map<String, String>>> = _userReviewList
     fun resetState(){
         _modifyRes.value = "init'"
     }
@@ -77,9 +77,21 @@ class UserViewModel: ViewModel(){
             try{
                 userRepository.getMyPage().collect(){
                     res ->
-                    _userMyPage.value = res
+                    _userPage.value = res
                 }
             }catch (e:Exception){
+            }
+        }
+    }
+
+    fun getUserPage(userId: String){
+        GlobalScope.async {
+            try{
+                userRepository.getUserPage(userId).collect(){
+                    res ->
+                    _userPage.value = res
+                }
+            } catch(e: Exception){
             }
         }
     }
