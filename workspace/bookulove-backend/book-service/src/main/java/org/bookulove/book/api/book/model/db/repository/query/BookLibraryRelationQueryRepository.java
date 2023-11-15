@@ -21,25 +21,41 @@ public class BookLibraryRelationQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     public List<BookLibraryRelation> findLibraryRelationByParam(Long userId, boolean sale, boolean borrow){
+        BooleanExpression saleCondition = isSale(sale);
+        BooleanExpression borrowCondition = isBorrow(borrow);
+
+        BooleanExpression bookCondition = null;
+
+        if (sale && borrow) {
+            // sale=true, borrow=true 경우
+            bookCondition = saleCondition.and(borrowCondition);
+        } else if (sale) {
+            // sale=true, borrow=false 경우
+            bookCondition = saleCondition;
+        } else if (borrow) {
+            // sale=false, borrow=true 경우
+            bookCondition = borrowCondition;
+        }
+
         return queryFactory
                 .select(bookLibraryRelation)
                 .from(bookLibraryRelation)
                 .join(bookLibraryRelation.library, libraryEntity)
                 .on(libraryEntity.userId.eq(userId))
                 .where(
-                        isSale(sale),
-                        isBorrow(borrow),
-                        bookLibraryRelation.isRemoved.eq(false)
+                        bookCondition != null
+                                ? bookCondition.and(bookLibraryRelation.isRemoved.eq(false))
+                                : bookLibraryRelation.isRemoved.eq(false)
                 )
                 .fetch();
     }
 
     private BooleanExpression isSale(boolean sale){
-        return !sale ? null : bookLibraryRelation.allowSale.eq(true);
+        return sale ? bookLibraryRelation.allowSale.eq(true) : null;
     }
 
     private BooleanExpression isBorrow(boolean borrow){
-        return !borrow ? null : bookLibraryRelation.isBorrow.eq(true);
+        return borrow ? bookLibraryRelation.allowBorrow.eq(true) : null;
     }
 
 }
