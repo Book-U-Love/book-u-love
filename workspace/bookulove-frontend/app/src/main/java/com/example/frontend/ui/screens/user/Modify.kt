@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +51,9 @@ private val modifyDto: ModifyUser = ModifyUser("", "", 0.0, 0.0)
 @ExperimentalMaterial3Api
 @Composable
 fun Modify(navController: NavHostController, authViewModel: AuthViewModel, userViewModel: UserViewModel){
+    LaunchedEffect(key1 = Unit){
+        userViewModel.getMyInfo()
+    }
     val userInfo: Map<String, String> = userViewModel.userMyInfo.value
     var isFirst by remember {
         mutableStateOf(true)
@@ -65,70 +69,68 @@ fun Modify(navController: NavHostController, authViewModel: AuthViewModel, userV
 @Composable
 fun FirstModify(navController: NavHostController, changePage: () -> Unit, authViewModel: AuthViewModel, userViewModel: UserViewModel,
                 userInfo: Map<String, String>){
-    Log.d("find", userInfo.toString())
+    if(!userInfo.isEmpty()){
+        var nickname: String by remember { mutableStateOf(userInfo.get("nickname").toString()) }
+        var libName: String by remember { mutableStateOf(userInfo.get("libraryName").toString()) }
+        val sucChk = remember{ mutableStateOf(false) }
+        val sucMsg = remember{ mutableStateOf("") }
+        val sucFun = remember{ mutableStateOf({}) }
+        val modChk by userViewModel.modifyRes.collectAsState()
+        Box(modifier = Modifier.fillMaxSize()){
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                ){
+                item{
+                    Spacer(modifier = Modifier.height(30.dp))
+                    FuncBtn(name = "위치 등록", onClick = { changePage() })
+                    InputField(value = userInfo.get("loginId").toString(), label = "아이디", onValueChanged = {}, enable = false)
+                    val openDialog = remember{ mutableStateOf(false) }
 
-    var nickname by remember {
-        mutableStateOf(userInfo.get("nickname").toString())
-    }
-    var libName by remember{ mutableStateOf(userInfo.get("libraryName").toString()) }
-    val sucChk = remember{ mutableStateOf(false) }
-    val sucMsg = remember{ mutableStateOf("") }
-    val sucFun = remember{ mutableStateOf({}) }
-    val modChk by userViewModel.modifyRes.collectAsState()
-    Box(modifier = Modifier.fillMaxSize()){
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            ){
-            item{
-                Spacer(modifier = Modifier.height(30.dp))
-                FuncBtn(name = "위치 등록", onClick = { changePage() })
-                InputField(value = userInfo.get("loginId").toString(), label = "아이디", onValueChanged = {}, enable = false)
-                val openDialog = remember{ mutableStateOf(false) }
-
-                FuncBtn(name = "비밀번호 수정", onClick = {openDialog.value = !openDialog.value})
-                if(openDialog.value){
-                    PwModify(
-                        onDismissRequest = { openDialog.value = false },
-                        onConfirmation = { 
-                            openDialog.value = false
-                            //패스워드 변경 함수 진행
-                         },
-                        userViewModel,
-                        authViewModel
-                    )
+                    FuncBtn(name = "비밀번호 수정", onClick = {openDialog.value = !openDialog.value})
+                    if(openDialog.value){
+                        PwModify(
+                            onDismissRequest = { openDialog.value = false },
+                            onConfirmation = {
+                                openDialog.value = false
+                                //패스워드 변경 함수 진행
+                             },
+                            userViewModel,
+                            authViewModel
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(30.dp))
+                    InputField(value = nickname, label = "닉네임", onValueChanged = {nickname = it})
+                    InputField(value = libName, label = "도서관명", onValueChanged = {libName = it})
                 }
-                Spacer(modifier = Modifier.height(30.dp))
-                InputField(value = nickname, label = "닉네임", onValueChanged = {nickname = it})
-                InputField(value = libName, label = "도서관명", onValueChanged = {libName = it})
-            }
-            item{
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
-                    PageBtn(
-                        navController = navController,
-                        "돌아가기",
-                        Routes.MYPAGE
-                    )
-                    Spacer(modifier = Modifier.width(80.dp))
-                    FuncBtn(
-                        onClick = {
-                            modifyDto.nickname = nickname
-                            modifyDto.libraryName = libName
-                            userViewModel.modifyUserInfo(modifyDto)
-                          },
-                        name = "수정하기"
-                    )
-                }
-                if(modChk == "success"){
-                    sucChk.value = true
-                    sucMsg.value = "회원정보 수정에 성공했습니다"
-                    sucFun.value = {
-                        userViewModel.resetState()
-                        navController.navigate(Routes.MYPAGE)}
-                }
-                if(sucChk.value){
-                    Message(title = "success", dialogClose = { sucChk.value = false }, confirmButton = sucFun.value, content = sucMsg.value)
+                item{
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
+                        PageBtn(
+                            navController = navController,
+                            "돌아가기",
+                            Routes.MYPAGE
+                        )
+                        Spacer(modifier = Modifier.width(80.dp))
+                        FuncBtn(
+                            onClick = {
+                                modifyDto.nickname = nickname
+                                modifyDto.libraryName = libName
+                                userViewModel.modifyUserInfo(modifyDto)
+                              },
+                            name = "수정하기"
+                        )
+                    }
+                    if(modChk == "success"){
+                        sucChk.value = true
+                        sucMsg.value = "회원정보 수정에 성공했습니다"
+                        sucFun.value = {
+                            userViewModel.resetState()
+                            navController.navigate(Routes.MYPAGE)}
+                    }
+                    if(sucChk.value){
+                        Message(title = "success", dialogClose = { sucChk.value = false }, confirmButton = sucFun.value, content = sucMsg.value)
+                    }
                 }
             }
         }
