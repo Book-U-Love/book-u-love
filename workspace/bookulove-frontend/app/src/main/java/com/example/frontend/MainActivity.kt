@@ -56,7 +56,6 @@ import com.example.frontend.data.repository.PrefsRepository
 import com.example.frontend.ui.components.BookReportDetail
 import com.example.frontend.ui.components.BookReportRegist
 import com.example.frontend.ui.screens.book.BookIsbnSearch
-import com.example.frontend.ui.screens.book.BookList
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
 import com.example.frontend.ui.screens.book.BookTransactionRegist
@@ -244,11 +243,11 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
 
            }
         }
-        composable(route = Routes.BOOKLIST){
-            BookList()
-        }
+//        composable(route = Routes.BOOKLIST){
+//            BookList()
+//        }
         composable(route = Routes.BOOKTRANSACTIONREGIST){
-            BookTransactionRegist()
+            BookTransactionRegist(bookViewModel, navController)
         }
         composable(route = Routes.MODIFYINFO){
             Modify(navController, authViewModel, userViewModel)
@@ -256,8 +255,8 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
         composable(route = Routes.BOOKREPORTREGIST){
             BookReportRegist(bookViewModel,navController)
         }
-        composable(route = Routes.BOOKISBNSEARCH){
-            BookIsbnSearch(bookViewModel,navController)
+        composable(route = Routes.BOOKISBNSEARCH+"/{route}"){
+            BookIsbnSearch(bookViewModel,navController, it.arguments?.getString("route"))
         }
     }
 

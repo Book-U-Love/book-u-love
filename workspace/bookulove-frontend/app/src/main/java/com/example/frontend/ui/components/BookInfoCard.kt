@@ -28,15 +28,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.frontend.R
-import com.example.frontend.data.model.BookSearchRes
 import com.example.frontend.ui.vo.Routes
 
 @ExperimentalMaterial3Api
 @Composable
-fun BookInfoCard(searchRes: Map<String,String>?, navController:NavController){
+fun BookInfoCard(searchRes: Map<String,String>?, navController:NavController,route:String?){
     val title = when(searchRes!!.getValue("title").length>12){true -> searchRes!!.getValue("title").substring(0,12)+"..."; false-> searchRes!!.getValue("title")}
     val author = when(searchRes!!.getValue("author").length>12){true -> searchRes!!.getValue("author").substring(0,12)+"..."; false-> searchRes!!.getValue("author")}
-    ElevatedCard(onClick = { navController.navigate(Routes.BOOKREPORTREGIST)},modifier= Modifier
+    ElevatedCard(onClick = {
+        if(route.equals("report"))navController.navigate(Routes.BOOKREPORTREGIST)
+                           else navController.navigate(Routes.BOOKTRANSACTIONREGIST)},modifier= Modifier
         .padding(top = 15.dp)
         .fillMaxWidth()
 
@@ -89,6 +90,5 @@ fun QuestionCard(){
                 .background(Color.White))
         Text("도서정보를 찾을 수 없습니다.",modifier=Modifier.padding(top=30.dp, start=30.dp, end=30.dp, bottom=15.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Text("ISBN을 다시 확인해주세요.",modifier=Modifier.padding(start=30.dp, end=30.dp, bottom=15.dp), fontSize = 18.sp,color= Color.Black.copy(alpha=0.5f))
-
     }
 }

@@ -1,25 +1,20 @@
 package com.example.frontend.viewmodel
 
+import android.util.ArrayMap
 import android.util.Log
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.frontend.data.model.BookRegistReq
 import com.example.frontend.data.model.BookReportReq
-import com.example.frontend.data.model.BookSearchRes
 import com.example.frontend.data.repository.BookRepository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import java.lang.Exception
 
 class BookViewModel: ViewModel() {
@@ -37,11 +32,18 @@ class BookViewModel: ViewModel() {
     // 독후감 등록 결과
     private val _reportRegistRes = MutableStateFlow<Boolean?>(null)
     val reportRegistRes : StateFlow<Boolean?> = _reportRegistRes
+    // 책 등록 결과
+    private val _bookRegistRes = MutableStateFlow<Boolean?>(null)
+    val bookRegistRes : StateFlow<Boolean?> = _bookRegistRes
+    // 내 보유 책 리스트
+    private val _myBookList = MutableStateFlow<List<Map<String,String>>>(emptyList())
+    val myBookList = _myBookList
     fun changeState(){
         _reportState.value = !_reportState.value
     }
     fun resetRegistRes(){
         _reportRegistRes.value = null
+        _bookRegistRes.value = null
     }
     fun bookSearch(isbn:String){
         GlobalScope.async{
@@ -69,6 +71,31 @@ class BookViewModel: ViewModel() {
                 }
             }catch (e:Exception){
                 Log.d("report regist error", "독후감 등록 실패")
+            }
+        }
+    }
+    fun bookRegist(bookInfo:BookRegistReq){
+        viewModelScope.async{
+            Log.d("bookregist", "regist start")
+            try{
+                bookRepository.bookRegist(bookInfo).collect{
+                    res -> _bookRegistRes.value = res
+                }
+            } catch(e:Exception){
+                Log.d("bookregist res", "등록 오류")
+            }
+        }
+    }
+    fun getMyBookList(){
+        viewModelScope.async {
+            Log.d("get my book list", "get my book list")
+            try{
+                bookRepository.getMyBookList().collect(){
+                    res-> _myBookList.value = res
+                }
+                Log.d("my book list", "my book list load success")
+            }catch(e:Exception){
+                Log.d("my book list"," my book list load fail")
             }
         }
     }

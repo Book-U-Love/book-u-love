@@ -3,9 +3,9 @@ package com.example.frontend.data.repository
 import android.util.Log
 import com.example.frontend.data.api.API
 import com.example.frontend.data.api.BookApi
+import com.example.frontend.data.model.BookRegistReq
 import com.example.frontend.data.model.BookReportReq
-import com.example.frontend.data.model.BookReportRes
-import com.example.frontend.data.model.BookSearchRes
+import com.example.frontend.data.model.MyBookListRes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 class BookRepository(
@@ -32,6 +32,29 @@ class BookRepository(
         }else{
             Log.d("res fail", "res fail")
             emit(false)
+        }
+    }
+    suspend fun bookRegist(bookInfo: BookRegistReq):Flow<Boolean> = flow{
+        val response = api.bookRegist(bookInfo)
+        Log.d("response res", "res start")
+        if(response.code()==200){
+            emit(true)
+            Log.d("res","res 성공")
+        }else{
+            emit(false)
+            Log.d("res","res 실패")
+        }
+    }
+    suspend fun getMyBookList():Flow<List<Map<String,String>>> = flow{
+        val response = api.getMyBookList()
+        Log.d("mybook res", "Res start")
+        if(response.code()==200){
+            response.body()?.let {
+                emit(response.body()!!.data)
+            }
+            Log.d("book list res"," book list 성공")
+        }else{
+            Log.d("res", "Res 실패")
         }
     }
 }
