@@ -1,5 +1,6 @@
 package com.example.frontend.ui.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -8,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -91,7 +93,7 @@ fun CustomFAB(
                                     .background(Color.White, RoundedCornerShape(5.dp))
                                     .width(expandedWidth)
                                     .height(expandedHeight)
-                                    .clickable { navController.navigate(Routes.BOOKREPORTREGIST) }){
+                                    .clickable { navController.navigate(Routes.BOOKISBNSEARCH) }){
 //                                    Icon(painter = painterResource(id = R.drawable.baseline_book_24), contentDescription = "report", modifier=Modifier.align( Alignment.Center))
                                     Text("독후감 등록",modifier=Modifier.align(Alignment.Center))
                                 }
@@ -118,13 +120,13 @@ fun CustomFAB(
 @ExperimentalComposeUiApi
 fun CustomSearchFAB(){
     var isExpanded by remember{
-        mutableStateOf(false)
+        mutableStateOf(true)
     }
     var expandedState by remember{
         mutableStateOf(0.1f)
     }
 
-//    val keyboardController = LocalSoftwareKeyboardController.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 //    val expandedWidth by animateDpAsState(
 //        targetValue = expandedState,
 //        animationSpec = spring(dampingRatio=3f),
@@ -135,11 +137,11 @@ fun CustomSearchFAB(){
 //        animationSpec = spring(dampingRatio = 3f),
 //        label="expandedHeight"
 //    )
-//    FloatingActionButton(onClick = { isExpanded = !isExpanded},
-//        modifier=Modifier.width(expandedWidth).height(expandedHeight)
-//        ) {
-//
-//    }
+    FloatingActionButton(onClick = { isExpanded = !isExpanded},
+        modifier=Modifier.background(Color.White).animateContentSize().fillMaxWidth().height(if(isExpanded) 20.dp else 1000.dp)
+        ) {
+
+    }
 }
 
 

@@ -52,8 +52,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.frontend.data.local.addFocusCleaner
+import com.example.frontend.data.repository.PrefsRepository
 import com.example.frontend.ui.components.BookReportDetail
 import com.example.frontend.ui.components.BookReportRegist
+import com.example.frontend.ui.screens.book.BookIsbnSearch
 import com.example.frontend.ui.screens.book.BookList
 import com.example.frontend.ui.screens.book.BookSearch
 import com.example.frontend.ui.screens.book.BookTotal
@@ -115,6 +117,7 @@ class MainActivity : ComponentActivity() {
             val bookViewModel = ViewModelProvider(
                 this,BookViewModelFactory()
             )[BookViewModel::class.java]
+
             FrontEndTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -130,13 +133,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel,bookViewModel: BookViewModel){
     val navController = rememberNavController()
-//    prefsRepository.setValue("accessToken","")
-//    Log.d("token", prefsRepository.getValue("accessToken"))
 
-//    val pagerState = rememberPagerState(pageCount=2)
     Surface(modifier=Modifier.addFocusCleaner(LocalFocusManager.current)){
         Scaffold(topBar = {
-//            if(mainViewModel.isLogin.value)
+            if(mainViewModel.isLogin.value)
                 CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color.White
@@ -163,7 +163,7 @@ fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authView
             )
         },
             bottomBar ={
-//                if(mainViewModel.isLogin.value)
+                if(mainViewModel.isLogin.value)
                     com.example.frontend.ui.components.BottomAppBar(navController = navController)
             },
 //            floatingActionButton = {
@@ -186,7 +186,7 @@ fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authView
 }
 @Composable
 fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel,bookViewModel: BookViewModel){
-    NavHost(navController = navController, startDestination = Routes.BOOKTOTAL) {
+    NavHost(navController = navController, startDestination = Routes.HOME) {
         composable(route = Routes.HOME) {
             Home(navController = navController, mainViewModel, userViewModel, authViewModel)
             mainViewModel.changeState("홈")
@@ -221,7 +221,7 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             BookSearch(navController)
             mainViewModel.changeState("검색")
         }
-        composable(route = Routes.BOOKTOTAL) {
+        composable(route = Routes.MYLIBRARY) {
             BookTotal(navController,bookViewModel)
             mainViewModel.changeState("내 도서관")
         }
@@ -254,7 +254,10 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             Modify(navController, authViewModel, userViewModel)
         }
         composable(route = Routes.BOOKREPORTREGIST){
-            BookReportRegist(navController)
+            BookReportRegist(bookViewModel,navController)
+        }
+        composable(route = Routes.BOOKISBNSEARCH){
+            BookIsbnSearch(bookViewModel,navController)
         }
     }
 

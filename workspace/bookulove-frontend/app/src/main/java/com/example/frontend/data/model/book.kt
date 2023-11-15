@@ -1,21 +1,26 @@
 package com.example.frontend.data.model
 
 
-data class Book(
-    val bookId: Number,
-    val isbn: String,
-    val title: String,
-    val author: String,
-    val publisher: String,
-    val pubDate: String,
-    val category: String,
-    val price: Number,
-)
-
 data class BookRegistReq(
     val isbn:String,
     val condition:Int,
     val allowSale:Boolean,
     val allowBorrow:Boolean,
-    val details:String,
+    val details:String, )
+
+
+data class BookReportReq(
+    val bookId:Number,
+    val title : String,
+    val content: String,
+)
+data class BookReportRes(
+    val status: Number,
+    val code : String,
+    val data : String,
+)
+data class BookSearchRes(
+   val status: Number,
+    val code : String,
+    val data : Map<String, String>
 )

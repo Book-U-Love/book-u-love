@@ -12,7 +12,7 @@ import java.lang.Exception
 interface API{
     companion object{
 //        private const val BASE_URL = "http://10.0.2.2:9001/api/"
-        private const val REFRESH_URL = "http://10.0.2.2:9001/api/auth-service/auths/refresh"
+        private const val REFRESH_URL = "https://k9c209.p.ssafy.io/api/auth-service/auths/refresh"
         private const val TIMEOUT_LIMIT = 60L
         private const val BASE_URL = "https://k9c209.p.ssafy.io/api/"
         fun getInstance(): Retrofit{
