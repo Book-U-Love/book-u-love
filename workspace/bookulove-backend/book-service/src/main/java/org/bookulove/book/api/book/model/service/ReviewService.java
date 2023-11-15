@@ -56,8 +56,10 @@ public class ReviewService {
         ReviewRes reviewRes = ReviewRes.of(userId,
                 userInfoByUserId.data().nickname(),
                 reviewEntity.getBook().getBookId(),
+                reviewEntity.getBook().getIsbn(),
                 reviewEntity.getBook().getTitle(),
-                reviewId, reviewEntity.getTitle(),
+                reviewId,
+                reviewEntity.getTitle(),
                 reviewEntity.getContent());
 
         log.info("독후감 상세내용 domain: {}", reviewRes);

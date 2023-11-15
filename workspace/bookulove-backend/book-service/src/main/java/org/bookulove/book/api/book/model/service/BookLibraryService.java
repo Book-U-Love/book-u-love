@@ -71,6 +71,7 @@ public class BookLibraryService {
                 bookEntity.getPublisher(),
                 bookEntity.getPrice(),
                 bookEntity.getPubDate(),
+                bookEntity.getCover(),
                 reviewInfoResList
         );
 

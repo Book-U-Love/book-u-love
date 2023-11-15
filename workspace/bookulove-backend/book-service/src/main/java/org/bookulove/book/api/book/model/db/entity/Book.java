@@ -44,6 +44,8 @@ public class Book extends BaseTimeEntity{
     @NotNull
     private String publisher;
 
+    private String cover;
+
     @OneToMany(mappedBy = "book")
     private List<BookLibraryRelation> bookLibraryRelation;
 
@@ -51,7 +53,7 @@ public class Book extends BaseTimeEntity{
     private List<ReviewEntity> reviewEntityList;
 
     @Builder
-    public Book(Long bookId, String title, String author, LocalDate pubDate, String description, String isbn, int price, String category, String publisher, List<BookLibraryRelation> bookLibraryRelation, List<ReviewEntity> reviewEntityList) {
+    public Book(Long bookId, String title, String author, LocalDate pubDate, String description, String isbn, int price, String category, String publisher, String cover, List<BookLibraryRelation> bookLibraryRelation, List<ReviewEntity> reviewEntityList) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
@@ -61,6 +63,7 @@ public class Book extends BaseTimeEntity{
         this.price = price;
         this.category = category;
         this.publisher = publisher;
+        this.cover = cover;
         this.bookLibraryRelation = bookLibraryRelation;
         this.reviewEntityList = reviewEntityList;
     }

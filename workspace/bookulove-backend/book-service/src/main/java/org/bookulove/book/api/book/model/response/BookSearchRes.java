@@ -10,12 +10,13 @@ public record BookSearchRes(
         String publisher,
         String pubDate,
         String category,
-        int price
+        int price,
+        String cover
 
 ) {
 
     public BookSearchRes(Book book) {
-        this(book.getBookId(), book.getIsbn(), book.getTitle(), book.getAuthor(), book.getPublisher(), book.getPubDate().toString(), book.getCategory(), book.getPrice());
+        this(book.getBookId(), book.getIsbn(), book.getTitle(), book.getAuthor(), book.getPublisher(), book.getPubDate().toString(), book.getCategory(), book.getPrice(), book.getCover());
     }
 
 }
