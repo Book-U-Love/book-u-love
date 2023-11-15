@@ -36,14 +36,15 @@ public class StompHandler implements ChannelInterceptor {
                 String simpDestination = message.getHeaders().get("simpDestination").toString();
                 log.info("simpDestination: {}", simpDestination);
 
-                String roomId = getRoomId(simpDestination);
-                log.info("roomId: {}", roomId);
-
                 // TODO: 2023-11-08 kotlin에서 jwt 잘 넘어오는지 확인후 검증작업 추가
                 String token = getAccessToken(accessor);
                 log.info("subscribe token: {}", token);
+                Long userId = 2L;
+//                userId = jwtUtil.extractId(token);
 
-                stompCreateConnPort.createConn(2L, roomId);
+                String roomId = getRoomId(simpDestination, userId);
+                log.info("roomId: {}", roomId);
+
             }
             case SEND -> {
                 log.info("sendhandling");
@@ -62,12 +63,13 @@ public class StompHandler implements ChannelInterceptor {
         return accessToken;
     }
 
-    private String getRoomId(String simpDestination) {
-        if (simpDestination.length() <= 5) {
-            return "room";
+    private String getRoomId(String simpDestination, Long userId) {
+        if(simpDestination.contains("/sub/room/")){
+            String roomId = simpDestination.substring(10);
+            stompCreateConnPort.createConn(userId, roomId);
+            return roomId;
         }
         else return simpDestination.substring(5);
     }
-
 
 }
