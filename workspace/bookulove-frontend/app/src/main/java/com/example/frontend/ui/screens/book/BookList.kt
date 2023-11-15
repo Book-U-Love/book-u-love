@@ -48,7 +48,7 @@ fun BookList(bookViewModel: BookViewModel){
             LazyColumn(){
                 for(book in bookList.value){
                     item{
-                        BookInfo()
+                        BookInfo(book)
                     }
                 }
 

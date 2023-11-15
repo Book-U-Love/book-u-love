@@ -197,7 +197,7 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             mainViewModel.changeState("채팅")
         }
         composable(route = Routes.MYPAGE) {
-            MyPage(navController,true,"asdf", authViewModel, userViewModel)
+            MyPage(navController,true, authViewModel = authViewModel, userViewModel = userViewModel)
             mainViewModel.changeState("마이페이지")
         }
         composable(route = Routes.MYPAGE + "/{userId}",
@@ -209,10 +209,9 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             if (userId != null) {
                 MyPage(
                     navController,
-                    userId == "ssafy",
-                    userId,
-                    authViewModel,
-                    userViewModel
+                    userId = userId,
+                    authViewModel = authViewModel,
+                    userViewModel = userViewModel
                 )
             } else {
                 Home(navController = navController, mainViewModel, userViewModel, authViewModel)

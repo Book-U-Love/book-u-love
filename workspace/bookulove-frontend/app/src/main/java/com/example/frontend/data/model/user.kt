@@ -53,7 +53,7 @@ data class Token(
 data class LibraryList(
     val status: Int,
     val code: String,
-    val data: Map<String, List<UserRegistDto>>
+    val data: Map<String, List<Map<String, String>>>
 )
 
 data class ReviewList(

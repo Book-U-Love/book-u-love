@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.example.frontend.R
 
 @Composable
-fun BookInfo(){
+fun BookInfo(book: Map<String, String> = mapOf()){
     Surface {
 
         Row(modifier = Modifier
@@ -44,7 +44,7 @@ fun BookInfo(){
             Box(){
                 Column(modifier=Modifier.padding(start=15.dp,top=20.dp,end=15.dp, bottom = 10.dp)){
                     Box(){
-                        Text("클린 코드", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                        Text(book.get("title").toString(), fontSize = 24.sp, fontWeight = FontWeight.Bold)
                     }
                     Box(modifier=Modifier.padding(top=3.dp, bottom=3.dp)){
                         Row {
@@ -52,11 +52,28 @@ fun BookInfo(){
                             Text("5분 전", fontSize = 12.sp, color = Color.Gray, modifier = Modifier.padding(start = 5.dp))
                             }
                     }
-                    Box(){
-                        Box(modifier = Modifier
-                            .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(5.dp))
-                            .padding(3.dp)){
-                            Text("대여중", color=Color.White)
+                    Row(){
+                        if(book.get("allowSale") == "true"){
+                            Box(modifier = Modifier.padding(1.dp)){
+                                Box(modifier = Modifier
+                                    .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(5.dp))
+                                    .padding(3.dp)){
+                                    Text("판매중", color=Color.White)
+                                }
+                            }
+                        }
+                        if(book.get("allowBorrow") == "true"){
+                            Box(modifier = Modifier.padding(1.dp)){
+                                Box(modifier = Modifier
+                                    .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(5.dp))
+                                    .padding(3.dp)){
+                                    if(book.get("isBorrow").toString() == "true"){
+                                        Text("대여중", color = Color.White)
+                                    } else{
+                                        Text("대여가능", color = Color.White)
+                                    }
+                                }
+                            }
                         }
                     }
                     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {

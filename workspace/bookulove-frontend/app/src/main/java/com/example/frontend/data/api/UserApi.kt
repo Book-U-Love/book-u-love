@@ -16,6 +16,7 @@ import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface UserApi {
@@ -25,8 +26,11 @@ interface UserApi {
     @GET("user-service/users")
     suspend fun getMyInfo():Response<MapData>
 
+
     @GET("user-service/users/info")
     suspend fun getMyPage():Response<MapData>
+    @GET("user-service/users/info/{userId}")
+    suspend fun getUserPage(@Path("userId") userId: String): Response<MapData>
 
     @PATCH("user-service/users")
     suspend fun modifyUser(@Body modifyUser: ModifyUser):Response<Default>

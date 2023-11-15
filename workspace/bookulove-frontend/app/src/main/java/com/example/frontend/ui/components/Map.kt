@@ -42,7 +42,7 @@ fun MapInfo(
         pos: MutableState<LatLng>,
         title: String = "",
         detail: String = "",
-        libList: List<UserRegistDto> = listOf(),
+        libList: List<Map<String, String>> = listOf(),
         navController: NavHostController = rememberNavController()
     ){
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(LocalContext.current)
@@ -96,16 +96,18 @@ fun MapInfo(
             } else{
                 for(lib in libList){
                     MarkerInfoWindowContent (
-                        state = MarkerState(position = LatLng(lib.lat, lib.lng)),
+                        state = MarkerState(position = LatLng(lib.get("lat").toString().toDouble(), lib.get("lng").toString().toDouble())),
                         onInfoWindowClick = {
                             GlobalScope.launch(Dispatchers.Main){
-                                navController.navigate(Routes.MYPAGE+"/${lib.nickname}")
+                                navController.navigate(Routes.MYPAGE+"/${lib.get("userId").toString()}")
+//                                Log.d("find user", lib.get("userId").toString())
                             }
                         }
                     ){
                         Column {
-                            Text(text = lib.nickname)
-                            FuncBtn(name = lib.nickname, onClick = {})
+                            Text(text = lib.get("nickname").toString())
+//                            PageBtn(name = lib.nickname, navController = navController, destination = Routes.MYPAGE+lib.userId)
+                            FuncBtn(name = "이동", onClick = { })
                         }
                     }
                 }

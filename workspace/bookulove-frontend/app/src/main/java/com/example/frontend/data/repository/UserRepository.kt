@@ -45,6 +45,14 @@ class UserRepository(
         }
     }
 
+    suspend fun getUserPage(userId: String):Flow<Map<String, String>> = flow{
+        val response = api.getUserPage(userId)
+        Log.d("find result", response.body()!!.data.toString())
+        if(response.body()!!.status == 200){
+            emit(response.body()!!.data)
+        }
+    }
+
     suspend fun modifyUser(modifyUser: ModifyUser):Flow<String> = flow{
         val response = api.modifyUser( modifyUser)
         if(response.body()!!.status == 200){
@@ -63,9 +71,9 @@ class UserRepository(
         }
     }
 
-    suspend fun getLibraryList():Flow<List<UserRegistDto>> = flow{
+    suspend fun getLibraryList():Flow<List<Map<String, String>>> = flow{
         val response = api.getLibraryList()
-        val list: List<UserRegistDto>? = response.body()!!.data.get("userFindInfoResList")
+        val list: List<Map<String, String>>? = response.body()!!.data.get("userFindInfoResList")
         if(response.body()!!.status == 200){
             if(list != null){
                 emit(list)
