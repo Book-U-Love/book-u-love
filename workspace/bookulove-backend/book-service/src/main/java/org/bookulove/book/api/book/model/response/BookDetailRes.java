@@ -17,10 +17,12 @@ public record BookDetailRes(
 
         LocalDate pubDate,
 
+        String cover,
+
         List<ReviewInfoRes> reviewInfoResList
 ) {
-    public static BookDetailRes of(Long bookId, String title, String author, String publisher, int price, LocalDate pubDate, List<ReviewInfoRes> reviewInfoResList){
-        return new BookDetailRes(bookId, title, author, publisher, price, pubDate, reviewInfoResList);
+    public static BookDetailRes of(Long bookId, String title, String author, String publisher, int price, LocalDate pubDate, String cover, List<ReviewInfoRes> reviewInfoResList){
+        return new BookDetailRes(bookId, title, author, publisher, price, pubDate, cover, reviewInfoResList);
     }
 
 }

@@ -14,14 +14,21 @@ public record AladinSearch (
         String isbn13,
         int priceStandard,
         String categoryName,
-        String publisher
+        String publisher,
+
+        String cover
 ) {
 
     public AladinSearch(Map<String, Object> item) {
-        this((String) item.get("title"), (String) item.get("author"),
-                (String) item.get("pubDate"), (String) item.get("description"),
-                (String) item.get("isbn13"), (int) item.get("priceStandard"),
-                (String) item.get("categoryName"), (String) item.get("publisher"));
+        this((String) item.get("title"),
+                (String) item.get("author"),
+                (String) item.get("pubDate"),
+                (String) item.get("description"),
+                (String) item.get("isbn13"),
+                (int) item.get("priceStandard"),
+                (String) item.get("categoryName"),
+                (String) item.get("publisher"),
+                (String) item.get("cover"));
     }
 
     public Book to() {
@@ -35,6 +42,7 @@ public record AladinSearch (
                 .price(priceStandard())
                 .category(categories[1])
                 .publisher(publisher())
+                .cover(cover())
                 .build();
     }
 }
