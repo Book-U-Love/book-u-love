@@ -134,7 +134,7 @@
 
 ## 📂 시스템 아키텍처
 
-![]()
+![](./docs/images/service-architecture.png)
 
 <br>
 
@@ -146,3 +146,4 @@
 
 ## 📔 참조 문서
 ### [컨벤션](./docs/convention.md)
+### [포닝매뉴얼](./exec/porting-manual.md)

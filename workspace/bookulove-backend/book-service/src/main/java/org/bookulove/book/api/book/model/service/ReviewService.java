@@ -60,7 +60,8 @@ public class ReviewService {
                 reviewEntity.getBook().getTitle(),
                 reviewId,
                 reviewEntity.getTitle(),
-                reviewEntity.getContent());
+                reviewEntity.getContent(),
+                reviewEntity.getCreatedTime());
 
         log.info("독후감 상세내용 domain: {}", reviewRes);
         return reviewRes;
