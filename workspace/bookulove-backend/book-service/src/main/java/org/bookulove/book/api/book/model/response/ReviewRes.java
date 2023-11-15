@@ -15,6 +15,8 @@ public record ReviewRes(
 
         String bookTitle,
 
+        String bookCover,
+
         Long reviewId,
 
         String reviewTitle,
@@ -24,8 +26,8 @@ public record ReviewRes(
         String createdTime
 
 ) {
-    public static ReviewRes of(Long userId, String userName, Long bookId, String bookIsbn, String bookTitle, Long reviewId, String reviewTitle, String reviewContent, LocalDateTime createdTime){
-        return new ReviewRes(userId, userName, bookId, bookIsbn, bookTitle, reviewId, reviewTitle, reviewContent, convertTime(createdTime));
+    public static ReviewRes of(Long userId, String userName, Long bookId, String bookIsbn, String bookTitle, String bookCover, Long reviewId, String reviewTitle, String reviewContent, LocalDateTime createdTime){
+        return new ReviewRes(userId, userName, bookId, bookIsbn, bookTitle, bookCover, reviewId, reviewTitle, reviewContent, convertTime(createdTime));
     }
 
     private static String convertTime(LocalDateTime localDateTime) {

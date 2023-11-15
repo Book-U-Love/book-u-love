@@ -17,6 +17,9 @@ import org.bookulove.common.util.AuthUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @Transactional
@@ -58,6 +61,7 @@ public class ReviewService {
                 reviewEntity.getBook().getBookId(),
                 reviewEntity.getBook().getIsbn(),
                 reviewEntity.getBook().getTitle(),
+                reviewEntity.getBook().getCover(),
                 reviewId,
                 reviewEntity.getTitle(),
                 reviewEntity.getContent(),
@@ -65,5 +69,40 @@ public class ReviewService {
 
         log.info("독후감 상세내용 domain: {}", reviewRes);
         return reviewRes;
+    }
+
+    public List<ReviewRes> findReviewList(){
+        Long userId = authUtil.getUserIdByHeader();
+        String token = authUtil.getTokenByHeader();
+
+        ApiData<UserFindInfoRes> userInfoByUserId = userFeignClient.findUserByUserId(token, userId);
+        if (userInfoByUserId.status() != 200) {
+            throw new BookServiceException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        List<ReviewEntity> reviewEntityList = reviewRepository.findAllByUserId(userId);
+
+        List<ReviewRes> reviewResList = null;
+
+        if(reviewEntityList != null){
+            reviewResList = reviewEntityList.stream()
+                    .map(
+                            p -> ReviewRes.of(
+                                    userId,
+                                    userInfoByUserId.data().nickname(),
+                                    p.getBook().getBookId(),
+                                    p.getBook().getIsbn(),
+                                    p.getBook().getTitle(),
+                                    p.getBook().getCover(),
+                                    p.getReviewId(),
+                                    p.getTitle(),
+                                    p.getContent(),
+                                    p.getCreatedTime()
+                            )
+                    )
+                    .collect(Collectors.toList());
+        }
+
+        return reviewResList;
     }
 }

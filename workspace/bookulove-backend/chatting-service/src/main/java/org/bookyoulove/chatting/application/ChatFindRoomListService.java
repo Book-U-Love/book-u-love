@@ -94,6 +94,6 @@ public class ChatFindRoomListService implements ChatFindRoomListUseCase {
 
         log.info("채팅 목록 domain: {}", chattingRoomInfoDomainList);
 
-        return ChattingRoomListDomain.of(chattingRoomInfoDomainList);
+        return ChattingRoomListDomain.of(userId, chattingRoomInfoDomainList);
     }
 }
