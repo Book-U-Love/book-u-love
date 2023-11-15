@@ -1,5 +1,5 @@
 # 북유럽
-### 📚도서 판매 대여를 손쉽게, 개인 도서관 서비스 북유럽📚
+### 📚[도서 판매 대여를 손쉽게, 개인 도서관 서비스 북유럽](./docs/Ucc홍보영상.mp4)📚
 
 ![](docs/images/bookulove_logo.png)
 
@@ -134,7 +134,7 @@
 
 ## 📂 시스템 아키텍처
 
-![]()
+![](./docs/images/service-architecture.png)
 
 <br>
 
@@ -146,3 +146,4 @@
 
 ## 📔 참조 문서
 ### [컨벤션](./docs/convention.md)
+### [포닝매뉴얼](./exec/porting-manual.md)

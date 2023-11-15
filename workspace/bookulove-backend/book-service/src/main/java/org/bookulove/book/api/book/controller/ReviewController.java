@@ -30,4 +30,10 @@ public class ReviewController {
         return ApiData.ok(reviewService.findReview(reviewId));
     }
 
+    @GetMapping
+    public ApiData<?> findReviewList(){
+        log.info("나의 독후감 리스트 req");
+        return ApiData.ok(reviewService.findReviewList());
+    }
+
 }

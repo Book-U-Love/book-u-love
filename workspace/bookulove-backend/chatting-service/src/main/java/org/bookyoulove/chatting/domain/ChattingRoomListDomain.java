@@ -4,9 +4,11 @@ import java.util.List;
 
 public record ChattingRoomListDomain(
 
+        Long userId,
+
         List<ChattingRoomInfoDomain> chattingRoomInfoDomainList
 ) {
-    public static ChattingRoomListDomain of(List<ChattingRoomInfoDomain> chattingRoomInfoDomainList){
-        return new ChattingRoomListDomain(chattingRoomInfoDomainList);
+    public static ChattingRoomListDomain of(Long userId, List<ChattingRoomInfoDomain> chattingRoomInfoDomainList){
+        return new ChattingRoomListDomain(userId, chattingRoomInfoDomainList);
     }
 }

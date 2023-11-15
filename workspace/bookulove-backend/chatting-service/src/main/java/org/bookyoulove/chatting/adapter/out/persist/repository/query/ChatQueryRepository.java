@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.bookyoulove.chatting.adapter.out.persist.entity.QChattingEntity;
 import org.bookyoulove.chatting.adapter.out.persist.entity.QChattingRoomEntity;
 import org.bookyoulove.chatting.domain.ChattingDomain;
-import org.bookyoulove.chatting.domain.ChattingRoomListDomain;
 import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Repository;
 

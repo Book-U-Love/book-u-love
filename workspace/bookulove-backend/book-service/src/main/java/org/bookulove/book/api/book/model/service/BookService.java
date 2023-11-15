@@ -189,30 +189,37 @@ public class BookService {
         log.info(logCurrent(getClassName(), getMethodName(), END));
     }
 
-    public BookDetailRes findBookInfo(Long bookId){
+    public BookDetailRes findBookInfo(String isbn, boolean review, boolean sale, boolean borrow){
         String token = authUtil.getTokenByHeader();
 
-        Book bookEntity = bookRepository.findById(bookId).orElseThrow(
-                () -> new BookServiceException(ErrorCode.BOOK_NOT_FOUND)
-        );
+        Book bookEntity =  bookRepository.findByIsbn(isbn)
+                .orElseGet( () -> searchAladinAndSave(isbn) );
 
         List<ReviewInfoRes> reviewInfoResList = new ArrayList<>();
         List<ReviewEntity> reviewEntityList = bookEntity.getReviewEntityList();
-        for(ReviewEntity reviewEntity : reviewEntityList){
-            ApiData<UserFindInfoRes> userByUserId = userFeignClient.findUserByUserId(token, reviewEntity.getUserId());
-            if(userByUserId.status() != 200){
-                throw new BookServiceException(ErrorCode.USER_NOT_FOUND);
+
+        if(reviewEntityList != null){
+            for(ReviewEntity reviewEntity : reviewEntityList){
+                ApiData<UserFindInfoRes> userByUserId = userFeignClient.findUserByUserId(token, reviewEntity.getUserId());
+                if(userByUserId.status() != 200){
+                    throw new BookServiceException(ErrorCode.USER_NOT_FOUND);
+                }
+
+                ReviewInfoRes reviewInfoRes =
+                        ReviewInfoRes.of(reviewEntity.getReviewId(),
+                                reviewEntity.getTitle(),
+                                reviewEntity.getContent(),
+                                reviewEntity.getUserId(),
+                                userByUserId.data().nickname(),
+                                reviewEntity.getCreatedTime());
+
+                reviewInfoResList.add(reviewInfoRes);
             }
-
-            ReviewInfoRes reviewInfoRes =
-                    ReviewInfoRes.of(reviewEntity.getReviewId(),
-                            reviewEntity.getTitle(),
-                            reviewEntity.getTitle(),
-                            reviewEntity.getUserId(),
-                            userByUserId.data().nickname());
-
-            reviewInfoResList.add(reviewInfoRes);
         }
+
+
+        List<BookInfo> saleBookInfoList = getBookListByBookId(bookEntity.getBookId(), true, false);
+        List<BookInfo> borrowBookInfoList = getBookListByBookId(bookEntity.getBookId(), false, true);
 
         BookDetailRes bookDetailRes = BookDetailRes.of(bookEntity.getBookId(),
                 bookEntity.getTitle(),
@@ -221,11 +228,29 @@ public class BookService {
                 bookEntity.getPrice(),
                 bookEntity.getPubDate(),
                 bookEntity.getCover(),
-                reviewInfoResList);
+                reviewInfoResList,
+                saleBookInfoList,
+                borrowBookInfoList);
 
         log.info("책 상세정보 domain: {}", bookDetailRes);
 
         return bookDetailRes;
+    }
+
+    public List<BookInfo> getBookListByBookId(Long bookId, boolean sale, boolean borrow) {
+        log.info(logCurrent(getClassName(), getMethodName(), START));
+
+        List<BookLibraryRelation> libraryRelationByParam = bookLibraryRelationQueryRepository.findLibraryRelationByBookId(bookId, sale, borrow);
+
+        List<BookInfo> res = new ArrayList<>();
+        for (BookLibraryRelation relation : libraryRelationByParam) {
+            res.add(new BookInfo(relation));
+        }
+
+        log.info("내 도서관 책 리스트 domain: {}", res);
+
+        log.info(logCurrent(getClassName(), getMethodName(), END));
+        return res;
     }
 
 }

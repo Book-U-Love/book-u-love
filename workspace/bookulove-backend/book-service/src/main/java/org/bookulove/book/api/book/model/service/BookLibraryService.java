@@ -55,9 +55,10 @@ public class BookLibraryService {
             ReviewInfoRes reviewInfoRes =
                     ReviewInfoRes.of(reviewEntity.getReviewId(),
                             reviewEntity.getTitle(),
-                            reviewEntity.getTitle(),
+                            reviewEntity.getContent(),
                             reviewEntity.getUserId(),
-                            userByUserId.data().nickname());
+                            userByUserId.data().nickname(),
+                            reviewEntity.getCreatedTime());
 
             reviewInfoResList.add(reviewInfoRes);
         }
@@ -69,6 +70,7 @@ public class BookLibraryService {
                 bookEntity.getTitle(),
                 bookEntity.getAuthor(),
                 bookEntity.getPublisher(),
+                bookLibraryRelation.getCondition(),
                 bookEntity.getPrice(),
                 bookEntity.getPubDate(),
                 bookEntity.getCover(),
