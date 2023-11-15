@@ -15,21 +15,32 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
 import com.example.frontend.data.api.API
 import com.example.frontend.data.api.BookApi
+import com.example.frontend.data.repository.PrefsRepository
 import com.example.frontend.ui.components.ChatInfo
-import com.example.frontend.ui.components.CustomDialog
-import com.example.frontend.ui.theme.Red
-import kotlinx.coroutines.Dispatchers
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-
+import com.example.frontend.viewmodel.MainViewModel
+import com.example.frontend.viewmodel.StompViewModel
+import kotlinx.coroutines.delay
+import java.lang.Exception
 
 @Composable
 @ExperimentalMaterial3Api
-fun Chat(navController: NavController){
+fun Chat(navController: NavController,mainViewModel: MainViewModel,stompViewModel: StompViewModel){
     val bookApi: BookApi = API.getInstance().create(BookApi::class.java)
     var state by remember{
         mutableStateOf(false)
+    }
+    LaunchedEffect(Unit){
+        try{
+            stompViewModel.init()
+            delay(5000)
+            stompViewModel.connect()
+            delay(5000)
+            stompViewModel.sendMessage("asdfasdf")
+            Log.d("accessToken", PrefsRepository().getValue("accessToken"))
+        }catch (e:Exception){
+            Log.d("test","eror")
+        }
+
     }
     Log.d("asdf",navController.currentBackStackEntry?.destination.toString())
     Box {
@@ -38,6 +49,8 @@ fun Chat(navController: NavController){
             ChatInfo(navController)
             ChatInfo(navController)
         }
-
+    }
+    Button(onClick = { stompViewModel.sendMessage("asdfasdfadsfadsf") }) {
+        Text("send")
     }
 }

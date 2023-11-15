@@ -75,6 +75,7 @@ import com.example.frontend.viewmodel.BookViewModel
 import com.example.frontend.viewmodel.BookViewModelFactory
 import com.example.frontend.viewmodel.MainViewModel
 import com.example.frontend.viewmodel.MainViewModelFactory
+import com.example.frontend.viewmodel.StompViewModel
 import com.example.frontend.viewmodel.UserViewModel
 import com.example.frontend.viewmodel.UserViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -118,11 +119,11 @@ class MainActivity : ComponentActivity() {
             val bookViewModel = ViewModelProvider(
                 this,BookViewModelFactory()
             )[BookViewModel::class.java]
-
+            val stompViewModel = StompViewModel()
             FrontEndTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    MainApp(mainViewModel, userViewModel, authViewModel,bookViewModel)
+                    MainApp(mainViewModel, userViewModel, authViewModel,bookViewModel, stompViewModel)
                 }
             }
         }
@@ -132,7 +133,7 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
 @Composable
-fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel,bookViewModel: BookViewModel){
+fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel,bookViewModel: BookViewModel,stompViewModel:StompViewModel){
     val navController = rememberNavController()
 
     Surface(modifier=Modifier.addFocusCleaner(LocalFocusManager.current)){
@@ -179,21 +180,21 @@ fun MainApp(mainViewModel: MainViewModel, userViewModel: UserViewModel, authView
                 verticalArrangement = Arrangement.spacedBy(1.dp),
             ) {
                 Divider()
-                MainNavigation(navController = navController,mainViewModel, userViewModel, authViewModel, bookViewModel)
+                MainNavigation(navController = navController,mainViewModel, userViewModel, authViewModel, bookViewModel,stompViewModel)
             }
 
         }
     }
 }
 @Composable
-fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel,bookViewModel: BookViewModel){
+fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel, userViewModel: UserViewModel, authViewModel: AuthViewModel,bookViewModel: BookViewModel,stompViewModel: StompViewModel){
     NavHost(navController = navController, startDestination = Routes.HOME) {
         composable(route = Routes.HOME) {
             Home(navController = navController, mainViewModel, userViewModel, authViewModel)
             mainViewModel.changeState("홈")
         }
         composable(route = Routes.CHAT) {
-            Chat(navController)
+            Chat(navController,mainViewModel, stompViewModel)
             mainViewModel.changeState("채팅")
         }
         composable(route = Routes.MYPAGE) {

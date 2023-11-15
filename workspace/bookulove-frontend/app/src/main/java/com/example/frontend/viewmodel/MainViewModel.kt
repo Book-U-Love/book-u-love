@@ -11,6 +11,7 @@ class MainViewModel: ViewModel(){
     private val _isLogin = mutableStateOf(false)
     val navState: State<String> = _navState
     val isLogin: State<Boolean> = _isLogin
+
     fun changeState(state:String){
         _navState.value = state
     }
