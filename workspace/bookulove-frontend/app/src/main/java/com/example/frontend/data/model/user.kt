@@ -59,5 +59,5 @@ data class LibraryList(
 data class ReviewList(
     val status: Int,
     val code: String,
-    val data: Map<String, List<Map<String, Object>>>
+    val data: Map<String, List<Map<String, String>>>
 )

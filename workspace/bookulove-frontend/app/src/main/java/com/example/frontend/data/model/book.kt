@@ -24,3 +24,9 @@ data class BookSearchRes(
     val code : String,
     val data : Map<String, String>
 )
+
+data class BookList(
+    val status: Int,
+    val code: String,
+    val data: List<Map<String, String>>
+)

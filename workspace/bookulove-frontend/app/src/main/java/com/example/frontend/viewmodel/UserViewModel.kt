@@ -22,7 +22,7 @@ class UserViewModel: ViewModel(){
     private val _signupRes: MutableStateFlow<String> = MutableStateFlow("init")
     private val _userMyInfo: MutableState<Map<String, String>> = mutableStateOf(mapOf())
     private val _userMyPage: MutableState<Map<String, String>> = mutableStateOf(mapOf())
-    private val _userReviewList: MutableState<List<Map<String, Object>>> = mutableStateOf(listOf())
+    private val _userReviewList: MutableState<List<Map<String, String>>> = mutableStateOf(listOf())
     private val _modifyRes: MutableStateFlow<String> = MutableStateFlow("init")
     private val _modifyPwRes: MutableStateFlow<String> = MutableStateFlow("init")
     private val _libraryList: MutableState<List<UserRegistDto>> = mutableStateOf(listOf())
@@ -38,7 +38,7 @@ class UserViewModel: ViewModel(){
     val libraryList: State<List<UserRegistDto>> = _libraryList
     val checkId: StateFlow<String>
         get() = _checkId
-    val userReviewList : State<List<Map<String, Object>>> = _userReviewList
+    val userReviewList : State<List<Map<String, String>>> = _userReviewList
     fun resetState(){
         _modifyRes.value = "init'"
     }

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,6 +38,9 @@ class BookViewModel: ViewModel() {
     // 독후감 등록 결과
     private val _reportRegistRes = MutableStateFlow<Boolean?>(null)
     val reportRegistRes : StateFlow<Boolean?> = _reportRegistRes
+    // 등록한 도서 조회
+    private val _bookList: MutableState<List<Map<String, String>>> = mutableStateOf(listOf())
+    val bookList: State<List<Map<String, String>>> = _bookList
     fun changeState(){
         _reportState.value = !_reportState.value
     }
@@ -69,6 +73,18 @@ class BookViewModel: ViewModel() {
                 }
             }catch (e:Exception){
                 Log.d("report regist error", "독후감 등록 실패")
+            }
+        }
+    }
+
+    fun getBookList(sale: Boolean, borrow: Boolean){
+        GlobalScope.async {
+            try{
+                bookRepository.getBookList(sale, borrow).collect(){
+                        res ->
+                    _bookList.value = res
+                }
+            } catch(e: Exception){
             }
         }
     }

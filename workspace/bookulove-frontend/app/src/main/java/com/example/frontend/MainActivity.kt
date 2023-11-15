@@ -62,6 +62,7 @@ import com.example.frontend.ui.screens.book.BookTotal
 import com.example.frontend.ui.screens.book.BookTransactionRegist
 import com.example.frontend.ui.screens.main.Home
 import com.example.frontend.ui.screens.info.MyPage
+import com.example.frontend.ui.screens.info.ReviewList
 import com.example.frontend.ui.screens.user.Chat
 import com.example.frontend.ui.screens.user.ChatRoom
 import com.example.frontend.ui.screens.user.Modify
@@ -245,7 +246,7 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
            }
         }
         composable(route = Routes.BOOKLIST){
-            BookList()
+            BookList(bookViewModel)
         }
         composable(route = Routes.BOOKTRANSACTIONREGIST){
             BookTransactionRegist()
@@ -258,6 +259,9 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
         }
         composable(route = Routes.BOOKISBNSEARCH){
             BookIsbnSearch(bookViewModel,navController)
+        }
+        composable(route = Routes.REVIEWLIST){
+            ReviewList(navController, userViewModel, authViewModel)
         }
     }
 

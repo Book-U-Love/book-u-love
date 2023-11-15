@@ -42,53 +42,16 @@ fun BookList(bookViewModel: BookViewModel){
         bookViewModel.getBookList(sale = false, borrow = false)
     }
     val bookList = bookViewModel.bookList
-    val openMsg = remember{ mutableStateOf(false) }
-    Box(modifier = Modifier.fillMaxSize()){
-        LazyColumn(){
-            for(book in bookList.value){
-                item{
-                    BookInfo(book)
+    Log.d("find booklist", bookList.toString())
+    if(bookList.value.isNotEmpty()){
+        Box(modifier = Modifier.fillMaxSize()){
+            LazyColumn(){
+                for(book in bookList.value){
+                    item{
+                        BookInfo()
+                    }
                 }
-            }
-            item{
-                FuncBtn(name = "도서 등록", onClick = { openMsg.value = true })
-            }
-        }
-        if(openMsg.value){
-            RegistBook(
-                onDismissRequest = { openMsg.value = false },
-                onConfirmation = { openMsg.value = false },
-                bookViewModel = bookViewModel
-            )
-        }
-    }
-}
 
-@ExperimentalMaterial3Api
-@Composable
-fun RegistBook(
-    onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit,
-    bookViewModel: BookViewModel
-){
-    val modifyPw: ModifyPw = ModifyPw("", "")
-    var isbn by remember { mutableStateOf("") }
-    var title by remember { mutableStateOf("") }
-    var author by remember { mutableStateOf("") }
-    Dialog(onDismissRequest = { onDismissRequest() }) {
-        Card (
-            modifier = Modifier.fillMaxWidth(),
-        ){
-            Column (
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                InputField(value = isbn, label = "ISBN", onValueChanged = {isbn = it})
-                InputField(value = title, label = "제목", onValueChanged = {}, enable = false)
-                InputField(value = author, label = "저자", onValueChanged = {}, enable = false)
-                FuncBtn(name = "검색", onClick = {
-                    bookViewModel.getBookInfo(isbn)
-                })
             }
         }
     }

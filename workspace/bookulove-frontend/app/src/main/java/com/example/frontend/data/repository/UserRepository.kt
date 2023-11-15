@@ -82,10 +82,10 @@ class UserRepository(
         }
     }
 
-    suspend fun getReviewList(): Flow<List<Map<String, Object>>> = flow{
+    suspend fun getReviewList(): Flow<List<Map<String, String>>> = flow{
         val response = api.getReviewList()
         if(response.body()!!.status == 200){
-            val list: List<Map<String, Object>>? = response.body()!!.data.get("revieweeDomainList")
+            val list: List<Map<String, String>>? = response.body()!!.data.get("revieweeDomainList")
             if(list != null){
                 emit(list)
             }
