@@ -248,7 +248,7 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             BookList(bookViewModel)
         }
         composable(route = Routes.BOOKTRANSACTIONREGIST){
-            BookTransactionRegist()
+            BookTransactionRegist(bookViewModel, navController)
         }
         composable(route = Routes.MODIFYINFO){
             Modify(navController, authViewModel, userViewModel)
@@ -256,8 +256,8 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
         composable(route = Routes.BOOKREPORTREGIST){
             BookReportRegist(bookViewModel,navController)
         }
-        composable(route = Routes.BOOKISBNSEARCH){
-            BookIsbnSearch(bookViewModel,navController)
+        composable(route = Routes.BOOKISBNSEARCH+"/{route}"){
+            BookIsbnSearch(bookViewModel,navController, it.arguments?.getString("route"))
         }
         composable(route = Routes.REVIEWLIST){
             ReviewList(navController, userViewModel, authViewModel)

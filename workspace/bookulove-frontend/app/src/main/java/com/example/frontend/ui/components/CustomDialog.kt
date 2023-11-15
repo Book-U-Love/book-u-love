@@ -39,7 +39,7 @@ fun CustomDialog(
     Surface(color=Color.Transparent){
         Column(modifier= Modifier
             .fillMaxSize()
-            .background(Color.Black.copy(alpha = 0.5f)),
+            .background(Color.Black.copy(alpha = 0.6f)),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally){
             Box(){
@@ -51,9 +51,9 @@ fun CustomDialog(
                     )
                     .padding(25.dp))
                 {
-                    Box(modifier=Modifier.fillMaxWidth()){
+                    Box(modifier=Modifier.fillMaxWidth().background(Color.White)){
                         Text(dialogTitle,
-                            fontSize = 24.sp,modifier=Modifier.align(Alignment.Center)
+                            fontSize = 24.sp,modifier=Modifier.background(Color.White).align(Alignment.Center)
                         ,   fontWeight = FontWeight.Bold)
                     }
                     Spacer(modifier = Modifier.padding(top=30.dp))
