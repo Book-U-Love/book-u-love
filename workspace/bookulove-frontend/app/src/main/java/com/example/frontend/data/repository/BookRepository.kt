@@ -50,6 +50,7 @@ class BookRepository(
         Log.d("mybook res", "Res start")
         if(response.code()==200){
             response.body()?.let {
+                Log.d("response list",response.body()!!.data.toString())
                 emit(response.body()!!.data)
             }
             Log.d("book list res"," book list 성공")

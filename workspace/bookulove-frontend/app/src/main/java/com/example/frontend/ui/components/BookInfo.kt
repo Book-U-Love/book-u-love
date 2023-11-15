@@ -34,7 +34,6 @@ import com.example.frontend.R
 @Composable
 fun BookInfo(book: Map<String, String> = mapOf()){
     Surface {
-
         Row(modifier = Modifier
             .fillMaxWidth()){
             Box(modifier= Modifier
