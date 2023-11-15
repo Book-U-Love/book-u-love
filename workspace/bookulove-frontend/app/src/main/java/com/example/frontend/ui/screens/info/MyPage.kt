@@ -40,145 +40,146 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun MyPage(navController : NavHostController, isMine: Boolean = false, userId: String = "",authViewModel: AuthViewModel, userViewModel: UserViewModel){
-//     SideEffect{
-//          userViewModel.getMyPage()
-//     }
-     userViewModel.getMyPage()
-     val userInfo = userViewModel.userMyPage
-     Log.d("find", userInfo.toString())
+     LaunchedEffect(key1 = Unit){
+          userViewModel.getMyPage()
+     }
      // userId 기반으로 이름, 도서 수, 리뷰 수 받아오기
-     LazyColumn(modifier = Modifier.fillMaxHeight()){
-          item{
-               Row(
-                    modifier = Modifier
-                         .fillMaxWidth()
-                         .padding(top = 40.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceAround
-               ){
-                    Avatar(80)
-                    Text(
-                         userInfo.value.get("userName").toString() + "님",
-                         fontSize = 30.sp,
-                         textAlign = TextAlign.Left,
-                         modifier = Modifier.padding(20.dp)
-                    )
-               }
-          }
-          if(isMine){
+     val userInfo = userViewModel.userMyPage
+     if(!userInfo.value.isEmpty()){
+
+          LazyColumn(modifier = Modifier.fillMaxHeight()){
                item{
                     Row(
-                         modifier = Modifier.fillMaxWidth(),
-                         horizontalArrangement = Arrangement.Center
+                         modifier = Modifier
+                              .fillMaxWidth()
+                              .padding(top = 40.dp),
+                         verticalAlignment = Alignment.CenterVertically,
+                         horizontalArrangement = Arrangement.SpaceAround
                     ){
-                         PageBtn(navController = navController, name = "프로필 수정", destination = Routes.MODIFYINFO)
+                         Avatar(80)
+                         Text(
+                              userInfo.value.get("userName").toString() + "님",
+                              fontSize = 30.sp,
+                              textAlign = TextAlign.Left,
+                              modifier = Modifier.padding(20.dp)
+                         )
                     }
                }
-          }
-          item{
-               Text(
-                    "유저평점",
-                    fontSize = 25.sp,
-                    modifier = Modifier.padding(30.dp),
-                    fontWeight = FontWeight.Bold
-               )
-               Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-               ){
-                    var a: Int = 1
-                    while(a <= 5){
-                         if(a <= userInfo.value.get("grade").toString().toDouble()){
-                              Image(
-                                   painter = painterResource(id = R.drawable.ic_star_yellow),
-                                   contentDescription = null,
-                                   contentScale = ContentScale.Fit,
-                                   modifier = Modifier.size(30.dp)
-                              )
-                         } else{
-                              Image(
-                                   painter = painterResource(id = R.drawable.ic_star),
-                                   contentDescription = null,
-                                   contentScale = ContentScale.Fit,
-                                   modifier = Modifier.size(30.dp)
-                              )
+               if(isMine){
+                    item{
+                         Row(
+                              modifier = Modifier.fillMaxWidth(),
+                              horizontalArrangement = Arrangement.Center
+                         ){
+                              PageBtn(navController = navController, name = "프로필 수정", destination = Routes.MODIFYINFO)
                          }
-                         a++
                     }
                }
-          }
-          item{
-               Text(
-                    "도서 관리",
-                    fontSize = 25.sp,
-                    modifier = Modifier.padding(start = 30.dp, top = 30.dp, end = 30.dp, bottom = 10.dp),
-                    fontWeight = FontWeight.Bold
-               )
-               Row(
-                    modifier = Modifier
-                         .fillMaxWidth()
-                         .padding(horizontal = 40.dp, vertical = 20.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-               ){
-                    Text(
-                         "보유 중인 도서",
-                         fontSize = 20.sp,
-                         modifier = Modifier.padding(start = 10.dp)
+                    item{
+                         Text(
+                              "유저평점",
+                              fontSize = 25.sp,
+                              modifier = Modifier.padding(30.dp),
+                              fontWeight = FontWeight.Bold
                          )
-                    Row(
-                         verticalAlignment = Alignment.CenterVertically
-                    ){
-                         Text(userInfo.value.get("bookCount").toString(), fontSize = 20.sp)
-                         Image(
-                              painter = painterResource(id = R.drawable.next),
-                              contentDescription = "",
-                              contentScale = ContentScale.Fit,
-                              modifier = Modifier
-                                   .size(15.dp)
-                                   .clickable { navController.navigate(Routes.BOOKLIST) },
-                         )
+                         Row(
+                              modifier = Modifier.fillMaxWidth(),
+                              horizontalArrangement = Arrangement.SpaceEvenly
+                         ){
+                              var a: Int = 1
+                              while(a <= 5){
+                                   if(a <= userInfo.value.get("grade").toString().toDouble()){
+                                        Image(
+                                             painter = painterResource(id = R.drawable.ic_star_yellow),
+                                             contentDescription = null,
+                                             contentScale = ContentScale.Fit,
+                                             modifier = Modifier.size(30.dp)
+                                        )
+                                   } else{
+                                        Image(
+                                             painter = painterResource(id = R.drawable.ic_star),
+                                             contentDescription = null,
+                                             contentScale = ContentScale.Fit,
+                                             modifier = Modifier.size(30.dp)
+                                        )
+                                   }
+                                   a++
+                              }
+                         }
                     }
-               }
-          }
-          item {
-               Text(
-                    "평가",
-                    fontSize = 25.sp,
-                    modifier = Modifier.padding(
-                         start = 30.dp,
-                         top = 30.dp,
-                         end = 30.dp,
-                         bottom = 10.dp
-                    ),
-                    fontWeight = FontWeight.Bold
-               )
-               Row(
-                    modifier = Modifier
-                         .fillMaxWidth()
-                         .padding(horizontal = 40.dp, vertical = 20.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-               ) {
+               item{
                     Text(
-                         "나에 대한 평가",
-                         fontSize = 20.sp,
-                         modifier = Modifier.padding(start = 10.dp)
+                         "도서 관리",
+                         fontSize = 25.sp,
+                         modifier = Modifier.padding(start = 30.dp, top = 30.dp, end = 30.dp, bottom = 10.dp),
+                         fontWeight = FontWeight.Bold
                     )
                     Row(
+                         modifier = Modifier
+                              .fillMaxWidth()
+                              .padding(horizontal = 40.dp, vertical = 20.dp),
+                         horizontalArrangement = Arrangement.SpaceBetween,
+                         verticalAlignment = Alignment.CenterVertically
+                    ){
+                         Text(
+                              "보유 중인 도서",
+                              fontSize = 20.sp,
+                              modifier = Modifier.padding(start = 10.dp)
+                              )
+                         Row(
+                              verticalAlignment = Alignment.CenterVertically
+                         ){
+                              Text(userInfo.value.get("bookCount").toString(), fontSize = 20.sp)
+                              Image(
+                                   painter = painterResource(id = R.drawable.next),
+                                   contentDescription = "",
+                                   contentScale = ContentScale.Fit,
+                                   modifier = Modifier
+                                        .size(15.dp)
+                                        .clickable { navController.navigate(Routes.BOOKLIST) },
+                              )
+                         }
+                    }
+               }
+               item {
+                    Text(
+                         "평가",
+                         fontSize = 25.sp,
+                         modifier = Modifier.padding(
+                              start = 30.dp,
+                              top = 30.dp,
+                              end = 30.dp,
+                              bottom = 10.dp
+                         ),
+                         fontWeight = FontWeight.Bold
+                    )
+                    Row(
+                         modifier = Modifier
+                              .fillMaxWidth()
+                              .padding(horizontal = 40.dp, vertical = 20.dp),
+                         horizontalArrangement = Arrangement.SpaceBetween,
                          verticalAlignment = Alignment.CenterVertically
                     ) {
-                         Text(userInfo.value.get("revieweeCount").toString(), fontSize = 20.sp)
-                         Image(
-                              painter = painterResource(id = R.drawable.next),
-                              contentDescription = "",
-                              contentScale = ContentScale.Fit,
-                              modifier = Modifier
-                                   .size(15.dp)
-                                   .clickable {
-                                        navController.navigate(Routes.REVIEWLIST)
-                                   },
+                         Text(
+                              "나에 대한 평가",
+                              fontSize = 20.sp,
+                              modifier = Modifier.padding(start = 10.dp)
                          )
+                         Row(
+                              verticalAlignment = Alignment.CenterVertically
+                         ) {
+                              Text(userInfo.value.get("revieweeCount").toString(), fontSize = 20.sp)
+                              Image(
+                                   painter = painterResource(id = R.drawable.next),
+                                   contentDescription = "",
+                                   contentScale = ContentScale.Fit,
+                                   modifier = Modifier
+                                        .size(15.dp)
+                                        .clickable {
+                                             navController.navigate(Routes.REVIEWLIST)
+                                        },
+                              )
+                         }
                     }
                }
           }
