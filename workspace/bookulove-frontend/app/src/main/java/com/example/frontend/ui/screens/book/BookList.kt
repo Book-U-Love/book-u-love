@@ -37,9 +37,13 @@ import com.example.frontend.viewmodel.UserViewModel
 
 @Composable
 @ExperimentalMaterial3Api
-fun BookList(bookViewModel: BookViewModel){
+fun BookList(bookViewModel: BookViewModel, userId: String = ""){
     LaunchedEffect(key1 = Unit){
-        bookViewModel.getBookList(sale = false, borrow = false)
+        if(userId == ""){
+            bookViewModel.getBookList(sale = false, borrow = false)
+        } else{
+            bookViewModel.getUserBookList(userId, sale = false, borrow = false)
+        }
     }
     val bookList = bookViewModel.bookList
     Log.d("find booklist", bookList.toString())

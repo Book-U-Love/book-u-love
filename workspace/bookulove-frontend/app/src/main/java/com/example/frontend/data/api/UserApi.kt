@@ -45,5 +45,8 @@ interface UserApi {
     suspend fun checkId(@Path("userId") userId: String): Response<Default>
 
     @GET("user-service/evals/reviewee")
-    suspend fun getReviewList(): Response<ReviewList>
+    suspend fun getMyReviewList(): Response<ReviewList>
+
+    @GET("user-service/evals/reviewee/{userId}")
+    suspend fun getUserReviewList(@Path("userId") userId: String): Response<ReviewList>
 }

@@ -23,9 +23,13 @@ import com.example.frontend.viewmodel.AuthViewModel
 import com.example.frontend.viewmodel.UserViewModel
 
 @Composable
-fun ReviewList(navHostController: NavHostController, userViewModel: UserViewModel, authViewModel: AuthViewModel){
+fun ReviewList(navHostController: NavHostController, userViewModel: UserViewModel, authViewModel: AuthViewModel, userId: String = ""){
     LaunchedEffect(key1 = Unit){
-        userViewModel.getReviewList()
+        if(userId == ""){
+            userViewModel.getMyReviewList()
+        } else{
+            userViewModel.getUserReviewList(userId)
+        }
     }
     val reviewList = userViewModel.userReviewList
     if(reviewList.value.isNotEmpty()){

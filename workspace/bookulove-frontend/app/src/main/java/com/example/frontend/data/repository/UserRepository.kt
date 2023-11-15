@@ -90,14 +90,24 @@ class UserRepository(
         }
     }
 
-    suspend fun getReviewList(): Flow<List<Map<String, String>>> = flow{
-        val response = api.getReviewList()
+    suspend fun getMyReviewList(): Flow<List<Map<String, String>>> = flow{
+        val response = api.getMyReviewList()
         if(response.body()!!.status == 200){
             val list: List<Map<String, String>>? = response.body()!!.data.get("revieweeDomainList")
             if(list != null){
                 emit(list)
             }
         } else{
+        }
+    }
+
+    suspend fun getUserReviewList(userId: String): Flow<List<Map<String, String>>> = flow{
+        val response = api.getUserReviewList(userId)
+        if(response.body()!!.status == 200){
+            val list: List<Map<String, String>>? = response.body()!!.data.get("revieweeDomainList")
+            if(list != null){
+                emit(list)
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface BookApi{
@@ -22,6 +23,9 @@ interface BookApi{
 
     @GET("book-service/books/list")
     suspend fun getBookList(@Query("sale") sale:Boolean, @Query("borrow") borrow: Boolean): Response<BookList>
+
+    @GET("book-service/books/list/{userId}")
+    suspend fun getUserBookList(@Path("userId") userId: String, @Query("sale") sale: Boolean, @Query("borrow") borrow: Boolean): Response<BookList>
 
     @POST("book-service/books")
     suspend fun bookRegist(@Body bookInfo:BookRegistReq):Response<BookRegistRes>

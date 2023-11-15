@@ -144,14 +144,26 @@ class UserViewModel: ViewModel(){
         }
     }
 
-    fun getReviewList(){
+    fun getMyReviewList(){
         GlobalScope.async {
             try{
-                userRepository.getReviewList().collect(){
+                userRepository.getMyReviewList().collect(){
                     res ->
                     _userReviewList.value = res
                 }
             }catch (e: Exception){
+            }
+        }
+    }
+
+    fun getUserReviewList(userId: String){
+        GlobalScope.async {
+            try{
+                userRepository.getUserReviewList(userId).collect(){
+                    res ->
+                    _userReviewList.value = res
+                }
+            }catch(e: Exception){
             }
         }
     }

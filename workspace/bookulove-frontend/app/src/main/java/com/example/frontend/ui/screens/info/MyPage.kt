@@ -40,14 +40,14 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun MyPage(navController : NavHostController, isMine: Boolean = false, userId: String = "",authViewModel: AuthViewModel, userViewModel: UserViewModel){
-     LaunchedEffect(key1 = Unit, key2 = userId){
+     LaunchedEffect(key1 = Unit){
           if(isMine){
                userViewModel.getMyPage()
           } else{
                userViewModel.getUserPage(userId)
-               Log.d("find userid", userId.toString())
           }
      }
+
      // userId 기반으로 이름, 도서 수, 리뷰 수 받아오기
      val userInfo = userViewModel.userPage
      Log.d("find userInfo", userInfo.value.toString())
@@ -142,7 +142,13 @@ fun MyPage(navController : NavHostController, isMine: Boolean = false, userId: S
                                    contentScale = ContentScale.Fit,
                                    modifier = Modifier
                                         .size(15.dp)
-                                        .clickable { navController.navigate(Routes.BOOKLIST) },
+                                        .clickable {
+                                             if (isMine) {
+                                                  navController.navigate(Routes.BOOKLIST)
+                                             } else{
+                                                  navController.navigate(Routes.BOOKLIST + "/${userId}")
+                                             }
+                                        }
                               )
                          }
                     }
@@ -182,7 +188,11 @@ fun MyPage(navController : NavHostController, isMine: Boolean = false, userId: S
                                    modifier = Modifier
                                         .size(15.dp)
                                         .clickable {
-                                             navController.navigate(Routes.REVIEWLIST)
+                                             if(isMine){
+                                                  navController.navigate(Routes.REVIEWLIST)
+                                             } else{
+                                                  navController.navigate(Routes.REVIEWLIST+"/${userId}")
+                                             }
                                         },
                               )
                          }

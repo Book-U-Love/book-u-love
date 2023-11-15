@@ -118,6 +118,18 @@ class BookViewModel: ViewModel() {
             }
         }
     }
+
+    fun getUserBookList(userId: String, sale: Boolean, borrow: Boolean){
+        GlobalScope.async {
+            try{
+                bookRepository.getUserBookList(userId, sale, borrow).collect(){
+                    res ->
+                    _bookList.value = res
+                }
+            } catch(e: Exception){
+            }
+        }
+    }
 }
 class BookViewModelFactory: ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
