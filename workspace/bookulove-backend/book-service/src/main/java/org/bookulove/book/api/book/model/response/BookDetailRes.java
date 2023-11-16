@@ -19,15 +19,15 @@ public record BookDetailRes(
 
         String cover,
 
-        List<ReviewInfoRes> reviewInfoResList,
+        List<ReviewRes> reviewResList,
 
         List<BookInfo> saleBookInfoList,
 
         List<BookInfo> borrowBookInfoList
 
 ) {
-    public static BookDetailRes of(Long bookId, String title, String author, String publisher, int price, LocalDate pubDate, String cover, List<ReviewInfoRes> reviewInfoResList, List<BookInfo> saleBookInfoList,  List<BookInfo> borrowBookInfoList){
-        return new BookDetailRes(bookId, title, author, publisher, price, pubDate, cover, reviewInfoResList, saleBookInfoList, borrowBookInfoList);
+    public static BookDetailRes of(Long bookId, String title, String author, String publisher, int price, LocalDate pubDate, String cover, List<ReviewRes> reviewResList, List<BookInfo> saleBookInfoList,  List<BookInfo> borrowBookInfoList){
+        return new BookDetailRes(bookId, title, author, publisher, price, pubDate, cover, reviewResList, saleBookInfoList, borrowBookInfoList);
     }
 
 }

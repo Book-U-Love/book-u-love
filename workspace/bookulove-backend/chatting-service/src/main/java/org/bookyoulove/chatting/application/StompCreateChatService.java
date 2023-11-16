@@ -68,7 +68,7 @@ public class StompCreateChatService implements StompCreateChatUseCase {
         log.info("상대 정보 res: {}", targetRes.data());
 
         // TODO: 2023-11-14 채팅방 안에서 읽음 구현시 이부분 수정 필요
-        StompChatDomain stompChatDomain = StompChatDomain.of(targetRes.data().nickname(), cmd.content(), LocalDateTime.now());
+        StompChatDomain stompChatDomain = StompChatDomain.of(targetId, targetRes.data().nickname(), cmd.content(), LocalDateTime.now());
 
         sendingOperations.convertAndSend("/sub/room/" + cmd.roomId().toString(), stompChatDomain);
 

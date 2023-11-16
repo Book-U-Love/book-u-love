@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 public record StompChatDomain(
 
+        Long userId,
+
         String senderName,
 
         String content,
@@ -13,8 +15,8 @@ public record StompChatDomain(
 
 ) {
 
-    public static StompChatDomain of(String senderName, String content, LocalDateTime sendTime){
-        return new StompChatDomain(senderName, content, convertTime(sendTime));
+    public static StompChatDomain of(Long userId, String senderName, String content, LocalDateTime sendTime){
+        return new StompChatDomain(userId, senderName, content, convertTime(sendTime));
     }
 
     private static String convertTime(LocalDateTime localDateTime) {
