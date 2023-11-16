@@ -29,10 +29,11 @@ import com.example.frontend.ui.components.CustomFAB
 import com.example.frontend.ui.vo.Routes
 import com.example.frontend.ui.vo.bookList
 import com.example.frontend.viewmodel.BookViewModel
+import com.example.frontend.viewmodel.UserViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun BookTotal(navController: NavController, bookViewModel: BookViewModel){
+fun BookTotal(navController: NavController, userViewModel: UserViewModel, bookViewModel: BookViewModel){
     var scrollState = rememberScrollState()
     var myBookList = bookViewModel.myBookList.collectAsState();
     val dialog = remember{ mutableStateOf(false) }
@@ -54,10 +55,11 @@ fun BookTotal(navController: NavController, bookViewModel: BookViewModel){
                 Column(){
                     if(myBookList.value.size!=0){
                             myBookList.value.forEach{
-                                BookInfo(it, onClick = {
+                                BookInfo(userViewModel = userViewModel, it, onClick = {
                                     dialog.value = true
                                     bookDetail = it
-                                });
+                                },
+                                    canModify = true);
                             }
                     }
                 }
@@ -75,7 +77,9 @@ fun BookTotal(navController: NavController, bookViewModel: BookViewModel){
                 }
             }
             if(dialog.value){
-                BookDetail(book = bookDetail,
+                BookDetail(
+                    userViewModel,
+                    book = bookDetail,
                     onDismissRequest = { dialog.value = false },
                     onConfirmation = {
                         dialog.value = false

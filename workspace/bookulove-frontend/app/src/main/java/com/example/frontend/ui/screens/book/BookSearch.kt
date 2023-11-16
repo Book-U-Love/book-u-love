@@ -55,13 +55,14 @@ import com.example.frontend.ui.components.QuestionCard
 import com.example.frontend.ui.vo.Routes
 import com.example.frontend.ui.vo.categoryList
 import com.example.frontend.viewmodel.BookViewModel
+import com.example.frontend.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @ExperimentalMaterial3Api
-fun BookSearch(navController:NavController, bookViewModel: BookViewModel){
+fun BookSearch(navController:NavController, userViewModel: UserViewModel, bookViewModel: BookViewModel){
     val categoryState = rememberLazyListState();
     var isbnFind by remember{ mutableStateOf("") }
     val dialog = remember{ mutableStateOf(false) }
@@ -124,7 +125,7 @@ fun BookSearch(navController:NavController, bookViewModel: BookViewModel){
                         "판매" -> {
                             for(book in saleList){
                                 item{
-                                    BookInfo(book, onClick = {
+                                    BookInfo(userViewModel, book, onClick = {
                                         dialog.value = true
                                         bookDetail = book
                                     })
@@ -134,7 +135,7 @@ fun BookSearch(navController:NavController, bookViewModel: BookViewModel){
                         "대여" -> {
                             for(book in borrowList){
                                 item{
-                                    BookInfo(book, onClick = {
+                                    BookInfo(userViewModel, book, onClick = {
                                         dialog.value = true
                                         bookDetail = book
                                     })
@@ -145,7 +146,9 @@ fun BookSearch(navController:NavController, bookViewModel: BookViewModel){
                 }
            }
            if(dialog.value){
-               BookDetail(book = bookDetail,
+               BookDetail(
+                   userViewModel,
+                   book = bookDetail,
                    onDismissRequest = { dialog.value = false },
                    onConfirmation = {
                        dialog.value = false

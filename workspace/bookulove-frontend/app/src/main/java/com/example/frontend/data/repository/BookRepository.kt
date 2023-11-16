@@ -94,4 +94,14 @@ class BookRepository(
             emit(response.body()!!.data)
         }
     }
+
+    suspend fun modifyBook(book: Map<String, String>) = flow<String>{
+        val response = api.modifyBook(book)
+        Log.d("find repo", response.body()!!.toString())
+        if(response.body()!!.status == 200){
+            emit("success")
+        } else{
+            emit("fail")
+        }
+    }
 }

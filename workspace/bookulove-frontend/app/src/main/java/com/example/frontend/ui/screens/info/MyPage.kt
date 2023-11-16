@@ -50,7 +50,6 @@ fun MyPage(navController : NavHostController, isMine: Boolean = false, userId: S
 
      // userId 기반으로 이름, 도서 수, 리뷰 수 받아오기
      val userInfo = userViewModel.userPage
-     Log.d("find userInfo", userInfo.value.toString())
      if(!userInfo.value.isEmpty()){
 
           LazyColumn(modifier = Modifier.fillMaxHeight()){

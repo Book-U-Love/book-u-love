@@ -7,6 +7,7 @@ import com.example.frontend.data.model.BookReportReq
 import com.example.frontend.data.model.BookReportRes
 import com.example.frontend.data.model.BookResult
 import com.example.frontend.data.model.BookSearchRes
+import com.example.frontend.data.model.Default
 import com.example.frontend.data.model.MapData
 import com.example.frontend.data.model.MyBookListRes
 import com.example.frontend.data.model.ReportList
@@ -14,6 +15,7 @@ import com.example.frontend.data.model.SearchResult
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -45,4 +47,7 @@ interface BookApi{
 
     @GET("book-service/books/list?sale=false&borrow=false")
     suspend fun getMyBookList():Response<MyBookListRes>
+
+    @PATCH("book-service/books")
+    suspend fun modifyBook(@Body book: Map<String, String>):Response<Default>
 }

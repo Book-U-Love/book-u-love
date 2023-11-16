@@ -55,6 +55,10 @@ class BookViewModel: ViewModel() {
     // 검색결과
     private val _searchResult: MutableState<BookResult> = mutableStateOf(BookResult())
     val searchResult: State<BookResult> = _searchResult
+    // 수정결과
+    private val _modifyBook: MutableState<String> = mutableStateOf("init")
+    val modifyBook: State<String> = _modifyBook
+
     fun changeState(){
         _reportState.value = !_reportState.value
     }
@@ -173,6 +177,18 @@ class BookViewModel: ViewModel() {
                     _searchResult.value = res
                 }
             } catch (e: Exception){
+            }
+        }
+    }
+
+    fun modifyBook(book: Map<String, String>){
+        GlobalScope.async {
+            try{
+                bookRepository.modifyBook(book).collect(){
+                    res ->
+                    _modifyBook.value = res
+                }
+            } catch(e: Exception){
             }
         }
     }
