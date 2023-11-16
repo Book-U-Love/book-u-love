@@ -139,7 +139,7 @@ fun BookSearch(navController:NavController, bookViewModel: BookViewModel){
 @Composable
 fun BookIsbnSearch(bookViewModel: BookViewModel,navController: NavController, route:String?){
     var isbn = remember{
-        mutableStateOf(TextFieldValue("9791197559648"))
+        mutableStateOf(TextFieldValue(""))
     }
     if (route != null) {
         Log.d("route", route)
