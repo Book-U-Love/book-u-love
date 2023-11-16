@@ -16,9 +16,7 @@ import org.bookulove.book.api.book.model.db.repository.ReviewRepository;
 import org.bookulove.book.api.book.model.db.repository.query.BookLibraryRelationQueryRepository;
 import org.bookulove.book.api.book.model.feign.UserFeignClient;
 import org.bookulove.book.api.book.model.request.BookUpdateReq;
-import org.bookulove.book.api.book.model.response.BookDetailRes;
-import org.bookulove.book.api.book.model.response.BookInfo;
-import org.bookulove.book.api.book.model.response.ReviewInfoRes;
+import org.bookulove.book.api.book.model.response.*;
 import org.bookulove.book.api.library.model.db.entity.LibraryEntity;
 import org.bookulove.book.api.library.model.db.repository.LibraryRepository;
 import org.bookulove.book.api.library.model.db.repository.query.LibraryQueryRepository;
@@ -26,7 +24,6 @@ import org.bookulove.book.exception.BookServiceException;
 import org.bookulove.book.api.book.model.feign.AladinFeignClient;
 import org.bookulove.book.api.book.model.feign.AladinSearch;
 import org.bookulove.book.api.book.model.request.BookRegistReq;
-import org.bookulove.book.api.book.model.response.BookSearchRes;
 import org.bookulove.common.api.response.ApiData;
 import org.bookulove.common.error.ErrorCode;
 import org.bookulove.common.feignclient.user.UserFindInfoRes;
@@ -195,7 +192,7 @@ public class BookService {
         Book bookEntity =  bookRepository.findByIsbn(isbn)
                 .orElseGet( () -> searchAladinAndSave(isbn) );
 
-        List<ReviewInfoRes> reviewInfoResList = new ArrayList<>();
+        List<ReviewRes> reviewResList = new ArrayList<>();
         List<ReviewEntity> reviewEntityList = bookEntity.getReviewEntityList();
 
         if(reviewEntityList != null){
@@ -205,15 +202,19 @@ public class BookService {
                     throw new BookServiceException(ErrorCode.USER_NOT_FOUND);
                 }
 
-                ReviewInfoRes reviewInfoRes =
-                        ReviewInfoRes.of(reviewEntity.getReviewId(),
-                                reviewEntity.getTitle(),
-                                reviewEntity.getContent(),
-                                reviewEntity.getUserId(),
-                                userByUserId.data().nickname(),
-                                reviewEntity.getCreatedTime());
+                ReviewRes reviewRes = ReviewRes.of(
+                        userByUserId.data().userId(),
+                        userByUserId.data().nickname(),
+                        reviewEntity.getBook().getBookId(),
+                        reviewEntity.getBook().getIsbn(),
+                        reviewEntity.getBook().getTitle(),
+                        reviewEntity.getBook().getCover(),
+                        reviewEntity.getReviewId(),
+                        reviewEntity.getTitle(),
+                        reviewEntity.getContent(),
+                        reviewEntity.getCreatedTime());
 
-                reviewInfoResList.add(reviewInfoRes);
+                reviewResList.add(reviewRes);
             }
         }
 
@@ -228,7 +229,7 @@ public class BookService {
                 bookEntity.getPrice(),
                 bookEntity.getPubDate(),
                 bookEntity.getCover(),
-                reviewInfoResList,
+                reviewResList,
                 saleBookInfoList,
                 borrowBookInfoList);
 
