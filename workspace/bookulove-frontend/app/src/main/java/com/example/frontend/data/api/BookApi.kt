@@ -7,6 +7,7 @@ import com.example.frontend.data.model.BookReportReq
 import com.example.frontend.data.model.BookReportRes
 import com.example.frontend.data.model.BookSearchRes
 import com.example.frontend.data.model.MyBookListRes
+import com.example.frontend.data.model.ReportList
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -26,6 +27,9 @@ interface BookApi{
 
     @GET("book-service/books/list/{userId}")
     suspend fun getUserBookList(@Path("userId") userId: String, @Query("sale") sale: Boolean, @Query("borrow") borrow: Boolean): Response<BookList>
+
+    @GET("book-service/reviews")
+    suspend fun getReportList(): Response<ReportList>
 
     @POST("book-service/books")
     suspend fun bookRegist(@Body bookInfo:BookRegistReq):Response<BookRegistRes>
