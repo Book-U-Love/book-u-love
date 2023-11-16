@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.bookulove.book.api.book.model.db.entity.BaseTimeEntity;
 import org.bookulove.book.api.book.model.db.entity.BookLibraryRelation;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -21,7 +22,7 @@ import static jakarta.persistence.CascadeType.ALL;
 @Getter
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LibraryEntity {
+public class LibraryEntity extends BaseTimeEntity {
 
     @Id
     private Long userId;

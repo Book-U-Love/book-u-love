@@ -78,6 +78,4 @@ class BookController {
         return ApiData.ok(bookService.findBookInfo(isbn, review, sale, borrow));
     }
 
-
-
 }
