@@ -39,6 +39,7 @@ class UserViewModel: ViewModel(){
     val checkId: StateFlow<String>
         get() = _checkId
     val userReviewList : State<List<Map<String, String>>> = _userReviewList
+
     fun resetState(){
         _modifyRes.value = "init'"
     }

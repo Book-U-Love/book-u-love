@@ -51,6 +51,7 @@ import com.example.frontend.ui.components.BookInfo
 import com.example.frontend.ui.components.BookInfoCard
 import com.example.frontend.ui.components.BookReportInfo
 import com.example.frontend.ui.components.QuestionCard
+import com.example.frontend.ui.vo.Routes
 import com.example.frontend.ui.vo.categoryList
 import com.example.frontend.viewmodel.BookViewModel
 import kotlinx.coroutines.launch
@@ -62,6 +63,8 @@ import kotlinx.coroutines.launch
 fun BookSearch(navController:NavController, bookViewModel: BookViewModel){
     val categoryState = rememberLazyListState();
     var isbnFind by remember{ mutableStateOf("") }
+    val dialog = remember{ mutableStateOf(false) }
+    var bookDetail:Map<String, String> by remember{ mutableStateOf(mapOf()) }
     Box(modifier=Modifier.fillMaxSize()){
        Column(){
            Box(){
@@ -108,15 +111,22 @@ fun BookSearch(navController:NavController, bookViewModel: BookViewModel){
                    val reviewList = bookResult.reviewResList
                    val saleList = bookResult.saleBookInfoList
                    val borrowList = bookResult.borrowBookInfoList
+
                    Log.d("find result", bookResult.toString())
                    for(book in saleList){
                        item{
-                            BookInfo(book)
+                           BookInfo(book, onClick = {
+                               dialog.value = true
+                               bookDetail = book
+                           })
                        }
                    }
                    for(book in borrowList){
                        item{
-                           BookInfo(book)
+                           BookInfo(book, onClick = {
+                               dialog.value = true
+                               bookDetail = book
+                           })
                        }
                    }
                    for(review in reviewList){
@@ -124,6 +134,17 @@ fun BookSearch(navController:NavController, bookViewModel: BookViewModel){
                            BookReportInfo(navController, review)
                        }
                    }
+               }
+               if(dialog.value){
+                   BookDetail(
+                       book = bookDetail,
+                       onDismissRequest = {dialog.value = false},
+                       onConfirmation = {
+                           dialog.value = false
+                           val sellerId = bookDetail.get("sellerId").toString()
+                           navController.navigate(Routes.CHATROOM + "/${sellerId}")
+                       }
+                   )
                }
            }
 
