@@ -36,11 +36,11 @@ public class StompHandler implements ChannelInterceptor {
                 String simpDestination = message.getHeaders().get("simpDestination").toString();
                 log.info("simpDestination: {}", simpDestination);
 
-                // TODO: 2023-11-08 kotlin에서 jwt 잘 넘어오는지 확인후 검증작업 추가
                 String token = getAccessToken(accessor);
                 log.info("subscribe token: {}", token);
-                Long userId = 2L;
-//                userId = jwtUtil.extractId(token);
+
+                Long userId = jwtUtil.extractId(token);
+                log.info("userId: {}", userId);
 
                 String roomId = getRoomId(simpDestination, userId);
                 log.info("roomId: {}", roomId);
@@ -50,8 +50,6 @@ public class StompHandler implements ChannelInterceptor {
                 log.info("sendhandling");
                 Long userId = jwtUtil.extractId(getAccessToken(accessor));
                 log.info("접속중인 회원 id: {}", userId);
-
-
             }
         }
         return message;
@@ -63,6 +61,7 @@ public class StompHandler implements ChannelInterceptor {
 
         if(accessToken == null || !(accessToken.startsWith("Bearer "))){
             log.error("authentication is null");
+            return null;
         }
 
         accessToken = accessToken.replace("Bearer", "");
