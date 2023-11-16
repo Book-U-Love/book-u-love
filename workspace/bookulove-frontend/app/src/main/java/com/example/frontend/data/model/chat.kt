@@ -1,5 +1,7 @@
 package com.example.frontend.data.model
 
+import java.time.LocalDateTime
+
 
 data class ChatCreateReq(
     val buId:Int,
@@ -23,8 +25,8 @@ data class ChattingRoomInfoDomainList(
     val roomId:Int,
     val buId:Int,
     val bookName:String,
-    val targetId:String,
-    val targetNickname:String,
+    val targetId:Int,
+    val targetName:String,
     val lastContent:String,
     val lastTime:String,
     val unReadCount:Int,
@@ -47,5 +49,14 @@ data class EnterChatRoomData(
     val myId: Int,
     val targetName: String,
     val bookName: String,
-    val chattingInfoDomainList: List<Map<String,String>>
+    val chattingInfoDomainList: List<EnterChatInfoDomain>
+)
+data class EnterChatInfoDomain(
+    val chattingId:Long,
+    val chattingRoomId:Long,
+    val writerId:Long,
+    val writerName:String,
+    val content:String,
+    val readCount:Long,
+    val lastTime:LocalDateTime,
 )

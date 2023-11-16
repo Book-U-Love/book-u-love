@@ -23,37 +23,28 @@ import com.example.frontend.ui.components.ChatInfo
 import com.example.frontend.viewmodel.ChatViewModel
 import com.example.frontend.viewmodel.MainViewModel
 import com.example.frontend.viewmodel.StompViewModel
+import com.example.frontend.viewmodel.UserViewModel
 import kotlinx.coroutines.delay
 import java.lang.Exception
 
 @Composable
 @ExperimentalMaterial3Api
-fun Chat(navController: NavController,mainViewModel: MainViewModel,stompViewModel: StompViewModel, chatViewModel: ChatViewModel){
+fun Chat(navController: NavController,mainViewModel: MainViewModel,stompViewModel: StompViewModel, chatViewModel: ChatViewModel,userViewModel: UserViewModel){
     DisposableEffect(Unit){
-        stompViewModel.runStomp()
-        try{
-            chatViewModel.getChatRoomList()
-            Log.d("채팅방리스트", "로드 성공")
-
-        }catch (e:Exception){
-            Log.d("채팅방리스트", "로드 실패")
-        }
+        var userId:Int = userViewModel.userMyInfo.value.get("userId")!!.toInt()
+        stompViewModel.runStomp("/sub/$userId")
+        chatViewModel.getChatRoomList()
         onDispose {
             stompViewModel.disconnect()
         }
     }
-    Log.d("asdf",navController.currentBackStackEntry?.destination.toString())
-    Log.d("채팅방 리스트1111111", chatViewModel.chatRoomList.value.toString())
+    var chatRoomList = chatViewModel.chatRoomList.value
     Box {
-        Column(){
-            ChatInfo(navController)
-            ChatInfo(navController)
-            ChatInfo(navController)
-        }
+        Log.d("size",chatViewModel.chatRoomList.value?.size.toString())
         LazyColumn(){
-//            items(chatViewModel.chatRoomList.value!!.size){
-//                ChatInfo(navController = )
-//            }
+           itemsIndexed(chatViewModel.chatRoomList.value){
+               index, item -> ChatInfo(navController, item, chatViewModel)
+           }
         }
     }
 }

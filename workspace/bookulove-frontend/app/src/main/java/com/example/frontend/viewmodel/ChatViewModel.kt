@@ -17,6 +17,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectIndexed
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
 
 
 class ChatViewModel(): ViewModel(){
@@ -25,18 +27,23 @@ class ChatViewModel(): ViewModel(){
     private val _createdRoom: MutableState<Map<String,Int>> = mutableStateOf(emptyMap())
     val createdRoom:State<Map<String,Int>> = _createdRoom
     // 채팅방 목록
-    private val _chatRoomList: MutableState<List<ChattingRoomInfoDomainList>?> = mutableStateOf(
-        null
+    private val _chatRoomList: MutableState<List<ChattingRoomInfoDomainList>> = mutableStateOf(
+        listOf()
     )
-    val chatRoomList:State<List<ChattingRoomInfoDomainList>?> = _chatRoomList
+    val chatRoomList:State<List<ChattingRoomInfoDomainList>> = _chatRoomList
     // 퇴장 채팅방 정보
     private val _exitChatRoom: MutableState<Boolean?> = mutableStateOf(null)
     val exitChatRoom:State<Boolean?> = _exitChatRoom
     // 입장 채팅방 정보
-    private val _enterChatRoom:MutableState<EnterChatRoomData?> = mutableStateOf(null)
-    val enterChatRoom:State<EnterChatRoomData?> = _enterChatRoom
+    private val _enterChatRoomData:MutableState<EnterChatRoomData?> = mutableStateOf(null)
+    val enterChatRoomData:State<EnterChatRoomData?> = _enterChatRoomData
 
+    private val _inChatRoom:MutableState<Boolean> = mutableStateOf(false)
+    val inChatRoom:State<Boolean> = _inChatRoom
 
+    fun changeInChatRoom(){
+        _inChatRoom.value = !_inChatRoom.value
+    }
     fun createChatRoom(seller:ChatCreateReq){
         viewModelScope.async{
             try{
@@ -72,15 +79,16 @@ class ChatViewModel(): ViewModel(){
         }
     }
     fun enterChatRoom(roomId:Int){
-        viewModelScope.async {
+        Log.d("호출?","ㅇㅇ")
+        viewModelScope.launch {
             try{
                 chatRepository.enterChatRoom(roomId).collect(){
-
+                    res -> _enterChatRoomData.value = res
                 }
             }catch (e:Exception){
-
             }
         }
+        changeInChatRoom()
     }
 }
 

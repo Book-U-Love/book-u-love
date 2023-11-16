@@ -27,21 +27,21 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.example.frontend.ui.vo.chatDataList
 import com.example.frontend.ui.vo.chatList
+import com.example.frontend.viewmodel.ChatViewModel
+import com.example.frontend.viewmodel.StompViewModel
 
 
 @ExperimentalMaterial3Api
 @Composable
-fun ChatInput(){
+fun ChatInput(stompViewModel: StompViewModel,chatViewModel: ChatViewModel){
     var text by remember{
-        mutableStateOf(TextFieldValue());
+        mutableStateOf(TextFieldValue(""))
     }
     var state = rememberScrollState()
-    var lineCount by remember{
-        mutableStateOf(1)
-    }
     var textFieldHeight by remember{
         mutableStateOf(1)
     }
+    var roomId = chatViewModel.enterChatRoomData.value?.roomId
     Surface(modifier = Modifier.fillMaxWidth()){
         Box(){
             Row(verticalAlignment = Alignment.CenterVertically){
@@ -49,7 +49,6 @@ fun ChatInput(){
                     value = text,
                     onValueChange = {
                         text = it
-                        lineCount = it.text.count { it == '\n' } + 1;
                     },
                     modifier = Modifier
                         .fillMaxWidth(0.8f)
@@ -62,7 +61,8 @@ fun ChatInput(){
                 Box(){
                     Button(modifier=Modifier.fillMaxWidth().fillMaxHeight(),
                         onClick = {
-                            chatDataList.add(chatList("나",text.text));
+                            Log.d("texttext",text.text)
+                            stompViewModel.send("/pub/$roomId",text.text);
                             text=TextFieldValue("");
                             },
                         shape = RoundedCornerShape(0)) {

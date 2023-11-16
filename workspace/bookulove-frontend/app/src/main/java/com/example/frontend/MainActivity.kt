@@ -199,7 +199,7 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             mainViewModel.changeState("홈")
         }
         composable(route = Routes.CHAT) {
-            Chat(navController,mainViewModel, stompViewModel,chatViewModel)
+            Chat(navController,mainViewModel, stompViewModel,chatViewModel,userViewModel)
             mainViewModel.changeState("채팅")
         }
         composable(route = Routes.MYPAGE) {
@@ -238,11 +238,10 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             entry ->
             val sellerId = entry.arguments?.getString("sellerId")
             if(sellerId != null){
-                ChatRoom(sellerId)
+                ChatRoom(sellerId,mainViewModel,chatViewModel,stompViewModel)
             } else{
                 Home(navController, mainViewModel, userViewModel, authViewModel)
             }
-            mainViewModel.changeState("김싸피")
         }
         composable(route = Routes.REGISTER) {
             Register(navController = navController)

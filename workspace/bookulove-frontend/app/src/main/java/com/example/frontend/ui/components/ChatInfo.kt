@@ -8,6 +8,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,11 +19,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.frontend.data.model.ChattingRoomInfoDomainList
+import com.example.frontend.viewmodel.ChatViewModel
 
 @ExperimentalMaterial3Api
 @Composable
-fun ChatInfo(navController: NavController){
-    Surface(modifier=Modifier.clickable{navController.navigate("chatroom")}){
+fun ChatInfo(navController: NavController, item:ChattingRoomInfoDomainList,chatViewModel: ChatViewModel){
+    var ready = chatViewModel.inChatRoom.value
+
+    Surface(modifier=Modifier.clickable{
+        chatViewModel.enterChatRoom(item.targetId)
+        if(ready)navController.navigate("chatroom/${item.targetId}")
+    }){
         Box(){
 
             Row(modifier= Modifier
@@ -32,11 +41,11 @@ fun ChatInfo(navController: NavController){
                 }
                 Box(modifier=Modifier.fillMaxWidth(0.75f)){
                     Column(modifier=Modifier.fillMaxWidth()){
-                        Text("김싸피",
+                        Text(item.targetName,
                             modifier=Modifier.padding(top=15.dp),
                             fontWeight = FontWeight.Bold,
                             fontSize=18.sp)
-                        Text("채팅 내용을 입력하세요.",
+                        Text(item.lastContent,
                             modifier=Modifier.padding(top=8.dp))
                     }
                 }
@@ -44,11 +53,11 @@ fun ChatInfo(navController: NavController){
                     .fillMaxWidth()
                     .height(100.dp), contentAlignment = Alignment.TopCenter){
                     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier= Modifier.padding(top=20.dp)){
-                        Text(fontSize = 8.sp,text="2023-10-26")
+                        Text(fontSize = 8.sp,text=item.lastTime)
                         Badge(modifier= Modifier
                             .padding(top = 15.dp)
                             .size(24.dp)){
-                            val number = 0
+                            val number = item.unReadCount
                             Text(
                                 number.toString(),
                                 modifier = Modifier.semantics { contentDescription = "notifications" })

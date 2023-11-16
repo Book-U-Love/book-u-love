@@ -18,13 +18,14 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.example.frontend.data.model.EnterChatInfoDomain
 
 @Composable
-fun ChatContent(userName:String, userChat:String){
+fun ChatContent(item:EnterChatInfoDomain, targetName:String){
 
-    CompositionLocalProvider(LocalLayoutDirection provides when(userName) {
-        "나" ->LayoutDirection.Rtl
-        else ->LayoutDirection.Ltr
+    CompositionLocalProvider(LocalLayoutDirection provides when(item.writerName==targetName) {
+        false ->LayoutDirection.Rtl
+        true ->LayoutDirection.Ltr
     }) {
         Box(modifier= Modifier
             .fillMaxWidth()
@@ -37,16 +38,16 @@ fun ChatContent(userName:String, userChat:String){
                     .padding(top = 10.dp)
                     .fillMaxWidth(0.8f)){
                     Column(){
-                        Text(text = userName)
+                        Text(text = item.writerName)
                         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                             Box(
                                 modifier = Modifier
                                     .padding(top = 5.dp)
                                     .clip(RoundedCornerShape(5.dp))
-                                    .background(when(userName){ "나" -> Color.Yellow else ->Color.White})
+                                    .background(when(item.writerName==targetName){ false -> Color.Yellow true ->Color.White})
                                     .padding(8.dp)
                             ) {
-                                Text(text = userChat)
+                                Text(text = item.content)
                             }
                         }
 

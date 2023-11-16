@@ -22,13 +22,13 @@ class StompViewModel() : ViewModel(){
     val intervalMillis = 1000L
     val client = OkHttpClient()
     val stompClient = StompSingleton.getStompInstance()
-    fun runStomp(){
+    val headerList = arrayListOf<StompHeader>()
+    fun runStomp(path:String){
         val accessToken = PrefsRepository().getValue("accessToken")
-        val headerList = arrayListOf<StompHeader>()
-        headerList.add(StompHeader("Authorization","Bearer $accessToken"))
+        if(headerList.size==0)headerList.add(StompHeader("Authorization","Bearer $accessToken"))
         stompClient.connect(headerList)
 
-        stompClient.topic("/sub/2",headerList).subscribe(){
+        stompClient.topic(path,headerList).subscribe(){
             Log.d("message receive", it.payload)
         }
         stompClient.lifecycle().subscribe { lifecycleEvent->
@@ -47,9 +47,13 @@ class StompViewModel() : ViewModel(){
                 }
             }
         }
-        stompClient.send(StompMessage(StompCommand.SEND,headerList, "asdfasdf")).subscribe()
+    }
+    fun send(dest:String,message:String){
+        stompClient.send(dest,message).subscribe()
     }
     fun disconnect(){
+        Log.d("disconnect1","disconnect")
         stompClient.disconnect()
+        Log.d("disconnect2","disconnect")
     }
 }

@@ -26,15 +26,10 @@ class ChatRepository(
     }
 
     suspend fun getChatRoomList():Flow<List<ChattingRoomInfoDomainList>> = flow{
-        Log.d("getchatroomlist"," suceess")
         val response = api.getChatRoomList()
-        Log.d("getchatroomlist1111"," suceess")
         if(response.code()==200){
-            Log.d("getchatroomlist"," suceess")
             emit(response.body()!!.data.chattingRoomInfoDomainList)
-            Log.d("getchatroomlist"," suceess")
         }
-        Log.d("getchatroomlist"," fail")
     }
     suspend fun exitChatRoom():Flow<Boolean> = flow{
         val response = api.exitChatRoom()
@@ -47,7 +42,7 @@ class ChatRepository(
     suspend fun enterChatRoom(roomId:Int):Flow<EnterChatRoomData?> = flow{
         val response = api.enterChatRoom(roomId)
         if(response.code()==200){
-            emit(response.body()!!.data)
+            emit(response.body()?.data)
         }else{
             emit(null)
         }
