@@ -15,6 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,6 +26,7 @@ import androidx.navigation.NavController
 import com.example.frontend.ui.components.BookInfo
 import com.example.frontend.ui.components.BookReportInfo
 import com.example.frontend.ui.components.CustomFAB
+import com.example.frontend.ui.vo.Routes
 import com.example.frontend.ui.vo.bookList
 import com.example.frontend.viewmodel.BookViewModel
 import kotlinx.coroutines.delay
@@ -30,6 +35,8 @@ import kotlinx.coroutines.delay
 fun BookTotal(navController: NavController, bookViewModel: BookViewModel){
     var scrollState = rememberScrollState()
     var myBookList = bookViewModel.myBookList.collectAsState();
+    val dialog = remember{ mutableStateOf(false) }
+    var bookDetail:Map<String, String> by remember{ mutableStateOf(mapOf()) }
     val reportList = bookViewModel.reportList
     LaunchedEffect(myBookList.value){
         bookViewModel.getMyBookList();
@@ -47,7 +54,10 @@ fun BookTotal(navController: NavController, bookViewModel: BookViewModel){
                 Column(){
                     if(myBookList.value.size!=0){
                             myBookList.value.forEach{
-                                BookInfo(it);
+                                BookInfo(it, onClick = {
+                                    dialog.value = true
+                                    bookDetail = it
+                                });
                             }
                     }
                 }
@@ -63,6 +73,16 @@ fun BookTotal(navController: NavController, bookViewModel: BookViewModel){
                         BookReportInfo(navController, report);
                     }
                 }
+            }
+            if(dialog.value){
+                BookDetail(book = bookDetail,
+                    onDismissRequest = { dialog.value = false },
+                    onConfirmation = {
+                        dialog.value = false
+                        val sellerId = bookDetail.get("sellerId").toString()
+                        navController.navigate(Routes.CHATROOM + "/${sellerId}")
+                    }
+                    )
             }
         }
         CustomFAB(navController)

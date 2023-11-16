@@ -63,7 +63,7 @@ data class BookResult(
     val price: Int = 0,
     val pubDate: String = "",
     val cover: String = "",
-    val reviewInfoResList: List<Map<String, String>> = listOf(),
+    val reviewResList: List<Map<String, String>> = listOf(),
     val saleBookInfoList: List<Map<String, String>> = listOf(),
     val borrowBookInfoList: List<Map<String, String>> = listOf(),
 )
