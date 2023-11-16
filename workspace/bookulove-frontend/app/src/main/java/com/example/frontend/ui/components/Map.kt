@@ -100,33 +100,16 @@ fun MapInfo(
                         onInfoWindowClick = {
                             GlobalScope.launch(Dispatchers.Main){
                                 navController.navigate(Routes.MYPAGE+"/${lib.get("userId").toString()}")
-//                                Log.d("find user", lib.get("userId").toString())
                             }
                         }
                     ){
                         Column {
-                            Text(text = lib.get("nickname").toString())
-//                            PageBtn(name = lib.nickname, navController = navController, destination = Routes.MYPAGE+lib.userId)
+                            Text(text = lib.get("libraryName").toString())
                             FuncBtn(name = "이동", onClick = { })
                         }
                     }
                 }
             }
         }
-//        Button(onClick = {
-//            Log.i("location", cameraPositionState.position.toString())
-//            fusedLocationClient.lastLocation
-//                .addOnSuccessListener { location : Location? ->
-//                    if(location != null){
-//                        val update = CameraUpdateFactory.newLatLngZoom(
-//                            LatLng(location.latitude, location.longitude),
-//                            18f)
-//                        cameraPositionState.move(update)
-//                    }
-//                }
-//        }) {
-//            Text(text = "현재위치로")
-//        }
-
     }
 }
