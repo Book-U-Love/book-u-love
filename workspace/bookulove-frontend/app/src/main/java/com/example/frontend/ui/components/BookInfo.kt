@@ -3,6 +3,7 @@ package com.example.frontend.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,17 +30,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import coil.compose.rememberImagePainter
 import com.example.frontend.R
 
 @Composable
-fun BookInfo(book: Map<String, String> = mapOf()){
+fun BookInfo(book: Map<String, String> = mapOf(), onClick: () -> Unit = {}){
     Surface {
 
         Row(modifier = Modifier
-            .fillMaxWidth()){
+            .fillMaxWidth()
+            .clickable { onClick() }
+        ){
             Box(modifier= Modifier
                 .padding(15.dp)){
-               Image(modifier=Modifier.size(100.dp),painter = painterResource(id = R.drawable.mark), contentDescription = "BookImage")
+               Image(modifier=Modifier.size(100.dp),painter = rememberImagePainter(book.get("cover").toString()), contentDescription = "BookImage")
             }
             Box(){
                 Column(modifier=Modifier.padding(start=15.dp,top=20.dp,end=15.dp, bottom = 10.dp)){
@@ -48,15 +53,17 @@ fun BookInfo(book: Map<String, String> = mapOf()){
                     }
                     Box(modifier=Modifier.padding(top=3.dp, bottom=3.dp)){
                         Row {
-                            Text("장덕동", fontSize = 12.sp, color = Color.Gray)
-                            Text("5분 전", fontSize = 12.sp, color = Color.Gray, modifier = Modifier.padding(start = 5.dp))
+                            Text(book.get("createdTime").toString(), fontSize = 12.sp, color = Color.Gray, modifier = Modifier.padding(start = 5.dp))
                             }
                     }
                     Row(){
                         if(book.get("allowSale") == "true"){
                             Box(modifier = Modifier.padding(1.dp)){
                                 Box(modifier = Modifier
-                                    .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(5.dp))
+                                    .background(
+                                        Color.Black.copy(alpha = 0.6f),
+                                        RoundedCornerShape(5.dp)
+                                    )
                                     .padding(3.dp)){
                                     Text("판매중", color=Color.White)
                                 }
@@ -65,7 +72,10 @@ fun BookInfo(book: Map<String, String> = mapOf()){
                         if(book.get("allowBorrow") == "true"){
                             Box(modifier = Modifier.padding(1.dp)){
                                 Box(modifier = Modifier
-                                    .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(5.dp))
+                                    .background(
+                                        Color.Black.copy(alpha = 0.6f),
+                                        RoundedCornerShape(5.dp)
+                                    )
                                     .padding(3.dp)){
                                     if(book.get("isBorrow").toString() == "true"){
                                         Text("대여중", color = Color.White)
@@ -88,7 +98,7 @@ fun BookInfo(book: Map<String, String> = mapOf()){
                                         Text("판매", )}
                                     ElevatedButton(
                                         modifier= Modifier
-                                            .padding(start=10.dp)
+                                            .padding(start = 10.dp)
                                             .width(80.dp)
                                             .height(40.dp),
                                         shape = RoundedCornerShape(5.dp),
@@ -110,4 +120,3 @@ fun BookInfo(book: Map<String, String> = mapOf()){
             }
         Divider(color=Color.Black.copy(alpha=0.3f))
 }
-
