@@ -12,6 +12,8 @@ public record ChattingListDomain(
 
         Long buId,
 
+        Long myId,
+
         String targetName,
 
         String bookName,
@@ -24,6 +26,7 @@ public record ChattingListDomain(
             Long sellerId,
             Long buyerId,
             Long buId,
+            Long myId,
             String targetName,
             String bookName,
             List<ChattingInfoDomain> chattingInfoDomainList
@@ -33,6 +36,7 @@ public record ChattingListDomain(
                 sellerId,
                 buyerId,
                 buId,
+                myId,
                 targetName,
                 bookName,
                 chattingInfoDomainList

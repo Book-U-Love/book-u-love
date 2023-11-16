@@ -9,10 +9,12 @@ public record ChatCreateRoomCmd(
 
         Long sellerId,
 
-        Long buyerId
+        Long buyerId,
+
+        Long myId
 
 ) {
     public static ChatCreateRoomCmd of(Long userId, ChatCreateRoomReq req) {
-        return new ChatCreateRoomCmd(req.buId(), req.sellerId(), userId);
+        return new ChatCreateRoomCmd(req.buId(), req.sellerId(), userId, userId);
     }
 }
