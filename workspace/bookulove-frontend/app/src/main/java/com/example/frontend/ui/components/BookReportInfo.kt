@@ -54,10 +54,9 @@ fun BookReportInfo(navController: NavController, report: Map<String, String>){
                 }
             }
 
-            Box(modifier=Modifier.fillMaxWidth()){
-                Text(text = report.get("createdTime").toString() ,modifier=Modifier.align(Alignment.BottomEnd))
-            }
-
+//            Box(modifier=Modifier.fillMaxWidth()){
+//                Text(text = report.get("createdTime").toString() ,modifier=Modifier.align(Alignment.BottomEnd))
+//            }
         }
         Divider()
     }
