@@ -48,8 +48,7 @@ public class StompCreateChatService implements StompCreateChatUseCase {
         Long userId = jwtUtil.extractId(cmd.token());
         log.info("현재접속유저 id: {}", userId);
 
-        // TODO: 2023-11-09 채팅방 생성 로직이 먼저
-        ChattingRoomDomain chattingRoomDomain = stompFindRoomPort.findRoom(cmd.roomId());
+        ChattingRoomDomain chattingRoomDomain = stompFindRoomPort.findRoom(cmd.roomId(), userId);
 
         Long targetId = Objects.equals(userId, chattingRoomDomain.buyerId()) ? chattingRoomDomain.sellerId() : chattingRoomDomain.buyerId();
         log.info("상대방 아이디: {}", targetId);
@@ -67,10 +66,6 @@ public class StompCreateChatService implements StompCreateChatUseCase {
         }
 
         log.info("상대 정보 res: {}", targetRes.data());
-
-//        Date currentTime = new Date();
-//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-//        String formattedTime = sdf.format(currentTime);
 
         // TODO: 2023-11-14 채팅방 안에서 읽음 구현시 이부분 수정 필요
         StompChatDomain stompChatDomain = StompChatDomain.of(targetRes.data().nickname(), cmd.content(), LocalDateTime.now());

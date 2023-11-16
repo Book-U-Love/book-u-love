@@ -48,3 +48,22 @@ data class ReportList(
     val code: String,
     val data: List<Map<String, String>>
 )
+
+data class SearchResult(
+    val status: Int,
+    val code: String,
+    val data: BookResult
+)
+
+data class BookResult(
+    val bookId: Int = 0,
+    val title: String = "",
+    val author: String = "",
+    val publisher: String = "",
+    val price: Int = 0,
+    val pubDate: String = "",
+    val cover: String = "",
+    val reviewInfoResList: List<Map<String, String>> = listOf(),
+    val saleBookInfoList: List<Map<String, String>> = listOf(),
+    val borrowBookInfoList: List<Map<String, String>> = listOf(),
+)

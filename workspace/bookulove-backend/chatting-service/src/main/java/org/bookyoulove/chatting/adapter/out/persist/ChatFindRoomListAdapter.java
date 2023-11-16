@@ -24,7 +24,7 @@ public class ChatFindRoomListAdapter implements ChatFindRoomListPort {
         List<ChattingRoomDomain> chattingRoomDomainList =
                 roomRepository.findAllBySellerIdOrBuyerId(userId, userId)
                         .stream()
-                        .map(ChattingRoomDomain::of)
+                        .map(p->ChattingRoomDomain.of(p, userId))
                         .collect(Collectors.toList());
 
         log.info("채팅방 리스트 domain: {}", chattingRoomDomainList);

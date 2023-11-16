@@ -17,10 +17,10 @@ public class StompFindRoomAdapter implements StompFindRoomPort {
     private final RoomRepository roomRepository;
 
     @Override
-    public ChattingRoomDomain findRoom(Long roomId) {
+    public ChattingRoomDomain findRoom(Long roomId, Long userId) {
         ChattingRoomDomain chattingRoomDomain = ChattingRoomDomain.of(roomRepository.findById(roomId).orElseThrow(
                 () -> new ChatServiceException(ErrorCode.ROOM_NOT_FOUND)
-        ));
+        ), userId);
 
         log.info("접속중인 방 domain: {}", chattingRoomDomain);
 

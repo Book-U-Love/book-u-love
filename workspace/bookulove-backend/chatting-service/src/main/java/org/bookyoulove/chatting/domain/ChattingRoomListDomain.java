@@ -4,7 +4,7 @@ import java.util.List;
 
 public record ChattingRoomListDomain(
 
-        Long userId,
+        Long myId,
 
         List<ChattingRoomInfoDomain> chattingRoomInfoDomainList
 ) {

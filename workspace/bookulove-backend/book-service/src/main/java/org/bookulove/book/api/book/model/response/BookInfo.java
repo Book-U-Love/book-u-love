@@ -11,6 +11,8 @@ public record BookInfo(
 
         Long buid,
 
+        Long sellerId,
+
         String isbn,
 
         String title,
@@ -42,6 +44,7 @@ public record BookInfo(
     public BookInfo(BookLibraryRelation relation) {
         this(
                 relation.getBuid(),
+                relation.getLibrary().getUserId(),
                 relation.getBook().getIsbn(),
                 relation.getBook().getTitle(),
                 relation.getBook().getDescription(),
@@ -59,8 +62,11 @@ public record BookInfo(
     }
 
     private static String convertTime(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return localDateTime.format(formatter);
+        if(localDateTime != null){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            return localDateTime.format(formatter);
+        }
+        return null;
     }
 
     private static int getPrice(int price, Condition condition) {
