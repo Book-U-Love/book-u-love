@@ -9,7 +9,7 @@ public record   BookUpdateReq(
         @NotBlank(message = "BUID가 입력되지 않았습니다.")
         Long buid,
 
-        Optional<Integer> condition,
+        Optional<String> condition,
 
         Optional<Boolean> allowSale,
 

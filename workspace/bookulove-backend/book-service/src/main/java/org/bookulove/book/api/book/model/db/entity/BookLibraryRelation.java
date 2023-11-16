@@ -62,8 +62,17 @@ public class BookLibraryRelation extends BaseTimeEntity{
         this.isRemoved = isRemoved;
     }
 
-    public void updateCondition(int index) {
-        this.condition = Condition.getInstance(index);
+    public void updateCondition(String condition) {
+        if(condition.equals("최상"))
+            this.condition = Condition.EXCELLENT;
+        else if(condition.equals("상"))
+            this.condition = Condition.GOOD;
+        else if(condition.equals("중"))
+            this.condition = Condition.FAIR;
+        else if(condition.equals("하"))
+            this.condition = Condition.POOR;
+        else if(condition.equals("최하"))
+            this.condition = Condition.VERY_POOR;
     }
 
     public void updateAllowSale(boolean allowSale) {
