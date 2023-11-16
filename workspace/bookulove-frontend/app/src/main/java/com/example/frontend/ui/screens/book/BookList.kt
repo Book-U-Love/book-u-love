@@ -61,49 +61,47 @@ fun BookList(navController: NavController, bookViewModel: BookViewModel, userId:
         }
     }
     val bookList = bookViewModel.bookList
-    if(bookList.value.isNotEmpty()){
-        Box(modifier = Modifier.fillMaxSize()){
+    Box(modifier = Modifier.fillMaxSize()){
 
-            LazyColumn(){
-                item{
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ){
-                        FuncBtn(name = "전체보기", onClick = {
-                            sale.value = false
-                            borrow.value = false
-                        })
-                        FuncBtn(name = "판매", onClick = {
-                            sale.value = !sale.value
-                        })
-                        FuncBtn(name = "대여", onClick = {
-                            borrow.value = !borrow.value
-                        })
-                    }
+        LazyColumn(){
+            item{
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ){
+                    FuncBtn(name = "전체보기", onClick = {
+                        sale.value = false
+                        borrow.value = false
+                    })
+                    FuncBtn(name = "판매", onClick = {
+                        sale.value = !sale.value
+                    })
+                    FuncBtn(name = "대여", onClick = {
+                        borrow.value = !borrow.value
+                    })
                 }
-                for(book in bookList.value){
-                    item{
-                        BookInfo(book, onClick = {
-                            dialog.value = true
-                            bookDetail = book
-                        })
-                    }
-                }
-
             }
-        }
-        if(dialog.value){
-            BookDetail(
-                book = bookDetail,
-                onDismissRequest = {dialog.value = false},
-                onConfirmation = {
-                    dialog.value = false
-                    val sellerId = bookDetail.get("sellerId").toString()
-                    navController.navigate(Routes.CHATROOM + "/${sellerId}")
+            for(book in bookList.value){
+                item{
+                    BookInfo(book, onClick = {
+                        dialog.value = true
+                        bookDetail = book
+                    })
                 }
-            )
+            }
+
         }
+    }
+    if(dialog.value){
+        BookDetail(
+            book = bookDetail,
+            onDismissRequest = {dialog.value = false},
+            onConfirmation = {
+                dialog.value = false
+                val sellerId = bookDetail.get("sellerId").toString()
+                navController.navigate(Routes.CHATROOM + "/${sellerId}")
+            }
+        )
     }
 }
 
