@@ -105,9 +105,10 @@ fun BookSearch(navController:NavController, bookViewModel: BookViewModel){
                }
                LazyColumn {
                    val bookResult = bookViewModel.searchResult.value
-                   val reviewList = bookResult.reviewInfoResList
+                   val reviewList = bookResult.reviewResList
                    val saleList = bookResult.saleBookInfoList
                    val borrowList = bookResult.borrowBookInfoList
+                   Log.d("find result", bookResult.toString())
                    for(book in saleList){
                        item{
                             BookInfo(book)

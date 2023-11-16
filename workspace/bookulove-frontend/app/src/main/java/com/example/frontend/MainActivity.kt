@@ -226,8 +226,17 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             BookTotal(navController,bookViewModel)
             mainViewModel.changeState("내 도서관")
         }
-        composable(route = Routes.CHATROOM) {
-            ChatRoom()
+        composable(route = Routes.CHATROOM+ "/{sellerId}",
+            arguments = listOf(navArgument("sellerId"){
+            type = NavType.StringType
+        })) {
+            entry ->
+            val sellerId = entry.arguments?.getString("sellerId")
+            if(sellerId != null){
+                ChatRoom(sellerId)
+            } else{
+                Home(navController, mainViewModel, userViewModel, authViewModel)
+            }
             mainViewModel.changeState("김싸피")
         }
         composable(route = Routes.REGISTER) {
@@ -251,13 +260,13 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             })){entry ->
             val userId = entry.arguments?.getString("userId")
             if (userId != null) {
-                BookList(bookViewModel, userId)
+                BookList(navController, bookViewModel, userId)
             } else{
                 Home(navController, mainViewModel, userViewModel, authViewModel)
             }
         }
         composable(route = Routes.BOOKLIST){
-            BookList(bookViewModel)
+            BookList(navController, bookViewModel)
         }
         composable(route = Routes.BOOKTRANSACTIONREGIST){
             BookTransactionRegist(bookViewModel, navController)

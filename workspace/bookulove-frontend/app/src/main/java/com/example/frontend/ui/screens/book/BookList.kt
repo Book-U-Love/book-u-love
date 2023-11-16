@@ -35,18 +35,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavController
 import com.example.frontend.data.model.ModifyPw
 import com.example.frontend.ui.components.BookInfo
 import com.example.frontend.ui.components.FuncBtn
 import com.example.frontend.ui.components.InputField
 import com.example.frontend.ui.components.Message
+import com.example.frontend.ui.vo.Routes
 import com.example.frontend.viewmodel.AuthViewModel
 import com.example.frontend.viewmodel.BookViewModel
 import com.example.frontend.viewmodel.UserViewModel
 
 @Composable
 @ExperimentalMaterial3Api
-fun BookList(bookViewModel: BookViewModel, userId: String = ""){
+fun BookList(navController: NavController, bookViewModel: BookViewModel, userId: String = ""){
     val sale = remember{ mutableStateOf(false) }
     val borrow = remember{ mutableStateOf(false) }
     val dialog = remember{ mutableStateOf(false) }
@@ -93,10 +95,12 @@ fun BookList(bookViewModel: BookViewModel, userId: String = ""){
         }
         if(dialog.value){
             BookDetail(
-                book= bookDetail,
+                book = bookDetail,
                 onDismissRequest = {dialog.value = false},
                 onConfirmation = {
                     dialog.value = false
+                    val sellerId = bookDetail.get("sellerId").toString()
+                    navController.navigate(Routes.CHATROOM + "/${sellerId}")
                 }
             )
         }
