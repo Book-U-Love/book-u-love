@@ -31,11 +31,7 @@ fun Chat(navController: NavController,mainViewModel: MainViewModel,stompViewMode
     }
     LaunchedEffect(Unit){
         try{
-            stompViewModel.init()
-            delay(5000)
-            stompViewModel.connect()
-            delay(5000)
-            stompViewModel.sendMessage("asdfasdf")
+            stompViewModel.runStomp()
             Log.d("accessToken", PrefsRepository().getValue("accessToken"))
         }catch (e:Exception){
             Log.d("test","eror")
@@ -50,7 +46,7 @@ fun Chat(navController: NavController,mainViewModel: MainViewModel,stompViewMode
             ChatInfo(navController)
         }
     }
-    Button(onClick = { stompViewModel.sendMessage("asdfasdfadsfadsf") }) {
+    Button(onClick = {  }) {
         Text("send")
     }
 }

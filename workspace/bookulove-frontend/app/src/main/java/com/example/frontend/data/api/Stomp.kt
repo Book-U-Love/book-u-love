@@ -1,5 +1,6 @@
 package com.example.frontend.data.api
 
+import android.util.Log
 import com.example.frontend.data.repository.PrefsRepository
 import com.example.frontend.viewmodel.AuthViewModel
 import okhttp3.Interceptor
@@ -25,7 +26,7 @@ object StompSingleton{
         fun init(){
             socket = OKHTTPSingleton.instance
             ac = PrefsRepository().getValue("accessToken")
-            stomp = Stomp.over(Stomp.ConnectionProvider.OKHTTP, BASE_URL, mapOf("Authorization" to "$ac"), socket)
+            stomp = Stomp.over(Stomp.ConnectionProvider.OKHTTP, BASE_URL, mapOf("Authorization" to "Bearer $ac"), socket)
         }
         fun getStompClient():StompClient{
             return stomp
@@ -36,7 +37,7 @@ object StompSingleton{
             if(REFRESH_URL ==url){
                 val refreshToken = PrefsRepository().getValue("refreshToken")
                 return if(refreshToken != ""){
-                    val token = "$refreshToken"
+                    val token = "Bearer $refreshToken"
                     val newRequest = chain.request().newBuilder().addHeader("RefreshToken", token).build()
                     chain.proceed(newRequest)
                 } else{
@@ -45,7 +46,7 @@ object StompSingleton{
             }else{
                 val accessToken = PrefsRepository().getValue("accessToken")
                 return if(accessToken != ""){
-                    val token = "$accessToken"
+                    val token = "Bearer $accessToken"
                     val newRequest = chain.request().newBuilder().addHeader("Authorization", token).build()
                     chain.proceed(newRequest)
                 }else{
@@ -62,7 +63,7 @@ object StompSingleton{
                     try{
                         authViewModel.refresh()
                         val accessToken = PrefsRepository().getValue("accessToken")
-                        val token = "$accessToken"
+                        val token = "Bearer $accessToken"
                         val newRequest = chain.request().newBuilder().addHeader("Authorization", token).build()
                         return chain.proceed(newRequest)
                     }catch (e:Exception){

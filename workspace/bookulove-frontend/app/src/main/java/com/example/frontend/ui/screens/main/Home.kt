@@ -106,6 +106,7 @@ fun BeforeLogin(navController: NavHostController, changePage: () -> Unit, mainVi
 fun AfterLogin(navController: NavHostController, userViewModel: UserViewModel, authViewModel: AuthViewModel){
     LaunchedEffect(key1 = Unit){
         userViewModel.getLibraryList()
+        Log.d("home token", PrefsRepository().getValue("accessToken"))
     }
     val pos = remember { mutableStateOf(LatLng(0.0, 0.0)) }
     val list = userViewModel.libraryList
