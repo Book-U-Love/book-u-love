@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -51,6 +52,7 @@ import com.example.frontend.ui.components.BookInfo
 import com.example.frontend.ui.components.BookInfoCard
 import com.example.frontend.ui.components.BookReportInfo
 import com.example.frontend.ui.components.QuestionCard
+import com.example.frontend.ui.vo.Routes
 import com.example.frontend.ui.vo.categoryList
 import com.example.frontend.viewmodel.BookViewModel
 import kotlinx.coroutines.launch
@@ -62,6 +64,9 @@ import kotlinx.coroutines.launch
 fun BookSearch(navController:NavController, bookViewModel: BookViewModel){
     val categoryState = rememberLazyListState();
     var isbnFind by remember{ mutableStateOf("") }
+    val dialog = remember{ mutableStateOf(false) }
+    var bookDetail:Map<String, String> by remember{ mutableStateOf(mapOf()) }
+    var select by remember{ mutableStateOf("독후감") }
     Box(modifier=Modifier.fillMaxSize()){
        Column(){
            Box(){
@@ -88,45 +93,67 @@ fun BookSearch(navController:NavController, bookViewModel: BookViewModel){
            Divider()
            Box(modifier=Modifier.padding(top=5.dp, bottom=5.dp),
            ){
-               LazyRow(state = categoryState, horizontalArrangement = Arrangement.SpaceBetween){
-                   itemsIndexed(categoryList){
-                       index, item ->
-                       Box(modifier=Modifier.padding(start=5.dp, end=5.dp)){
-                           TextButton(
-                               onClick = {
-                                         },
-                               modifier= Modifier
-
-                           ) {
-                                Text(text=item,color=Color.Black.copy(alpha=1f), fontSize = 18.sp)
+                LazyColumn(){
+                    item{
+                       LazyRow(state = categoryState, horizontalArrangement = Arrangement.SpaceBetween){
+                           itemsIndexed(categoryList){
+                               index, item ->
+                               Box(modifier=Modifier.padding(start=5.dp, end=5.dp)){
+                                   TextButton(
+                                       onClick = {select = item},
+                                   ) {
+                                        Text(text=item,color=Color.Black.copy(alpha=1f), fontSize = 18.sp)
+                                   }
+                               }
                            }
                        }
-                   }
-               }
-               LazyColumn {
-                   val bookResult = bookViewModel.searchResult.value
-                   val reviewList = bookResult.reviewResList
-                   val saleList = bookResult.saleBookInfoList
-                   val borrowList = bookResult.borrowBookInfoList
-                   Log.d("find result", bookResult.toString())
-                   for(book in saleList){
-                       item{
-                            BookInfo(book)
-                       }
-                   }
-                   for(book in borrowList){
-                       item{
-                           BookInfo(book)
-                       }
-                   }
-                   for(review in reviewList){
-                       item{
-                           BookReportInfo(navController, review)
-                       }
-                   }
-               }
+                        Divider()
+                    }
+                    val bookResult = bookViewModel.searchResult.value
+                    val reviewList = bookResult.reviewResList
+                    val saleList = bookResult.saleBookInfoList
+                    val borrowList = bookResult.borrowBookInfoList
+                    when(select){
+                        "독후감" -> {
+                            for(review in reviewList){
+                                item{
+                                    BookReportInfo(navController, review)
+                                }
+                            }
+                        }
+                        "판매" -> {
+                            for(book in saleList){
+                                item{
+                                    BookInfo(book, onClick = {
+                                        dialog.value = true
+                                        bookDetail = book
+                                    })
+                                }
+                            }
+                        }
+                        "대여" -> {
+                            for(book in borrowList){
+                                item{
+                                    BookInfo(book, onClick = {
+                                        dialog.value = true
+                                        bookDetail = book
+                                    })
+                                }
+                            }
+                        }
+                    }
+                }
            }
-
+           if(dialog.value){
+               BookDetail(book = bookDetail,
+                   onDismissRequest = { dialog.value = false },
+                   onConfirmation = {
+                       dialog.value = false
+                       val sellerId = bookDetail.get("sellerId").toString()
+                       navController.navigate(Routes.CHATROOM + "/${sellerId}")
+                   }
+               )
+           }
            Divider()
        }
         FloatingActionButton(onClick = {navController.navigate("booktransactionregist")}, modifier= Modifier
