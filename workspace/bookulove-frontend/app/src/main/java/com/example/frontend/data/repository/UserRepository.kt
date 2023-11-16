@@ -31,7 +31,7 @@ class UserRepository(
             val res = response.body()!!.data
             emit(mapOf("msg" to "success", "loginId" to res.get("loginId").toString(),
                 "nickname" to res.get("nickname").toString(), "phoneNumber" to res.get("phoneNumber").toString(), "libraryName" to res.get("libraryName").toString(),
-                "lat" to res.get("lat").toString(), "lng" to res.get("lng").toString()
+                "lat" to res.get("lat").toString(), "lng" to res.get("lng").toString(), "userId" to res.get("userId").toString()
             ))
         } else{
             emit(mapOf("msg" to "fail"))

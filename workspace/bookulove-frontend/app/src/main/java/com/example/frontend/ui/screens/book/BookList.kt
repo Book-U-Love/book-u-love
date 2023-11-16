@@ -48,7 +48,7 @@ import com.example.frontend.viewmodel.UserViewModel
 
 @Composable
 @ExperimentalMaterial3Api
-fun BookList(navController: NavController, bookViewModel: BookViewModel, userId: String = ""){
+fun BookList(navController: NavController, userViewModel: UserViewModel, bookViewModel: BookViewModel, userId: String = ""){
     val sale = remember{ mutableStateOf(false) }
     val borrow = remember{ mutableStateOf(false) }
     val dialog = remember{ mutableStateOf(false) }
@@ -83,10 +83,11 @@ fun BookList(navController: NavController, bookViewModel: BookViewModel, userId:
             }
             for(book in bookList.value){
                 item{
-                    BookInfo(book, onClick = {
+                    BookInfo(userViewModel = userViewModel, book, onClick = {
                         dialog.value = true
                         bookDetail = book
-                    })
+                    },
+                        canModify = true, bookViewModel)
                 }
             }
 
@@ -94,6 +95,7 @@ fun BookList(navController: NavController, bookViewModel: BookViewModel, userId:
     }
     if(dialog.value){
         BookDetail(
+            userViewModel,
             book = bookDetail,
             onDismissRequest = {dialog.value = false},
             onConfirmation = {
@@ -107,6 +109,7 @@ fun BookList(navController: NavController, bookViewModel: BookViewModel, userId:
 
 @Composable
 fun BookDetail(
+    userViewModel: UserViewModel,
     book: Map<String, String>,
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
@@ -177,8 +180,10 @@ fun BookDetail(
             ){
                 FuncBtn(name = "닫기", onClick = { onDismissRequest() })
                 Spacer(modifier = Modifier.width(10.dp))
-                FuncBtn(name = "채팅하기", onClick = { onConfirmation() })
-                Spacer(modifier = Modifier.width(10.dp))
+                if(book.get("sellerId").toString() != userViewModel.userMyInfo.value.get("userId").toString()){
+                    FuncBtn(name = "채팅하기", onClick = { onConfirmation() })
+                    Spacer(modifier = Modifier.width(10.dp))
+                }
             }
             Spacer(modifier = Modifier.height(20.dp))
         }

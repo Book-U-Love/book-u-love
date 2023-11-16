@@ -219,11 +219,11 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             }
         }
         composable(route = Routes.BOOKSEARCH) {
-            BookSearch(navController, bookViewModel)
+            BookSearch(navController, userViewModel, bookViewModel)
             mainViewModel.changeState("검색")
         }
         composable(route = Routes.MYLIBRARY) {
-            BookTotal(navController,bookViewModel)
+            BookTotal(navController, userViewModel, bookViewModel)
             mainViewModel.changeState("내 도서관")
         }
         composable(route = Routes.CHATROOM+ "/{sellerId}",
@@ -260,13 +260,13 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             })){entry ->
             val userId = entry.arguments?.getString("userId")
             if (userId != null) {
-                BookList(navController, bookViewModel, userId)
+                BookList(navController, userViewModel, bookViewModel, userId)
             } else{
                 Home(navController, mainViewModel, userViewModel, authViewModel)
             }
         }
         composable(route = Routes.BOOKLIST){
-            BookList(navController, bookViewModel)
+            BookList(navController, userViewModel, bookViewModel)
         }
         composable(route = Routes.BOOKTRANSACTIONREGIST){
             BookTransactionRegist(bookViewModel, navController)
