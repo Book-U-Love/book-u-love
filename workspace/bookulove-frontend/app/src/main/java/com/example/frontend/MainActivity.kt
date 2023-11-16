@@ -219,7 +219,7 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             }
         }
         composable(route = Routes.BOOKSEARCH) {
-            BookSearch(navController)
+            BookSearch(navController, bookViewModel)
             mainViewModel.changeState("검색")
         }
         composable(route = Routes.MYLIBRARY) {
@@ -241,7 +241,7 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
             entry ->
             val reportIndex = entry.arguments?.getInt("index");
            if(reportIndex!=null) {
-               BookReportDetail(reportIndex)
+               BookReportDetail(reportIndex, bookViewModel)
 
            }
         }

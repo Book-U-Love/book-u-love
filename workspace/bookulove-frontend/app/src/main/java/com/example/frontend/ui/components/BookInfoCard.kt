@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.frontend.R
 import com.example.frontend.ui.vo.Routes
 
@@ -42,9 +43,9 @@ fun BookInfoCard(searchRes: Map<String,String>?, navController:NavController,rou
         .fillMaxWidth()
 
         .padding(15.dp)) {
-        Image(painter = painterResource(id = R.drawable.default_book_img),
+        Image(painter = rememberImagePainter(searchRes.get("cover").toString()),
             contentDescription = "",
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Fit,
             modifier= Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.4f)

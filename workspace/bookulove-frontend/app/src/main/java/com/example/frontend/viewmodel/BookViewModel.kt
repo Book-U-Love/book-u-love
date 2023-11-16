@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.frontend.data.model.BookRegistReq
 import com.example.frontend.data.model.BookReportReq
+import com.example.frontend.data.model.BookResult
 import com.example.frontend.data.repository.BookRepository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -43,10 +44,17 @@ class BookViewModel: ViewModel() {
     private val _myBookList = MutableStateFlow<List<Map<String,String>>>(emptyList())
     val myBookList = _myBookList
     // 내 리뷰 리스트
-//    private val _reportList = MutableState<List<>>
+    private val _reportList: MutableState<List<Map<String, String>>> = mutableStateOf(listOf())
+    val reportList: State<List<Map<String, String>>> = _reportList
+    // 독후감 조회
+    private val _report: MutableState<Map<String, String>> = mutableStateOf(mapOf())
+    val report: State<Map<String, String>> = _report
     // 등록한 도서 조회
     private val _bookList: MutableState<List<Map<String, String>>> = mutableStateOf(listOf())
     val bookList: State<List<Map<String, String>>> = _bookList
+    // 검색결과
+    private val _searchResult: MutableState<BookResult> = mutableStateOf(BookResult())
+    val searchResult: State<BookResult> = _searchResult
     fun changeState(){
         _reportState.value = !_reportState.value
     }
@@ -129,6 +137,42 @@ class BookViewModel: ViewModel() {
                     _bookList.value = res
                 }
             } catch(e: Exception){
+            }
+        }
+    }
+
+    fun getMyReportList(){
+        GlobalScope.async {
+            try{
+                bookRepository.getMyReportList().collect(){
+                    res ->
+                    _reportList.value = res
+                }
+            } catch (e: Exception){
+            }
+        }
+    }
+
+    fun getReport(reviewId: String){
+        GlobalScope.async {
+            try{
+                bookRepository.getReport(reviewId).collect(){
+                    res ->
+                    _report.value = res
+                }
+            }catch(e: Exception){
+            }
+        }
+    }
+
+    fun bookSearchIsbn(isbn: String){
+        GlobalScope.async {
+            try{
+                bookRepository.bookSearchIsbn(isbn).collect(){
+                    res->
+                    _searchResult.value = res
+                }
+            } catch (e: Exception){
             }
         }
     }

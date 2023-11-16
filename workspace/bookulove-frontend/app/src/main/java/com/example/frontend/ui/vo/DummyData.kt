@@ -51,11 +51,11 @@ val chatDataList = mutableListOf<chatList>(
 )
 
 val categoryList = mutableListOf<String>(
-    "전체",
+//    "전체",
     "독후감",
     "판매",
     "대여",
-    "내 주변"
+//    "내 주변"
 )
 
 var bookList = mutableListOf<bookInfo>(
