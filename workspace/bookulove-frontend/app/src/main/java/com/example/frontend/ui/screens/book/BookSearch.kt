@@ -3,6 +3,7 @@ package com.example.frontend.ui.screens.book
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -45,7 +47,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.frontend.R
+import com.example.frontend.ui.components.BookInfo
 import com.example.frontend.ui.components.BookInfoCard
+import com.example.frontend.ui.components.BookReportInfo
 import com.example.frontend.ui.components.QuestionCard
 import com.example.frontend.ui.vo.categoryList
 import com.example.frontend.viewmodel.BookViewModel
@@ -55,8 +59,9 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @ExperimentalMaterial3Api
-fun BookSearch(navController:NavController){
+fun BookSearch(navController:NavController, bookViewModel: BookViewModel){
     val categoryState = rememberLazyListState();
+    var isbnFind by remember{ mutableStateOf("") }
     Box(modifier=Modifier.fillMaxSize()){
        Column(){
            Box(){
@@ -66,18 +71,24 @@ fun BookSearch(navController:NavController){
                    verticalAlignment = Alignment.CenterVertically,
                    horizontalArrangement = Arrangement.Center){
                    Box(modifier=Modifier.fillMaxWidth(0.7f)){
-                       OutlinedTextField(value = "", onValueChange = {},
+                       OutlinedTextField(value = isbnFind, onValueChange = {isbnFind = it},
                        modifier=Modifier.border(0.dp, Color.White),
                        )
                    }
-                   Box(modifier=Modifier.fillMaxWidth(0.5f)){
+                   Box(modifier= Modifier
+                       .fillMaxWidth(0.5f)
+                       .clickable {
+                           Log.d("find booksearch", isbnFind)
+                           bookViewModel.bookSearchIsbn(isbnFind)
+                       }){
                        Icon(modifier=Modifier.align(Alignment.Center),painter = painterResource(id = R.drawable.baseline_search_24), contentDescription ="searchIcon")
                    }
                }
            }
            Divider()
-           Box(modifier=Modifier.padding(top=5.dp, bottom=5.dp)){
-               LazyRow(state = categoryState){
+           Box(modifier=Modifier.padding(top=5.dp, bottom=5.dp),
+           ){
+               LazyRow(state = categoryState, horizontalArrangement = Arrangement.SpaceBetween){
                    itemsIndexed(categoryList){
                        index, item ->
                        Box(modifier=Modifier.padding(start=5.dp, end=5.dp)){
@@ -89,6 +100,27 @@ fun BookSearch(navController:NavController){
                            ) {
                                 Text(text=item,color=Color.Black.copy(alpha=1f), fontSize = 18.sp)
                            }
+                       }
+                   }
+               }
+               LazyColumn {
+                   val bookResult = bookViewModel.searchResult.value
+                   val reviewList = bookResult.reviewInfoResList
+                   val saleList = bookResult.saleBookInfoList
+                   val borrowList = bookResult.borrowBookInfoList
+                   for(book in saleList){
+                       item{
+                            BookInfo(book)
+                       }
+                   }
+                   for(book in borrowList){
+                       item{
+                           BookInfo(book)
+                       }
+                   }
+                   for(review in reviewList){
+                       item{
+                           BookReportInfo(navController, review)
                        }
                    }
                }

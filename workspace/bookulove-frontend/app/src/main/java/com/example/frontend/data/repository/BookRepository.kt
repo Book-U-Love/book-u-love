@@ -5,6 +5,7 @@ import com.example.frontend.data.api.API
 import com.example.frontend.data.api.BookApi
 import com.example.frontend.data.model.BookRegistReq
 import com.example.frontend.data.model.BookReportReq
+import com.example.frontend.data.model.BookResult
 import com.example.frontend.data.model.MyBookListRes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -73,8 +74,22 @@ class BookRepository(
         }
     }
 
-    suspend fun getReportList() = flow<List<Map<String, String>>>{
-        val response = api.getReportList()
+    suspend fun getMyReportList() = flow<List<Map<String, String>>>{
+        val response = api.getMyReportList()
+        if(response.body()!!.status == 200){
+            emit(response.body()!!.data)
+        }
+    }
+
+    suspend fun getReport(reviewId: String) = flow<Map<String, String>>{
+        val response = api.getReview(reviewId)
+        if(response.body()!!.status == 200){
+            emit(response.body()!!.data)
+        }
+    }
+
+    suspend fun bookSearchIsbn(isbn: String) = flow<BookResult>{
+        val response = api.bookSearchIsbn(isbn)
         if(response.body()!!.status == 200){
             emit(response.body()!!.data)
         }

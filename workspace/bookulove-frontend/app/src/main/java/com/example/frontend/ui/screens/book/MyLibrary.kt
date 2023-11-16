@@ -30,8 +30,12 @@ import kotlinx.coroutines.delay
 fun BookTotal(navController: NavController, bookViewModel: BookViewModel){
     var scrollState = rememberScrollState()
     var myBookList = bookViewModel.myBookList.collectAsState();
+    val reportList = bookViewModel.reportList
     LaunchedEffect(myBookList.value){
         bookViewModel.getMyBookList();
+    }
+    LaunchedEffect(Unit){
+        bookViewModel.getMyReportList()
     }
     Box(modifier=Modifier.fillMaxHeight()){
         Column(modifier = Modifier.verticalScroll(scrollState)){
@@ -55,8 +59,8 @@ fun BookTotal(navController: NavController, bookViewModel: BookViewModel){
             Divider()
             Box {
                 Column(){
-                    for(i in 0..(bookList.size)-1) {
-                        BookReportInfo(navController, i);
+                    for(report in reportList.value) {
+                        BookReportInfo(navController, report);
                     }
                 }
             }
