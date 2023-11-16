@@ -13,7 +13,7 @@ public record ChattingRoomInfoDomain(
 
         Long targetId,
 
-        String targetNickname,
+        String targetName,
 
         String lastContent,
 
@@ -26,11 +26,11 @@ public record ChattingRoomInfoDomain(
                                             Long buId,
                                             String bookName,
                                             Long targetId,
-                                            String targetNickname,
+                                            String targetName,
                                             String lastContent,
                                             LocalDateTime lastTime,
                                             Long unReadCount){
-        return new ChattingRoomInfoDomain(roomId, buId, bookName, targetId, targetNickname, lastContent, convertTime(lastTime), unReadCount);
+        return new ChattingRoomInfoDomain(roomId, buId, bookName, targetId, targetName, lastContent, convertTime(lastTime), unReadCount);
     }
 
     private static String convertTime(LocalDateTime localDateTime) {
@@ -38,6 +38,6 @@ public record ChattingRoomInfoDomain(
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             return localDateTime.format(formatter);
         }
-        return null;
+        return "";
     }
 }

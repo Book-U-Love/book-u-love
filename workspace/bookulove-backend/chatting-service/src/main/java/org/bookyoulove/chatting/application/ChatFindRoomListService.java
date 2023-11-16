@@ -53,12 +53,10 @@ public class ChatFindRoomListService implements ChatFindRoomListUseCase {
                 .map(p -> chatFindBookPort.findBook(token, p.buId()).data())
                 .collect(Collectors.toList());
 
-        List<UserFindInfoRes> userFindInfoResList = chattingDomainList.stream()
+        List<UserFindInfoRes> userFindInfoResList = roomDomainList.stream()
                 .map(p -> {
-                    if(p == null){
-                        return null;
-                    }
-                    return stompFindUserPort.findUser(token, p.writerId()).data();
+                    Long targetId = Objects.equals(p.myId(), p.sellerId()) ? p.buyerId() : p.sellerId();
+                    return stompFindUserPort.findUser(token, targetId).data();
                 })
                 .collect(Collectors.toList());
 
@@ -67,15 +65,11 @@ public class ChatFindRoomListService implements ChatFindRoomListUseCase {
         List<ChattingRoomInfoDomain> chattingRoomInfoDomainList = new ArrayList<>();
         for(int i=0; i<roomDomainList.size(); ++i){
 
-            Long writerId = null;
-            String content = null;
+            String content = "";
             LocalDateTime lastTime = null;
-            String nickname = null;
             if (chattingDomainList.get(i) != null) {
-                writerId = chattingDomainList.get(i).writerId();
                 content = chattingDomainList.get(i).content();
                 lastTime = chattingDomainList.get(i).lastTime();
-                nickname = userFindInfoResList.get(i).nickname();
             }
 
             ChattingRoomInfoDomain chattingRoomInfoDomain =
@@ -83,8 +77,8 @@ public class ChatFindRoomListService implements ChatFindRoomListUseCase {
                             roomDomainList.get(i).roomId(),
                             roomDomainList.get(i).buId(),
                             bookResList.get(i).title(),
-                            writerId,
-                            nickname,
+                            userFindInfoResList.get(i).userId(),
+                            userFindInfoResList.get(i).nickname(),
                             content,
                             lastTime,
                             unreadCountList.get(i)
