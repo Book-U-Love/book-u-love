@@ -60,6 +60,13 @@ public class StompHandler implements ChannelInterceptor {
     private String getAccessToken(StompHeaderAccessor accessor) {
         String accessToken = accessor.getFirstNativeHeader("Authorization");
         log.info("AccessToken: {}", accessToken);
+
+        if(accessToken == null || !(accessToken.startsWith("Bearer "))){
+            log.error("authentication is null");
+        }
+
+        accessToken = accessToken.replace("Bearer", "");
+        log.info("token: {}", accessToken);
         return accessToken;
     }
 
