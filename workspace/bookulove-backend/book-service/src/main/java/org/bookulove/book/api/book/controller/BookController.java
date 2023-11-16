@@ -45,16 +45,16 @@ class BookController {
     }
 
     @GetMapping("/list")
-    ApiData<List<BookInfo>> getBookList(@RequestParam boolean sale,
-                                        @RequestParam boolean borrow) {
+    ApiData<List<BookInfo>> getBookList(@RequestParam(defaultValue = "false") boolean sale,
+                                        @RequestParam(defaultValue = "false") boolean borrow) {
         log.info(logCurrent(getClassName(), getMethodName(), VIA));
         return ApiData.ok(bookService.getBookList(sale, borrow));
     }
 
     @GetMapping("/list/{userId}")
     ApiData<List<BookInfo>> getBookListById(@PathVariable Long userId,
-                                            @RequestParam boolean sale,
-                                            @RequestParam boolean borrow) {
+                                            @RequestParam(defaultValue = "false") boolean sale,
+                                            @RequestParam(defaultValue = "false") boolean borrow) {
         log.info(logCurrent(getClassName(), getMethodName(), VIA));
         return ApiData.ok(bookService.getBookList(userId,sale, borrow));
     }
@@ -69,12 +69,13 @@ class BookController {
         return ApiData.ok("도서 수정이 완료되었습니다.");
     }
 
-    @GetMapping("/{bookId}")
-    ApiData<BookDetailRes> findBookInfo(@PathVariable Long bookId){
-        log.info("책 정보 req: {}", bookId);
-        return ApiData.ok(bookService.findBookInfo(bookId));
+    @GetMapping
+    ApiData<BookDetailRes> findBookInfo(@RequestParam(required = true) String isbn,
+                                        @RequestParam(defaultValue = "false") boolean review,
+                                        @RequestParam(defaultValue = "false") boolean sale,
+                                        @RequestParam(defaultValue = "false") boolean borrow){
+        log.info("책 isbn: {} \n isReview: {}, isSale: {} \n isBorrow: {}", isbn, review, sale, borrow);
+        return ApiData.ok(bookService.findBookInfo(isbn, review, sale, borrow));
     }
-
-
 
 }

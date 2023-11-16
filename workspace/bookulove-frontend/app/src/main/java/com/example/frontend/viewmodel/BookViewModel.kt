@@ -42,6 +42,8 @@ class BookViewModel: ViewModel() {
     // 내 보유 책 리스트
     private val _myBookList = MutableStateFlow<List<Map<String,String>>>(emptyList())
     val myBookList = _myBookList
+    // 내 리뷰 리스트
+//    private val _reportList = MutableState<List<>>
     // 등록한 도서 조회
     private val _bookList: MutableState<List<Map<String, String>>> = mutableStateOf(listOf())
     val bookList: State<List<Map<String, String>>> = _bookList
@@ -112,6 +114,18 @@ class BookViewModel: ViewModel() {
             try{
                 bookRepository.getBookList(sale, borrow).collect(){
                         res ->
+                    _bookList.value = res
+                }
+            } catch(e: Exception){
+            }
+        }
+    }
+
+    fun getUserBookList(userId: String, sale: Boolean, borrow: Boolean){
+        GlobalScope.async {
+            try{
+                bookRepository.getUserBookList(userId, sale, borrow).collect(){
+                    res ->
                     _bookList.value = res
                 }
             } catch(e: Exception){

@@ -42,3 +42,9 @@ data class BookList(
     val code: String,
     val data: List<Map<String, String>>
 )
+
+data class ReportList(
+    val status: Int,
+    val code: String,
+    val data: List<Map<String, String>>
+)

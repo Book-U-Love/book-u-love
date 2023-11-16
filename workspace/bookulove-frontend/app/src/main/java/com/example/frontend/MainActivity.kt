@@ -245,6 +245,17 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
 
            }
         }
+        composable(route = Routes.BOOKLIST + "/{userId}",
+            arguments = listOf(navArgument("userId"){
+                type = NavType.StringType
+            })){entry ->
+            val userId = entry.arguments?.getString("userId")
+            if (userId != null) {
+                BookList(bookViewModel, userId)
+            } else{
+                Home(navController, mainViewModel, userViewModel, authViewModel)
+            }
+        }
         composable(route = Routes.BOOKLIST){
             BookList(bookViewModel)
         }
@@ -259,6 +270,23 @@ fun MainNavigation(navController: NavHostController, mainViewModel:MainViewModel
         }
         composable(route = Routes.BOOKISBNSEARCH+"/{route}"){
             BookIsbnSearch(bookViewModel,navController, it.arguments?.getString("route"))
+        }
+        composable(route = Routes.REVIEWLIST + "/{userId}",
+            arguments = listOf(navArgument("userId"){
+                type = NavType.StringType
+            })){
+            entry ->
+            val userId = entry.arguments?.getString("userId")
+            if (userId != null) {
+                ReviewList(
+                    navController,
+                    userId = userId,
+                    authViewModel = authViewModel,
+                    userViewModel = userViewModel
+                )
+            } else{
+                Home(navController, mainViewModel, userViewModel, authViewModel)
+            }
         }
         composable(route = Routes.REVIEWLIST){
             ReviewList(navController, userViewModel, authViewModel)
