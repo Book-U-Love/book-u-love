@@ -34,7 +34,7 @@ public class ChatFindListService implements ChatFindListUseCase {
 
     @Override
     public ChattingListDomain findChatList(Long userId, String token, Long roomId) {
-        ChattingRoomDomain room = stompFindRoomPort.findRoom(roomId);
+        ChattingRoomDomain room = stompFindRoomPort.findRoom(roomId, userId);
 
         BookRes bookRes = chatFindBookPort.findBook(token, room.buId()).data();
         log.info("책 정보: {}", bookRes);
@@ -61,6 +61,7 @@ public class ChatFindListService implements ChatFindListUseCase {
                 ChattingListDomain.of(roomId, room.sellerId(),
                         room.buyerId(),
                         room.buId(),
+                        userId,
                         targetFindInfoRes.nickname(),
                         bookRes.title(),
                         chattingInfoDomainList);

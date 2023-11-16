@@ -16,12 +16,12 @@ public class ChatCreateRoomAdapter implements ChatCreateRoomPort {
     private final RoomRepository roomRepository;
 
     @Override
-    public ChattingRoomDomain createRoom(Long buId, Long sellerId, Long buyerId) {
+    public ChattingRoomDomain createRoom(Long buId, Long sellerId, Long buyerId, Long myId) {
         ChattingRoomDomain roomDomain =
                 ChattingRoomDomain.of(roomRepository.findByBuIdAndSellerIdAndBuyerId(buId, sellerId, buyerId)
                         .orElseGet(
                                 () -> roomRepository.save(ChattingRoomEntity.of(buId, sellerId, buyerId))
-                        ));
+                        ), myId);
 
         log.info("채팅방 정보 domain: {}", roomDomain);
         return roomDomain;

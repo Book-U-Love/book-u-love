@@ -22,6 +22,6 @@ public class ChatCreateRoomService implements ChatCreateRoomUseCase {
     public ChattingRoomDomain createRoom(ChatCreateRoomCmd cmd) {
         log.info("채팅방 생성 cmd: {}", cmd);
 
-        return chatCreateRoomPort.createRoom(cmd.buId(), cmd.sellerId(), cmd.buyerId());
+        return chatCreateRoomPort.createRoom(cmd.buId(), cmd.sellerId(), cmd.buyerId(), cmd.myId());
     }
 }

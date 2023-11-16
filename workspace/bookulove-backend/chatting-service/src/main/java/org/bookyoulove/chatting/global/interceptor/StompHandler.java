@@ -42,8 +42,8 @@ public class StompHandler implements ChannelInterceptor {
                 Long userId = jwtUtil.extractId(token);
                 log.info("userId: {}", userId);
 
-                String roomId = getRoomId(simpDestination, userId);
-                log.info("roomId: {}", roomId);
+                String roomId = getPathId(simpDestination, userId);
+                log.info("pathId: {}", roomId);
 
             }
             case SEND -> {
@@ -69,7 +69,7 @@ public class StompHandler implements ChannelInterceptor {
         return accessToken;
     }
 
-    private String getRoomId(String simpDestination, Long userId) {
+    private String getPathId(String simpDestination, Long userId) {
         if(simpDestination.contains("/sub/room/")){
             String roomId = simpDestination.substring(10);
             stompCreateConnPort.createConn(userId, roomId);

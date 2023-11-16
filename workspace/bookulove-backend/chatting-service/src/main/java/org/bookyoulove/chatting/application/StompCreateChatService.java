@@ -48,7 +48,7 @@ public class StompCreateChatService implements StompCreateChatUseCase {
         Long userId = jwtUtil.extractId(cmd.token());
         log.info("현재접속유저 id: {}", userId);
 
-        ChattingRoomDomain chattingRoomDomain = stompFindRoomPort.findRoom(cmd.roomId());
+        ChattingRoomDomain chattingRoomDomain = stompFindRoomPort.findRoom(cmd.roomId(), userId);
 
         Long targetId = Objects.equals(userId, chattingRoomDomain.buyerId()) ? chattingRoomDomain.sellerId() : chattingRoomDomain.buyerId();
         log.info("상대방 아이디: {}", targetId);
