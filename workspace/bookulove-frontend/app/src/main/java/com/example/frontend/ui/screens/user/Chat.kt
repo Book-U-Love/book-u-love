@@ -7,6 +7,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,14 +30,11 @@ fun Chat(navController: NavController,mainViewModel: MainViewModel,stompViewMode
     var state by remember{
         mutableStateOf(false)
     }
-    LaunchedEffect(Unit){
-        try{
-            stompViewModel.runStomp()
-            Log.d("accessToken", PrefsRepository().getValue("accessToken"))
-        }catch (e:Exception){
-            Log.d("test","eror")
+    DisposableEffect(Unit){
+        stompViewModel.runStomp()
+        onDispose {
+            stompViewModel.disconnect()
         }
-
     }
     Log.d("asdf",navController.currentBackStackEntry?.destination.toString())
     Box {

@@ -14,24 +14,23 @@ import okhttp3.OkHttpClient
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
+import ua.naiksoftware.stomp.dto.StompCommand
 import ua.naiksoftware.stomp.dto.StompHeader
+import ua.naiksoftware.stomp.dto.StompMessage
 
 class StompViewModel() : ViewModel(){
-//    private lateinit var stompClient:StompClient
-    val url = "wss://k9c209.p.ssafy.io/api/chatting-service/stomps"
     val intervalMillis = 1000L
     val client = OkHttpClient()
-
-    val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP,url)
+    val stompClient = StompSingleton.getStompInstance()
     fun runStomp(){
-        stompClient.topic("/sub/2").subscribe(){
-            Log.d("message receive", it.payload)
-        }
         val accessToken = PrefsRepository().getValue("accessToken")
         val headerList = arrayListOf<StompHeader>()
         headerList.add(StompHeader("Authorization","Bearer $accessToken"))
         stompClient.connect(headerList)
 
+        stompClient.topic("/sub/2",headerList).subscribe(){
+            Log.d("message receive", it.payload)
+        }
         stompClient.lifecycle().subscribe { lifecycleEvent->
             when(lifecycleEvent.type){
                 LifecycleEvent.Type.OPENED ->{
@@ -48,55 +47,9 @@ class StompViewModel() : ViewModel(){
                 }
             }
         }
+        stompClient.send(StompMessage(StompCommand.SEND,headerList, "asdfasdf")).subscribe()
     }
-//    private val messageSubject:Flowable<String> =
-//        Flowable.create({
-//            emitter ->
-//                val disposable = stompClient.topic("/sub/2")
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe({
-//                        it->
-//                        val message = it.payload
-//                        Log.d("disposable res",message)
-//                        emitter.onNext(message)
-//                    },{ error ->
-//                        emitter.onError(error)
-//                    })
-//            disposables.add(disposable)
-//        }, BackpressureStrategy.BUFFER)
-//
-//    private val disposables = CompositeDisposable()
-//
-//    fun observeMessages(): Flowable<String>{
-//        return messageSubject
-//    }
-//    fun connect() {
-//        try{
-//            stompClient.connect()
-//        }catch(e:Exception){
-//            Log.d("ㅅㅂ","ㅅㅂㅅ")
-//        }
-//
-//    }
-//
-//    fun disconnect() {
-//        stompClient.disconnect()
-//        disposables.clear()
-//    }
-//
-//    fun sendMessage(message: String) {
-//        stompClient.send("/sub/2", message)
-//    }
-//
-//    // StompClient 초기화 및 AccessToken 설정
-//    fun init() {
-//        StompSingleton.init()
-//        stompClient = StompSingleton.getStompClient()
-//    }
-
-//    override fun onCleared() {
-//        super.onCleared()
-//        disposables.dispose()
-//    }
+    fun disconnect(){
+        stompClient.disconnect()
+    }
 }

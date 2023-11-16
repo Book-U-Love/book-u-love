@@ -16,45 +16,19 @@ object StompSingleton{
         private lateinit var socket: OkHttpClient
         private lateinit var stomp : StompClient
         private lateinit var ac :String
+
+        fun getStompInstance():StompClient{
+            socket = OKHTTPSingleton.instance
+            stomp = Stomp.over(Stomp.ConnectionProvider.OKHTTP, BASE_URL)
+            return stomp
+        }
+
         object OKHTTPSingleton{
             val instance:OkHttpClient = OkHttpClient.Builder()
-                .addInterceptor(AccessTokenInterceptor())
                 .addInterceptor(AccessTokenExpireInterceptor())
                 .pingInterval(100, TimeUnit.SECONDS)
                 .build()
         }
-        fun init(){
-            socket = OKHTTPSingleton.instance
-            ac = PrefsRepository().getValue("accessToken")
-            stomp = Stomp.over(Stomp.ConnectionProvider.OKHTTP, BASE_URL, mapOf("Authorization" to "Bearer $ac"), socket)
-        }
-        fun getStompClient():StompClient{
-            return stomp
-        }
-    private class AccessTokenInterceptor : Interceptor{
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val url = chain.request().url().toString()
-            if(REFRESH_URL ==url){
-                val refreshToken = PrefsRepository().getValue("refreshToken")
-                return if(refreshToken != ""){
-                    val token = "Bearer $refreshToken"
-                    val newRequest = chain.request().newBuilder().addHeader("RefreshToken", token).build()
-                    chain.proceed(newRequest)
-                } else{
-                    chain.proceed(chain.request())
-                }
-            }else{
-                val accessToken = PrefsRepository().getValue("accessToken")
-                return if(accessToken != ""){
-                    val token = "Bearer $accessToken"
-                    val newRequest = chain.request().newBuilder().addHeader("Authorization", token).build()
-                    chain.proceed(newRequest)
-                }else{
-                    chain.proceed(chain.request())
-                }
-            }
-        }
-    }
         private class AccessTokenExpireInterceptor: Interceptor{
             override fun intercept(chain: Interceptor.Chain): Response {
                 val response = chain.proceed(chain.request())
@@ -64,6 +38,7 @@ object StompSingleton{
                         authViewModel.refresh()
                         val accessToken = PrefsRepository().getValue("accessToken")
                         val token = "Bearer $accessToken"
+
                         val newRequest = chain.request().newBuilder().addHeader("Authorization", token).build()
                         return chain.proceed(newRequest)
                     }catch (e:Exception){
