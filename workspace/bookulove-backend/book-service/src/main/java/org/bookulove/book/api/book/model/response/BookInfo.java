@@ -11,6 +11,8 @@ public record BookInfo(
 
         Long buid,
 
+        Long sellerId,
+
         String isbn,
 
         String title,
@@ -42,6 +44,7 @@ public record BookInfo(
     public BookInfo(BookLibraryRelation relation) {
         this(
                 relation.getBuid(),
+                relation.getLibrary().getUserId(),
                 relation.getBook().getIsbn(),
                 relation.getBook().getTitle(),
                 relation.getBook().getDescription(),
