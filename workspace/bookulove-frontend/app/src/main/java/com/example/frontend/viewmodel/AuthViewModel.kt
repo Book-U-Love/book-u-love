@@ -1,8 +1,6 @@
 package com.example.frontend.viewmodel
 
 import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.frontend.data.model.Certification

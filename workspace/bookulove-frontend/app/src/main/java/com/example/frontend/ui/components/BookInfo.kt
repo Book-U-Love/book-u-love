@@ -37,7 +37,6 @@ import com.example.frontend.R
 @Composable
 fun BookInfo(book: Map<String, String> = mapOf(), onClick: () -> Unit = {}){
     Surface {
-
         Row(modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
