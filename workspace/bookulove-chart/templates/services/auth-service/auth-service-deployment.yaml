@@ -1,0 +1,47 @@
+{{- $service := index .Values "auth-service" }}
+{{- include "service.deployment.head" (list . $service.metadata.name) }}
+spec:
+  replicas: {{ $service.replicas }}
+  selector:
+    matchLabels: *labels
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      serviceAccountName: {{ include "service.release.name" (list . $service.metadata.name) }}
+      containers:
+      - name: {{ $service.metadata.name }}
+        image: {{ include "service.image" $service }}
+        {{- if .Values.global.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+        {{- end }}
+        env:
+        {{- include "service.secret.ref" (list . $service.metadata.name "USER-DB-PASSWORD" "datasource-main-password" ) | indent 8 }}
+        {{- include "service.secret.ref" (list . $service.metadata.name "JWT-SECRET" "jwt-secret") | indent 8 }}
+        {{- include "service.secret.ref" (list . $service.metadata.name "COOLSMS-SEND-PHONE-NUMBER" "cool-sms-sender" ) | indent 8 }}
+        {{- include "service.secret.ref" (list . $service.metadata.name "COOLSMS-API-KEY" "cool-sms-api-key" ) | indent 8 }}
+        {{- include "service.secret.ref" (list . $service.metadata.name "COOLSMS-API-SECRET-KEY" "cool-sms-api-secret-key") | indent 8 }}
+        {{- $datasourceHost := $service.datasource.main.host | replace "$releaseName" .Release.Name }}
+        {{- $datasourcePort := $service.datasource.main.port }}
+        - name: USER-DB-URL
+          value: "jdbc:mysql://{{ $datasourceHost }}:{{ $datasourcePort }}/bookulove?characterEncoding=utf8"
+        - name: USER-DB-USERNAME
+          value: {{ $service.datasource.main.auth.user | quote }}
+        - name: REDIS-HOST
+          value: {{ $service.datasource.redis.host | replace "$releaseName" .Release.Name | quote }}
+        - name: REDIS-PORT
+          value: {{ $service.datasource.redis.port | quote }}
+        - name: JWT-ACCESS-EXPIRE-TIME
+          value: {{ $service.jwt.accessExpirationTime | quote }}
+        - name: JWT-REFRESH-EXPIRE-TIME
+          value: {{ $service.jwt.refreshExpirationTime | quote }}
+        ports:
+        - containerPort: {{ $service.server.port }}
+        livenessProbe:
+          tcpSocket:
+            port: {{ $service.server.port }}
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          periodSeconds: 10

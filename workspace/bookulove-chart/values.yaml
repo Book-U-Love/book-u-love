@@ -1,0 +1,195 @@
+global:
+  auth:
+    password: &globalAuthPassword bookulove
+  persistence:
+    storage:
+      storageClass: standard
+
+redis:
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+  replica:
+    replicaCount: 0
+    persistence:
+      enabled: false
+
+user-db:
+  auth:
+    password: *globalAuthPassword
+  offsetServerID: 1000
+  initDBScripts: &mySQLInitDBScripts
+    00-bookulove-database.sql: |
+      CREATE DATABASE IF NOT EXISTS `bookulove` DEFAULT CHARSET='utf8mb4' COLLATE='utf8mb4_unicode_ci';
+  persistence:
+    storage:
+      storageClass: standard
+      size: 1Gi
+
+book-db:
+  offsetServerID: 2000
+  auth:
+    password: *globalAuthPassword
+  initDBScripts: *mySQLInitDBScripts
+  persistence:
+    storage:
+      storageClass: standard
+      size: 1Gi
+
+chatting-db:
+  offsetServerID: 3000
+  auth:
+    password: *globalAuthPassword
+  initDBScripts: *mySQLInitDBScripts
+  persistence:
+    storage:
+      storageClass: standard
+      size: 1Gi
+
+notification-db:
+  offsetServerID: 4000
+  auth:
+    password: *globalAuthPassword
+  initDBScripts: *mySQLInitDBScripts
+  persistence:
+    storage:
+      storageClass: standard
+      size: 1Gi
+
+universe-db:
+  offsetServerID: 9999
+  auth:
+    password: *globalAuthPassword
+  persistence:
+    storage:
+      storageClass: standard
+      size: 4Gi
+  multiSourceReplication:
+    sources:
+    - &aboutReplicationSource
+      name: user-db
+      port: 3306
+      user: root
+      password: MYSQL_ROOT_PASSWORD
+      filters:
+      - "REPLICATE_IGNORE_DB = (information_schema, mysql, performance_schema, sys)"
+    - !!merge <<: *aboutReplicationSource
+      name: book-db
+    - !!merge <<: *aboutReplicationSource
+      name: chatting-db
+    - !!merge <<: *aboutReplicationSource
+      name: notification-db
+
+user-service:
+  metadata:
+    org: bookulove
+    name: user-service
+    version: 1.0.0
+  replicas: 1
+  server:
+    port: 9003
+  datasource:
+    main:
+      host: "$releaseName-user-db"
+      port: 3306
+      auth:
+        user: root
+        password: *globalAuthPassword
+
+auth-service:
+  metadata:
+    org: bookulove
+    name: auth-service
+    version: 1.0.0
+  replicas: 1
+  server:
+    port: 9002
+  datasource:
+    main:
+      host: "$releaseName-user-db"
+      port: 3306
+      auth:
+        user: root
+        password: *globalAuthPassword
+    redis:
+      host: "$releaseName-redis-master"
+      port: 6379
+  jwt:
+    secret:
+    accessExpirationTime: "3600000"
+    refreshExpirationTime: "43200000"
+  coolSMS:
+    sender:
+    apiKey:
+    apiSecretKey:
+
+book-service:
+  metadata:
+    org: bookulove
+    name: book-service
+    version: 1.0.0
+  replicas: 1
+  server:
+    port: 9004
+  datasource:
+    main:
+      host: "$releaseName-book-db"
+      port: 3306
+      auth:
+        user: root
+        password: *globalAuthPassword
+  aladin:
+    apiKey:
+
+chatting-service:
+  metadata:
+    org: bookulove
+    name: chatting-service
+    version: 1.0.0
+  replicas: 1
+  server:
+    port: 9005
+  datasource:
+    main:
+      host: "$releaseName-chatting-db"
+      port: "3306"
+      auth:
+        user: root
+        password: *globalAuthPassword
+    redis:
+      host: "$releaseName-redis-master"
+      port: "6379"
+  jwt:
+    secret:
+
+apigateway-service:
+  metadata:
+    org: bookulove
+    name: apigateway-service
+    version: 1.0.0
+  replicas: 1
+  server:
+    port: 9001
+  datasource:
+    redis:
+      host: "$releaseName-redis-master"
+      port: "6379"
+  jwt:
+    secret:
+  services:
+  - user-service
+  - auth-service
+  - book-service
+  - chatting-service
+
+ingress:
+  tls:
+    enabled: false
+    secret:
+      name:
+    issuer:
+      type:
+      name:
+  host:

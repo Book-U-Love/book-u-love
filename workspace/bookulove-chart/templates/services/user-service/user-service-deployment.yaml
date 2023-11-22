@@ -1,0 +1,41 @@
+{{- $service := index .Values "user-service" }}
+{{- include "service.deployment.head" (list . $service.metadata.name) }}
+spec:
+  selector:
+    matchLabels: *labels
+  replicas: {{ $service.replicas }}
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      serviceAccountName: {{ include "service.release.name" (list . $service.metadata.name) }}
+      containers:
+      - name: {{ $service.metadata.name }}
+        image: {{ include "service.image" $service }}
+        {{- if .Values.global.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+        {{- end }}
+        env:
+        {{- $datasourceHost := $service.datasource.main.host | replace "$releaseName" .Release.Name }}
+        {{- $datasourcePort := $service.datasource.main.port }}
+        - name: USER-DB-URL
+          value: "jdbc:mysql://{{ $datasourceHost }}:{{ $datasourcePort }}/bookulove?characterEncoding=utf8"
+        - name: USER-DB-USERNAME
+          value: {{ $service.datasource.main.auth.user }}
+        - name: USER-DB-PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "service.release.name" (list . $service.metadata.name) }}
+              key: datasource-main-password
+        - name: DOMAIN-URL
+          value: "{{ include "service.release.name" (list . "apigateway-service") }}:{{ index .Values "apigateway-service" "server" "port" }}"
+        ports:
+        - containerPort: {{ $service.server.port }}
+        livenessProbe:
+          tcpSocket:
+            port: {{ $service.server.port }}
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          periodSeconds: 10

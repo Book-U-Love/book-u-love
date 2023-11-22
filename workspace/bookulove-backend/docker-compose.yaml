@@ -1,0 +1,175 @@
+version: '3.3'
+services:
+#  zookeeper:
+#    image: 'arm64v8/zookeeper:3.8'
+#    networks:
+#      - bookyoulove_network
+#    ports:
+#      - '2181:2181'
+#    environment:
+#      - ALLOW_ANONYMOUS_LOGIN=yes
+#      - ZOO_TLS_CLIENT_AUTH=none
+#      - ZOO_TLS_QUORUM_CLIENT_AUTH=none
+#
+#  kafka:
+#    image: 'bitnami/kafka:3.4.0'
+#    networks:
+#      - bookyoulove_network
+#    ports:
+#      - '9092:9092'
+#    environment:
+#      - KAFKA_BROKER_ID=1
+#      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181 #zookeeper 연결
+#      - ALLOW_PLAINTEXT_LISTENER=yes
+#      # LC = HTTP, LX = HTTPS
+#      - KAFKA_CFG_LISTENERS=LC://kafka:29092,LX://kafka:9092 #카프카 내부적으로 통신하는 포트 설정
+#      - KAFKA_CFG_ADVERTISED_LISTENERS=LC://kafka:29092,LX://${DOCKER_HOST_IP:-localhost}:9092 # 카프카 외부로 통신하는 포트 설정
+#      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=LC:PLAINTEXT,LX:PLAINTEXT
+#      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=LC
+#    depends_on:
+#      - zookeeper
+#
+#  kafka-ui:
+#    image: provectuslabs/kafka-ui
+#    container_name: kafka-ui
+#    networks:
+#      - bookyoulove_network
+#    ports:
+#      - "8989:8080"
+#    restart: always
+#    depends_on:
+#      - kafka
+#      - zookeeper
+#    environment:
+#      - KAFKA_CLUSTERS_0_NAME=${KAFKA_NAME:-local}
+#      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+#      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+
+  user-mysql:
+    image: mysql:8.0.33
+#    networks:
+#      - bookyoulove_network
+    volumes:
+      - ./userdb/conf.d:/etc/mysql/conf.d
+      - ./userdb/data:/var/lib/mysql
+      - ./userdb/initdb.d:/docker-entrypoint-initdb.d
+#    env_file: .env
+    ports:
+      - "23303:3306"
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_ROOT_PASSWORD=bookulove678
+      - MYSQL_USER=bookulove
+      - MYSQL_PASSWORD=bookulove678
+      - MYSQL_DATABASE=user
+
+  book-mysql:
+    image: mysql:8.0.33
+#    networks:
+#      - bookyoulove_network
+    volumes:
+      - ./bookdb/conf.d:/etc/mysql/conf.d
+      - ./bookdb/data:/var/lib/mysql
+      - ./bookdb/initdb.d:/docker-entrypoint-initdb.d
+    #    env_file: .env
+    ports:
+      - "23304:3306"
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_ROOT_PASSWORD=bookulove678
+      - MYSQL_USER=bookulove
+      - MYSQL_PASSWORD=bookulove678
+      - MYSQL_DATABASE=book
+
+  chatting-mysql:
+    image: mysql:8.0.33
+    #    networks:
+    #      - bookyoulove_network
+    volumes:
+      - ./chatdb/conf.d:/etc/mysql/conf.d
+      - ./chatdb/data:/var/lib/mysql
+      - ./chatdb/initdb.d:/docker-entrypoint-initdb.d
+    #    env_file: .env
+    ports:
+      - "23305:3306"
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_ROOT_PASSWORD=bookulove678
+      - MYSQL_USER=bookulove
+      - MYSQL_PASSWORD=bookulove678
+      - MYSQL_DATABASE=chatting
+
+#  alarm-mysql:
+#    image: mysql:8.0.33
+##    networks:
+##      - bookyoulove_network
+#    volumes:
+#      - ./alarmdb/conf.d:/etc/mysql/conf.d
+#      - ./alarmdb/data:/var/lib/mysql
+#      - ./alarmdb/initdb.d:/docker-entrypoint-initdb.d
+#    #    env_file: .env
+#    ports:
+#      - "23306:3306"
+#    environment:
+#      - TZ=Asia/Seoul
+#      - MYSQL_ROOT_PASSWORD=bookulove678
+#      - MYSQL_USER=bookulove
+#      - MYSQL_PASSWORD=bookulove678
+#      - MYSQL_DATABASE=alarm
+
+  redis:
+    container_name: "redis"
+    image: "redis"
+    ports:
+      - "6379:6379"
+
+#  axon-server:
+#    container_name: axon-server
+#    image: axoniq/axonserver:latest-jdk-17-dev
+#    networks:
+#      - bookyoulove_network
+#    ports:
+#      - "8024:8024"
+#      - "8124:8124"
+#    volumes:
+#      - axonserver-data:/axonserver/data
+#      - axonserver-events:/axonserver/events
+#      - axonserver-config:/axonserver/config:ro
+#
+#  apigatway-server:
+#    image: bookulove-backend-apigateway-service:1.0.0
+#    networks:
+#      - bookyoulove_network
+#    ports:
+#      - "9001:8080"
+#    depends_on:
+#      - mysql
+#    environment:
+#      - AXON_AXONSERVER_SERVERS=axon-server:8124
+#      - AXON_SERIALIZER_EVENTS=jackson
+#      - AXON_SERIALIZER_MESSAGES=jackson
+#      - AXON_SERIALIZER_GENERAL=xstream
+#
+#volumes:
+#  axonserver-data:
+#    driver: local
+#    driver_opts:
+#      o: bind
+#      type: none
+#      device: ${PWD}/axon-server-se/data
+#  axonserver-events:
+#    driver: local
+#    driver_opts:
+#      o: bind
+#      type: none
+#      device: ${PWD}/axon-server-se/events
+#  axonserver-config:
+#    driver: local
+#    driver_opts:
+#      o: bind
+#      type: none
+#      device: ${PWD}/axon-server-se/config
+
+networks:
+  bookyoulove_network:
+    driver: bridge

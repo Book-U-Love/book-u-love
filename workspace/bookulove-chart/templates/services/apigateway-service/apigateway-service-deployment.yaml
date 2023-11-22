@@ -1,0 +1,33 @@
+{{- $root := .}}
+{{- $service := index .Values "apigateway-service" }}
+{{- include "service.deployment.head" (list . $service.metadata.name) }}
+spec:
+  replicas: {{ $service.replicas }}
+  selector:
+    matchLabels: *labels
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      serviceAccountName: {{ include "service.release.name" (list . $service.metadata.name) }}
+      containers:
+      - name: apigateway-service
+        image: {{ include "service.image" $service }}
+        {{- if .Values.global.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+        {{- end }}
+        env:
+        {{- include "service.secret.ref" (list . $service.metadata.name "JWT-SECRET" "jwt-secret") | indent 8 }}
+        - name: REDIS-HOST
+          value: {{ $service.datasource.redis.host | replace "$releaseName" .Release.Name }}
+        - name: REDIS-PORT
+          value: {{ $service.datasource.redis.port | quote }}
+        {{- range $_, $v := $service.services }}
+        {{- $s := index $root.Values $v }}
+        - name: {{ $s.metadata.name | upper | quote }}
+          value: http://{{ include "service.release.name" (list $root $v) }}:{{ $s.server.port }}
+        {{- end }}
+        - name: ALARM-SERVICE
+          value: http://dummy-alarm-service
+        ports:
+        - containerPort: {{ $service.server.port }}

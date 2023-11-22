@@ -1,0 +1,37 @@
+global:
+  imagePullPolicy: Always
+
+user-db:
+  persistence:
+    storage:
+      storageClass: local-path
+
+book-db:
+  persistence:
+    storage:
+      storageClass: local-path
+
+chatting-db:
+  persistence:
+    storage:
+      storageClass: local-path
+
+notification-db:
+  persistence:
+    storage:
+      storageClass: local-path
+
+universe-db:
+  persistence:
+    storage:
+      storageClass: local-path
+
+ingress:
+  tls:
+    enabled: true
+    secret:
+      name: bookulove-tls
+    issuer:
+      type: ClusterIssuer
+      name: letsencrypt-prod
+  host: k9c209.p.ssafy.io

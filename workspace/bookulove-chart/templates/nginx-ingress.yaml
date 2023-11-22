@@ -1,0 +1,44 @@
+{{- $ingress := .Values.ingress }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-bookulove-ingress
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if $ingress.tls.enabled }}
+    {{- $issuerType := "issuer" }}
+    {{- if and $ingress.tls.issuer.type (eq $ingress.tls.issuer.type "ClusterIssuer") }}
+    {{- $issuerType = "cluster-issuer"}}
+    {{- end }}
+    cert-manager.io/{{ $issuerType }}: {{ $ingress.tls.issuer.name }}
+    {{- end }}
+    nginx.ingress.kubernetes.io/rewrite-target: /api$1
+spec:
+  ingressClassName: nginx
+  {{- if $ingress.tls.enabled  }}
+  tls:
+  - secretName: {{ $ingress.tls.secret.name }}
+    hosts: [ {{ $ingress.host | quote }} ]
+  {{- end }}
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /api(?!/chatting-service(?:$|/.+))(.*)
+        backend:
+          {{- $apigateway := index .Values "apigateway-service" }}
+          service:
+            name: {{ include "service.release.name" (list . $apigateway.metadata.name) }}
+            port:
+              number: {{ $apigateway.server.port }}
+      - pathType: Prefix
+        path: /api(?!/chatting-service/stomps(?:$|/.+))(/chatting-service.+)
+        backend:
+          {{- $chattingService := index .Values "chatting-service" }}
+          service:
+            name: {{ include "service.release.name" (list . $chattingService.metadata.name) }}
+            port:
+              number: {{ $chattingService.server.port }}
+    {{- if $ingress.host }}
+    host: {{ $ingress.host }}
+    {{- end }}

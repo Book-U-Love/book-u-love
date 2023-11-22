@@ -1,0 +1,3 @@
+.vscode
+charts/*.tgz
+prod-secret-values.yaml
